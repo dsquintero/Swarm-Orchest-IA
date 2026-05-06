@@ -1,0 +1,14 @@
+# .swarm/.agents-conf.yaml — Override local por proyecto
+# Generado por: swarm init (copia del global si no existe)
+#
+# Este archivo sobreescribe selectivamente la configuración global
+# de ~/.config/swarm/.agents-conf.yaml. Solo define las claves
+# que quieras cambiar; el resto se hereda del global.
+#
+# Ejemplo: si querés usar un modelo diferente para el implementer
+# en ESTE proyecto, descomentá las líneas siguientes:
+#
+# swarm-implementer:
+#   primary: opencode-go/kimi-k2.6
+#
+# las demas claves heredan el global

@@ -1,0 +1,23 @@
+# Build output
+swarm-cli/dist/
+
+# Dependencies
+swarm-cli/node_modules/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor files
+*.swp
+*.swo
+*~
+.vscode/
+.idea/
+
+# Source maps
+*.js.map
+
+# Environment
+.env
+.env.local

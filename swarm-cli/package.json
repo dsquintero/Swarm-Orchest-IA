@@ -1,0 +1,31 @@
+{
+  "name": "swarm-orchest-ia",
+  "version": "0.1.0",
+  "description": "Multi-Agent SDD Orchestrator CLI — manages project setup for Spec-Driven Development",
+  "main": "dist/cmd/swarm.js",
+  "bin": {
+    "swarm": "./dist/cmd/swarm.js"
+  },
+  "scripts": {
+    "build": "rimraf dist && tsc",
+    "dev": "ts-node src/cmd/swarm.ts",
+    "start": "node dist/cmd/swarm.js",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": ["swarm", "sdd", "opencode", "agents", "spec-driven"],
+  "author": "",
+  "license": "MIT",
+  "type": "commonjs",
+  "dependencies": {
+    "chalk": "^4.1.2",
+    "commander": "^14.0.3",
+    "js-yaml": "^4.1.1"
+  },
+  "devDependencies": {
+    "@types/js-yaml": "^4.0.9",
+    "@types/node": "^25.6.0",
+    "rimraf": "^6.1.3",
+    "ts-node": "^10.9.2",
+    "typescript": "^6.0.3"
+  }
+}
