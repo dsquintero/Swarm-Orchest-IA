@@ -8,18 +8,15 @@ export async function runFallback(agentName?: string, all: boolean = false, rest
   const configFile = agentsconf.swarmConfigFile();
   const config = agentsconf.load(configFile);
 
-  const swarmYaml = path.join(projectDir, '.swarm.yaml');
-
-  if (!fs.existsSync(swarmYaml)) {
-    throw new Error('No .swarm.yaml found. Run "swarm init" first.');
-  }
-
   const configPath = path.join(projectDir, '.swarm', 'config.yaml');
-  let mode = 'local';
-  if (fs.existsSync(configPath)) {
-    const content = fs.readFileSync(configPath, 'utf-8');
-    if (content.includes('mode: global')) mode = 'global';
+
+  if (!fs.existsSync(configPath)) {
+    throw new Error('No .swarm/config.yaml found. Run "swarm init" first.');
   }
+
+  let mode = 'local';
+  const content = fs.readFileSync(configPath, 'utf-8');
+  if (content.includes('mode: global')) mode = 'global';
 
   if (restore) {
     return restorePrimary(config, projectDir, mode);

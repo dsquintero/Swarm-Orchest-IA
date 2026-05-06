@@ -12,14 +12,22 @@
     "start": "node dist/cmd/swarm.js",
     "prepublishOnly": "npm run build"
   },
-  "keywords": ["swarm", "sdd", "opencode", "agents", "spec-driven"],
+  "keywords": [
+    "swarm",
+    "sdd",
+    "opencode",
+    "agents",
+    "spec-driven"
+  ],
   "author": "",
   "license": "MIT",
   "type": "commonjs",
   "dependencies": {
     "chalk": "^4.1.2",
     "commander": "^14.0.3",
-    "js-yaml": "^4.1.1"
+    "inquirer": "^13.4.2",
+    "js-yaml": "^4.1.1",
+    "ora": "^9.4.0"
   },
   "devDependencies": {
     "@types/js-yaml": "^4.0.9",

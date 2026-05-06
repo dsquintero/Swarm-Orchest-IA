@@ -59,7 +59,7 @@ Validaciones:
 - Si `[path]` no existe: error `"Directory does not exist: <path>"`
 - Si `[path]` no es un directorio: error `"Not a directory: <path>"`
 - `swarm init` en un proyecto ya inicializado: error `"Project already initialized"`
-- `swarm update/fallback/models` en un proyecto sin `.swarm.yaml`: error `"Not a Swarm project"`
+- `swarm update/fallback/models` en un proyecto sin `.swarm/config.yaml`: error `"Not a Swarm project"`
 
 ### Comandos disponibles
 
@@ -80,7 +80,6 @@ swarm models --fallback             # Solo modelos fallback
 
 ```
 mi-proyecto/
-├── .swarm.yaml                    ← modo (global/local) y ruta a templates
 ├── .opencode/
 │   ├── agents/                    ← 6 agentes (symlinks o copias)
 │   ├── skills/                    ← 3 skills
@@ -92,7 +91,7 @@ mi-proyecto/
 │   │   └── hello-mundo/spec.md   ← spec de ejemplo
 │   └── changes/archive/           ← cambios archivados
 └── .swarm/
-    ├── config.yaml                ← tool, modo, fecha
+    ├── config.yaml                ← tool, modo, templates_path, initialized_at
     ├── current.yaml               ← change activo (null al inicio)
     └── .agents-conf.yaml          ← override local de modelos
 ```

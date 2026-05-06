@@ -3,6 +3,9 @@ import * as path from 'path';
 import * as agentsconf from '../lib/agentsconf';
 import * as injector from '../lib/injector';
 import * as fsutil from '../lib/fsutil';
+import chalk from 'chalk';
+import inquirer from 'inquirer';
+import ora from 'ora';
 
 // Resolve templates directory relative to the package root
 // In dev (ts-node): __dirname is src/lib, templates at ../../templates/opencode
@@ -31,7 +34,7 @@ const AGENT_ORDER = [
   'swarm-verifier',
 ];
 
-export async function runInit(tool: string, projectDir: string): Promise<void> {
+export async function runInit(tool: string, projectDir: string, mode?: string): Promise<void> {
   const projectName = path.basename(projectDir);
 
   console.log(`Swarm-Orchest-IA — Project: ${projectName}\n`);
@@ -59,63 +62,60 @@ export async function runInit(tool: string, projectDir: string): Promise<void> {
     throw new Error(`Tool '${tool}' is not supported yet. Currently only 'opencode' is available.`);
   }
 
-  const modeIndex = await fsutil.askChoice(
-    'Install mode:',
-    [
-      'Global — symlinks to ~/.config/swarm/templates/, shared across projects',
-      'Local  — copies all files into the project, fully independent',
-    ],
-    0
-  );
-  const mode = modeIndex === 0 ? 'global' : 'local';
-
-  console.log(`\nInstalling in ${mode} mode...\n`);
+  let modeValue: string;
+  if (mode) {
+    modeValue = mode;
+    console.log(chalk.blue(`\nInstalling in ${modeValue} mode...\n`));
+  } else {
+    const { mode: selectedMode } = await inquirer.prompt<{ mode: string }>([{
+      type: 'list',
+      name: 'mode',
+      message: 'Install mode:',
+      choices: [
+        { name: 'Global — symlinks to ~/.config/swarm/templates/, shared across projects', value: 'global' },
+        { name: 'Local  — copies all files into the project, fully independent', value: 'local' },
+      ],
+      default: 'global',
+    }]);
+    modeValue = selectedMode;
+    console.log();
+  }
 
   const swarmDir = path.join(projectDir, '.swarm');
   const opencodeDir = path.join(projectDir, '.opencode');
   const swarmspecDir = path.join(projectDir, 'swarmspec');
-
-  // Step 2: .swarm.yaml
   const home = process.env.HOME || '/root';
-  const swarmYaml = `tool: ${tool}\nmode: ${mode}\ntemplates_path: ${home}/.config/swarm/templates/opencode\n`;
-  fs.writeFileSync(path.join(projectDir, '.swarm.yaml'), swarmYaml, 'utf-8');
-  console.log('Created: .swarm.yaml');
 
-  // Step 3: .opencode/ with agents, skills, commands
+  // Step 2: .opencode/ with agents, skills, commands
   const agentsDir = path.join(opencodeDir, 'agents');
   const skillsDir = path.join(opencodeDir, 'skills');
   const commandsDir = path.join(opencodeDir, 'commands');
 
-  if (mode === 'global') {
+  if (modeValue === 'global') {
     const templatesPath = path.join(agentsconf.swarmConfigDir(), 'templates', 'opencode');
+    const spinner = ora('Installing central templates...').start();
 
-    // Install central templates
     installCentralTemplates(templatesPath);
-
-    // Inject models into central agents
     injectIntoCentralAgents(templatesPath, config);
 
+    spinner.text = 'Creating symlinks...';
     fsutil.createSymlink(path.join(templatesPath, 'agents'), agentsDir);
-    console.log('Linked: .opencode/agents/ -> central templates');
-
     fsutil.createSymlink(path.join(templatesPath, 'skills'), skillsDir);
-    console.log('Linked: .opencode/skills/ -> central templates');
-
     fsutil.createSymlink(path.join(templatesPath, 'commands'), commandsDir);
-    console.log('Linked: .opencode/commands/ -> central templates');
+
+    spinner.succeed(chalk.green('Installed in global mode — agents, skills, commands linked'));
   } else {
+    const spinner = ora('Copying templates...').start();
+
     fsutil.ensureDir(agentsDir);
     fsutil.ensureDir(skillsDir);
     fsutil.ensureDir(commandsDir);
 
     copyAndInjectAgents(agentsDir, config);
-    console.log('Copied: .opencode/agents/ (with model injection)');
-
     fsutil.copyDir(path.join(TEMPLATES_DIR, 'skills'), skillsDir);
-    console.log('Copied: .opencode/skills/');
-
     fsutil.copyDir(path.join(TEMPLATES_DIR, 'commands'), commandsDir);
-    console.log('Copied: .opencode/commands/');
+
+    spinner.succeed(chalk.green('Installed in local mode — all files copied'));
   }
 
   // Step 4: .swarm/.agents-conf.yaml
@@ -127,20 +127,17 @@ export async function runInit(tool: string, projectDir: string): Promise<void> {
       fs.readFileSync(path.join(TEMPLATES_DIR, 'defaults', 'local-agents-conf.yaml'), 'utf-8'),
       'utf-8'
     );
-    console.log('Created: .swarm/.agents-conf.yaml (local override)');
   }
 
-  // Step 5: AGENTS.md
+  // Step 5-8: project files and metadata
+  const spin = ora('Creating project files...').start();
+
   const agentsMd = generateAgentsMd(projectName, projectDir);
   fs.writeFileSync(path.join(projectDir, 'AGENTS.md'), agentsMd, 'utf-8');
-  console.log('Created: AGENTS.md');
 
-  // Step 6: opencode.json
   const openCodeJson = generateOpenCodeJson(projectName);
   fs.writeFileSync(path.join(projectDir, 'opencode.json'), openCodeJson, 'utf-8');
-  console.log('Created: opencode.json');
 
-  // Step 7: swarmspec/
   fsutil.ensureDir(path.join(swarmspecDir, 'specs'));
   fsutil.ensureDir(path.join(swarmspecDir, 'changes', 'archive'));
   const exampleSpecDir = path.join(swarmspecDir, 'specs', 'hello-mundo');
@@ -150,42 +147,28 @@ export async function runInit(tool: string, projectDir: string): Promise<void> {
     fs.readFileSync(path.join(TEMPLATES_DIR, 'defaults', 'swarmspec-example', 'specs', 'hello-mundo', 'spec.md'), 'utf-8'),
     'utf-8'
   );
-  console.log('Created: swarmspec/ structure with example spec');
 
-  // Step 8: Engram
-  const useEngram = await fsutil.askYesNo('\nUse Engram for persistent memory?', false);
-  if (useEngram) {
-    try {
-      const { execSync } = require('child_process');
-      execSync('which engram', { stdio: 'ignore' });
-      console.log('Engram detected. It will be available in your OpenCode sessions.');
-    } catch {
-      console.log('Engram not found in PATH. Skipping. You can install it later.');
-    }
-  }
-
-  // Step 9: .swarm/ metadata
   const configContent = [
     `tool: ${tool}`,
-    `mode: ${mode}`,
+    `mode: ${modeValue}`,
+    `templates_path: ${home}/.config/swarm/templates/opencode`,
     `initialized_at: ${new Date().toISOString()}`,
-    `templates_source: ${home}/.config/swarm/templates/opencode`,
   ].join('\n') + '\n';
   fs.writeFileSync(path.join(swarmDir, 'config.yaml'), configContent, 'utf-8');
-  console.log('Created: .swarm/config.yaml');
 
   fs.writeFileSync(
     path.join(swarmDir, 'current.yaml'),
     fs.readFileSync(path.join(TEMPLATES_DIR, 'defaults', 'current.yaml'), 'utf-8'),
     'utf-8'
   );
-  console.log('Created: .swarm/current.yaml');
 
-  console.log('\nSwarm-Orchest-IA initialized successfully!');
-  console.log(`Mode: ${mode} | Tool: ${tool}`);
-  console.log('\nNext steps:');
-  console.log('  1. Open this project in OpenCode');
-  console.log('  2. Use /swarm-propose "your feature description" to start');
+  spin.succeed(chalk.green('Project files created'));
+
+  console.log(chalk.green.bold('\nSwarm-Orchest-IA initialized successfully!'));
+  console.log(`Mode: ${chalk.cyan(modeValue)} | Tool: ${chalk.cyan(tool)}`);
+  console.log(chalk.dim('\nNext steps:'));
+  console.log(chalk.dim('  1. Open this project in OpenCode'));
+  console.log(chalk.dim('  2. Use /swarm-propose "your feature description" to start'));
 }
 
 function installCentralTemplates(templatesPath: string): void {
@@ -218,7 +201,6 @@ function injectIntoCentralAgents(templatesPath: string, config: agentsconf.Confi
     const agentName = injector.agentNameFromFilename(entry);
     content = injector.injectIntoAgent(content, agentName, config);
     fs.writeFileSync(filePath, content, 'utf-8');
-    console.log(`  Injected model/temperature into ${entry}`);
   }
 }
 

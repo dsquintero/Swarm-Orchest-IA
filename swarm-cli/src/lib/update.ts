@@ -15,18 +15,15 @@ export function runUpdate(updateAll: boolean = false, projectDir?: string): void
 }
 
 function updateCurrentProject(config: agentsconf.Config, projectDir: string): void {
-  const swarmYaml = path.join(projectDir, '.swarm.yaml');
-
-  if (!fs.existsSync(swarmYaml)) {
-    throw new Error('No .swarm.yaml found in project directory. Run "swarm init" first.');
-  }
-
   const configPath = path.join(projectDir, '.swarm', 'config.yaml');
-  let mode = 'local';
-  if (fs.existsSync(configPath)) {
-    const content = fs.readFileSync(configPath, 'utf-8');
-    if (content.includes('mode: global')) mode = 'global';
+
+  if (!fs.existsSync(configPath)) {
+    throw new Error('No .swarm/config.yaml found in project directory. Run "swarm init" first.');
   }
+
+  let mode = 'local';
+  const content = fs.readFileSync(configPath, 'utf-8');
+  if (content.includes('mode: global')) mode = 'global';
 
   console.log(`Updating project (mode: ${mode})...`);
 
@@ -64,12 +61,12 @@ function injectIntoAgents(agentsDir: string, config: agentsconf.Config): void {
 
 function updateAllProjects(config: agentsconf.Config): void {
   const home = process.env.HOME || '/root';
-  console.log('Searching for projects with .swarm.yaml...');
+  console.log('Searching for projects with .swarm/config.yaml...');
 
-  const projects = findProjectsWithSwarmYaml(home);
+  const projects = findSwarmProjects(home);
 
   if (projects.length === 0) {
-    console.log('No projects found with .swarm.yaml');
+    console.log('No projects found with .swarm/config.yaml');
     return;
   }
 
@@ -83,21 +80,24 @@ function updateAllProjects(config: agentsconf.Config): void {
   }
 }
 
-function findProjectsWithSwarmYaml(dir: string, depth: number = 0): string[] {
+function findSwarmProjects(dir: string, depth: number = 0): string[] {
   if (depth > 5) return [];
   const results: string[] = [];
 
   try {
     for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
       const fullPath = path.join(dir, entry.name);
-      if (entry.name === '.swarm.yaml') {
-        const parentDir = path.dirname(fullPath);
-        if (!parentDir.includes('.config')) {
-          results.push(parentDir);
+      if (entry.name === '.swarm' && entry.isDirectory()) {
+        const configFile = path.join(fullPath, 'config.yaml');
+        if (fs.existsSync(configFile)) {
+          const parentDir = path.dirname(fullPath);
+          if (!parentDir.includes('.config')) {
+            results.push(parentDir);
+          }
         }
       }
       if (entry.isDirectory() && !entry.name.startsWith('.') && entry.name !== 'node_modules') {
-        results.push(...findProjectsWithSwarmYaml(fullPath, depth + 1));
+        results.push(...findSwarmProjects(fullPath, depth + 1));
       }
     }
   } catch {

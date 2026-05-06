@@ -18,13 +18,19 @@ program
   .command('init [path]')
   .description('Initialize Swarm-Orchest-IA in a project directory')
   .option('--tool <tool>', 'Target tool (opencode, claude, cursor)', 'opencode')
+  .option('-g, --global', 'Install in global mode (symlinks to central templates)')
+  .option('-l, --local', 'Install in local mode (copies to project)')
   .action(async (projectPath, opts) => {
     try {
+      if (opts.global && opts.local) {
+        throw new Error('Cannot use both --global (-g) and --local (-l). Choose one.');
+      }
       const projectDir = resolveProjectDir(projectPath);
       if (isInitialized(projectDir)) {
-        throw new Error(`Project already initialized. Found .swarm.yaml in ${projectDir}.\nUse 'swarm update' to update.`);
+        throw new Error(`Project already initialized. Found .swarm/config.yaml in ${projectDir}.\nUse 'swarm update' to update.`);
       }
-      await runInit(opts.tool, projectDir);
+      const mode: string | undefined = opts.global ? 'global' : opts.local ? 'local' : undefined;
+      await runInit(opts.tool, projectDir, mode);
     } catch (err: any) {
       console.error(`Error: ${err.message}`);
       process.exit(1);
@@ -34,7 +40,7 @@ program
 program
   .command('update [path]')
   .description('Update templates and re-inject model configuration')
-  .option('--all', 'Update all projects with .swarm.yaml')
+  .option('--all', 'Update all projects with .swarm/config.yaml')
   .action((projectPath, opts) => {
     try {
       if (opts.all) {
