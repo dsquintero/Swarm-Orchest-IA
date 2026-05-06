@@ -1,10 +1,20 @@
 import * as fs from 'fs';
 import * as path from 'path';
-import * as readline from 'readline';
 
 export function createSymlink(target: string, link: string): void {
   fs.mkdirSync(path.dirname(link), { recursive: true });
-  if (fs.existsSync(link)) fs.unlinkSync(link);
+  if (fs.existsSync(link)) {
+    try {
+      const stat = fs.lstatSync(link);
+      if (stat.isSymbolicLink() || stat.isFile()) {
+        fs.unlinkSync(link);
+      } else if (stat.isDirectory()) {
+        fs.rmSync(link, { recursive: true });
+      }
+    } catch {
+      fs.rmSync(link, { recursive: true, force: true });
+    }
+  }
   fs.symlinkSync(target, link);
 }
 
@@ -30,29 +40,84 @@ export function ensureDir(dirPath: string): void {
   fs.mkdirSync(dirPath, { recursive: true });
 }
 
-export function askYesNo(question: string, defaultValue: boolean = false): Promise<boolean> {
-  const prompt = defaultValue ? ' [Y/n]: ' : ' [y/N]: ';
-  const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
-  return new Promise((resolve) => {
-    rl.question(question + prompt, (answer: string) => {
-      rl.close();
-      const lower = answer.trim().toLowerCase();
-      if (lower === '') resolve(defaultValue);
-      resolve(lower === 'y' || lower === 'yes');
-    });
+// Shared stdin line reader — buffers data across sequential calls
+let _stdinBuffer = '';
+let _stdinPending: ((line: string) => void)[] = [];
+let _stdinReady = false;
+
+function _initStdin() {
+  if (_stdinReady) return;
+  _stdinReady = true;
+  process.stdin.resume();
+  process.stdin.setEncoding('utf8');
+  process.stdin.on('data', (chunk: string) => {
+    _stdinBuffer += chunk;
+    _tryFlush();
+  });
+  process.stdin.on('end', () => {
+    if (_stdinBuffer.trim() && _stdinPending.length > 0) {
+      const resolve = _stdinPending.shift()!;
+      resolve(_stdinBuffer.trim());
+      _stdinBuffer = '';
+    }
   });
 }
 
-export function askChoice(question: string, options: string[], defaultIndex: number = 0): Promise<number> {
-  const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
+function _tryFlush() {
+  while (_stdinBuffer.includes('\n') && _stdinPending.length > 0) {
+    const idx = _stdinBuffer.indexOf('\n');
+    const line = _stdinBuffer.slice(0, idx).trim();
+    _stdinBuffer = _stdinBuffer.slice(idx + 1);
+    const resolve = _stdinPending.shift()!;
+    resolve(line);
+  }
+}
+
+function _readLine(): Promise<string> {
+  _initStdin();
   return new Promise((resolve) => {
-    console.log(question);
-    options.forEach((opt, i) => console.log(`  ${i + 1}) ${opt}`));
-    rl.question(`\nChoose [${defaultIndex + 1}]: `, (answer: string) => {
-      rl.close();
-      const num = parseInt(answer.trim(), 10);
-      if (isNaN(num) || num < 1 || num > options.length) resolve(defaultIndex);
-      resolve(num - 1);
-    });
+    if (_stdinBuffer.includes('\n')) {
+      const idx = _stdinBuffer.indexOf('\n');
+      const line = _stdinBuffer.slice(0, idx).trim();
+      _stdinBuffer = _stdinBuffer.slice(idx + 1);
+      resolve(line);
+    } else {
+      _stdinPending.push(resolve);
+    }
+  });
+}
+
+export function askYesNo(question: string, defaultValue: boolean = false): Promise<boolean> {
+  const prompt = defaultValue ? ' [Y/n]: ' : ' [y/N]: ';
+  process.stdout.write(question + prompt);
+  return _readLine().then((answer) => {
+    if (answer === '') return defaultValue;
+    return answer.toLowerCase() === 'y' || answer.toLowerCase() === 'yes';
+  });
+}
+
+export function resolveProjectDir(projectPath?: string): string {
+  const dir = projectPath ? path.resolve(projectPath) : process.cwd();
+  if (!fs.existsSync(dir)) {
+    throw new Error(`Directory does not exist: ${dir}`);
+  }
+  if (!fs.statSync(dir).isDirectory()) {
+    throw new Error(`Not a directory: ${dir}`);
+  }
+  return dir;
+}
+
+export function isInitialized(projectDir: string): boolean {
+  return fs.existsSync(path.join(projectDir, '.swarm.yaml'));
+}
+
+export function askChoice(question: string, options: string[], defaultIndex: number = 0): Promise<number> {
+  process.stdout.write(question + '\n');
+  options.forEach((opt, i) => process.stdout.write(`  ${i + 1}) ${opt}\n`));
+  process.stdout.write(`\nChoose [${defaultIndex + 1}]: `);
+  return _readLine().then((answer) => {
+    const num = parseInt(answer, 10);
+    if (isNaN(num) || num < 1 || num > options.length) return defaultIndex;
+    return num - 1;
   });
 }

@@ -5,6 +5,7 @@ import { runInit } from '../lib/init';
 import { runUpdate } from '../lib/update';
 import { runFallback } from '../lib/fallback';
 import { runModels } from '../lib/models';
+import { resolveProjectDir, isInitialized } from '../lib/fsutil';
 
 const program = new Command();
 
@@ -14,12 +15,16 @@ program
   .version('0.1.0');
 
 program
-  .command('init')
-  .description('Initialize Swarm-Orchest-IA in the current project')
+  .command('init [path]')
+  .description('Initialize Swarm-Orchest-IA in a project directory')
   .option('--tool <tool>', 'Target tool (opencode, claude, cursor)', 'opencode')
-  .action(async (opts) => {
+  .action(async (projectPath, opts) => {
     try {
-      await runInit(opts.tool);
+      const projectDir = resolveProjectDir(projectPath);
+      if (isInitialized(projectDir)) {
+        throw new Error(`Project already initialized. Found .swarm.yaml in ${projectDir}.\nUse 'swarm update' to update.`);
+      }
+      await runInit(opts.tool, projectDir);
     } catch (err: any) {
       console.error(`Error: ${err.message}`);
       process.exit(1);
@@ -27,12 +32,20 @@ program
   });
 
 program
-  .command('update')
+  .command('update [path]')
   .description('Update templates and re-inject model configuration')
   .option('--all', 'Update all projects with .swarm.yaml')
-  .action((opts) => {
+  .action((projectPath, opts) => {
     try {
-      runUpdate(opts.all || false);
+      if (opts.all) {
+        runUpdate(true);
+      } else {
+        const projectDir = resolveProjectDir(projectPath);
+        if (!isInitialized(projectDir)) {
+          throw new Error(`Not a Swarm project. Run 'swarm init' first.`);
+        }
+        runUpdate(false, projectDir);
+      }
     } catch (err: any) {
       console.error(`Error: ${err.message}`);
       process.exit(1);
@@ -44,9 +57,14 @@ program
   .description('Switch agents to fallback models or restore primary models')
   .option('--all', 'Switch all agents to fallback')
   .option('--restore', 'Restore all agents to primary models')
+  .option('--path <path>', 'Project directory')
   .action(async (agentName, opts) => {
     try {
-      await runFallback(agentName, opts.all || false, opts.restore || false);
+      const projectDir = resolveProjectDir(opts.path);
+      if (!isInitialized(projectDir)) {
+        throw new Error(`Not a Swarm project. Run 'swarm init' first.`);
+      }
+      await runFallback(agentName, opts.all || false, opts.restore || false, projectDir);
     } catch (err: any) {
       console.error(`Error: ${err.message}`);
       process.exit(1);
@@ -54,13 +72,17 @@ program
   });
 
 program
-  .command('models')
+  .command('models [path]')
   .description('Show current model configuration for all agents')
   .option('--primary', 'Show only primary models')
   .option('--fallback', 'Show only fallback models')
-  .action((opts) => {
+  .action((projectPath, opts) => {
     try {
-      runModels(opts.primary || false, opts.fallback || false);
+      const projectDir = resolveProjectDir(projectPath);
+      if (!isInitialized(projectDir)) {
+        throw new Error(`Not a Swarm project. Run 'swarm init' first.`);
+      }
+      runModels(opts.primary || false, opts.fallback || false, projectDir);
     } catch (err: any) {
       console.error(`Error: ${err.message}`);
       process.exit(1);

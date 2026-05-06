@@ -4,18 +4,17 @@ import * as agentsconf from './agentsconf';
 import * as injector from './injector';
 import * as fsutil from './fsutil';
 
-export async function runFallback(agentName?: string, all: boolean = false, restore: boolean = false): Promise<void> {
+export async function runFallback(agentName?: string, all: boolean = false, restore: boolean = false, projectDir: string = process.cwd()): Promise<void> {
   const configFile = agentsconf.swarmConfigFile();
   const config = agentsconf.load(configFile);
 
-  const cwd = process.cwd();
-  const swarmYaml = path.join(cwd, '.swarm.yaml');
+  const swarmYaml = path.join(projectDir, '.swarm.yaml');
 
   if (!fs.existsSync(swarmYaml)) {
     throw new Error('No .swarm.yaml found. Run "swarm init" first.');
   }
 
-  const configPath = path.join(cwd, '.swarm', 'config.yaml');
+  const configPath = path.join(projectDir, '.swarm', 'config.yaml');
   let mode = 'local';
   if (fs.existsSync(configPath)) {
     const content = fs.readFileSync(configPath, 'utf-8');
@@ -23,15 +22,15 @@ export async function runFallback(agentName?: string, all: boolean = false, rest
   }
 
   if (restore) {
-    return restorePrimary(config, cwd, mode);
+    return restorePrimary(config, projectDir, mode);
   }
 
   if (all) {
-    return switchAllToFallback(config, cwd, mode);
+    return switchAllToFallback(config, projectDir, mode);
   }
 
   if (agentName) {
-    return switchAgentToFallback(config, cwd, mode, agentName);
+    return switchAgentToFallback(config, projectDir, mode, agentName);
   }
 
   console.log('Specify an agent name or use --all. Available agents:');

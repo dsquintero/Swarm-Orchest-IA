@@ -25,13 +25,16 @@ npm run build
 ### Inicializar un proyecto
 
 ```bash
+# En el directorio del proyecto
 cd mi-proyecto
+node /path/to/swarm-cli/dist/cmd/swarm.js init
 
-# Con el binario compilado
-node /path/to/swarm-cli/dist/cmd/swarm.js init --tool opencode
+# Especificando ruta al proyecto
+node /path/to/swarm-cli/dist/cmd/swarm.js init /path/to/mi-proyecto
 
 # Con ts-node (desarrollo)
-npm run dev -- init --tool opencode
+npm run dev -- init
+npm run dev -- init /path/to/mi-proyecto
 ```
 
 El comando pregunta si queres instalacion **Global** (symlinks) o **Local** (copias):
@@ -39,18 +42,38 @@ El comando pregunta si queres instalacion **Global** (symlinks) o **Local** (cop
 - **Global**: los agentes, skills y comandos se linkean a `~/.config/swarm/templates/opencode/`. Cambios en las plantillas se propagan a todos los proyectos con `swarm update`.
 - **Local**: todo se copia al proyecto. Cada proyecto es independiente. Ideal para commitear al repo.
 
+### Argumento `[path]`
+
+Todos los comandos aceptan un argumento `[path]` opcional que indica el directorio del proyecto. Si no se especifica, usa el directorio actual (`.`).
+
+```bash
+swarm init [path]                # Por defecto: directorio actual
+swarm update [path]              # Actualizar un proyecto especifico
+swarm update --all               # Actualizar todos los proyectos
+swarm fallback [agent-name]     # En directorio actual
+swarm fallback [agent-name] --path /otro/proyecto  # Con ruta explicita
+swarm models [path]             # Ver config de modelos
+```
+
+Validaciones:
+- Si `[path]` no existe: error `"Directory does not exist: <path>"`
+- Si `[path]` no es un directorio: error `"Not a directory: <path>"`
+- `swarm init` en un proyecto ya inicializado: error `"Project already initialized"`
+- `swarm update/fallback/models` en un proyecto sin `.swarm.yaml`: error `"Not a Swarm project"`
+
 ### Comandos disponibles
 
 ```bash
-swarm init --tool opencode    # Inicializar el proyecto
-swarm update                  # Actualizar modelos y plantillas
-swarm update --all            # Actualizar todos los proyectos
-swarm fallback --all          # Cambiar todos los agentes a modelos fallback
-swarm fallback swarm-explorer # Cambiar un agente a su fallback
-swarm fallback --restore      # Restaurar modelos primarios
-swarm models                  # Ver configuracion de modelos
-swarm models --primary        # Solo modelos primarios
-swarm models --fallback       # Solo modelos fallback
+swarm init [path] --tool opencode  # Inicializar proyecto
+swarm update [path]                 # Actualizar modelos y plantillas
+swarm update --all                  # Actualizar todos los proyectos
+swarm fallback [agent-name]         # Cambiar un agente a su fallback
+swarm fallback --all                # Cambiar todos los agentes a fallback
+swarm fallback --restore            # Restaurar modelos primarios
+swarm fallback --path /path/to/proj # Especificar proyecto
+swarm models [path]                 # Ver configuracion de modelos
+swarm models --primary              # Solo modelos primarios
+swarm models --fallback             # Solo modelos fallback
 ```
 
 ### Estructura del proyecto inicializado

@@ -11,12 +11,11 @@ const AGENT_ORDER = [
   'swarm-verifier',
 ];
 
-export function runModels(primaryOnly: boolean = false, fallbackOnly: boolean = false): void {
+export function runModels(primaryOnly: boolean = false, fallbackOnly: boolean = false, projectDir: string = process.cwd()): void {
   const configFile = agentsconf.swarmConfigFile();
   const config = agentsconf.load(configFile);
 
-  const cwd = process.cwd();
-  const localConf = path.join(cwd, '.swarm', '.agents-conf.yaml');
+  const localConf = path.join(projectDir, '.swarm', '.agents-conf.yaml');
   let effectiveConfig = config;
 
   if (fs.existsSync(localConf)) {

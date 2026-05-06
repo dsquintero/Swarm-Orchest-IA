@@ -31,9 +31,8 @@ const AGENT_ORDER = [
   'swarm-verifier',
 ];
 
-export async function runInit(tool: string): Promise<void> {
-  const cwd = process.cwd();
-  const projectName = path.basename(cwd);
+export async function runInit(tool: string, projectDir: string): Promise<void> {
+  const projectName = path.basename(projectDir);
 
   console.log(`Swarm-Orchest-IA — Project: ${projectName}\n`);
 
@@ -72,14 +71,14 @@ export async function runInit(tool: string): Promise<void> {
 
   console.log(`\nInstalling in ${mode} mode...\n`);
 
-  const swarmDir = path.join(cwd, '.swarm');
-  const opencodeDir = path.join(cwd, '.opencode');
-  const swarmspecDir = path.join(cwd, 'swarmspec');
+  const swarmDir = path.join(projectDir, '.swarm');
+  const opencodeDir = path.join(projectDir, '.opencode');
+  const swarmspecDir = path.join(projectDir, 'swarmspec');
 
   // Step 2: .swarm.yaml
   const home = process.env.HOME || '/root';
   const swarmYaml = `tool: ${tool}\nmode: ${mode}\ntemplates_path: ${home}/.config/swarm/templates/opencode\n`;
-  fs.writeFileSync(path.join(cwd, '.swarm.yaml'), swarmYaml, 'utf-8');
+  fs.writeFileSync(path.join(projectDir, '.swarm.yaml'), swarmYaml, 'utf-8');
   console.log('Created: .swarm.yaml');
 
   // Step 3: .opencode/ with agents, skills, commands
@@ -132,13 +131,13 @@ export async function runInit(tool: string): Promise<void> {
   }
 
   // Step 5: AGENTS.md
-  const agentsMd = generateAgentsMd(projectName, cwd);
-  fs.writeFileSync(path.join(cwd, 'AGENTS.md'), agentsMd, 'utf-8');
+  const agentsMd = generateAgentsMd(projectName, projectDir);
+  fs.writeFileSync(path.join(projectDir, 'AGENTS.md'), agentsMd, 'utf-8');
   console.log('Created: AGENTS.md');
 
   // Step 6: opencode.json
   const openCodeJson = generateOpenCodeJson(projectName);
-  fs.writeFileSync(path.join(cwd, 'opencode.json'), openCodeJson, 'utf-8');
+  fs.writeFileSync(path.join(projectDir, 'opencode.json'), openCodeJson, 'utf-8');
   console.log('Created: opencode.json');
 
   // Step 7: swarmspec/
