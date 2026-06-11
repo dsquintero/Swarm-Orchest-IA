@@ -1,8 +1,11 @@
 # Build output
-swarm-cli/dist/
+dist/
 
 # Dependencies
-swarm-cli/node_modules/
+node_modules/
+
+# Test coverage
+coverage/
 
 # OS files
 .DS_Store
