@@ -15,7 +15,6 @@ Cada fase la ejecuta un agente distinto con el modelo optimo para su tarea. El o
 ## Instalar
 
 ```bash
-cd swarm-cli
 npm install
 npm run build
 ```
@@ -27,10 +26,10 @@ npm run build
 ```bash
 # En el directorio del proyecto
 cd mi-proyecto
-node /path/to/swarm-cli/dist/cmd/swarm.js init
+node /path/to/swarm-orchest-ia/dist/cmd/swarm.js init
 
 # Especificando ruta al proyecto
-node /path/to/swarm-cli/dist/cmd/swarm.js init /path/to/mi-proyecto
+node /path/to/swarm-orchest-ia/dist/cmd/swarm.js init /path/to/mi-proyecto
 
 # Con ts-node (desarrollo)
 npm run dev -- init
@@ -146,42 +145,39 @@ swarm-implementer:
 ## Estructura del repositorio
 
 ```
-Swarm-Orchest-IA/
+Swarm-Orchest-IA/                      ← raiz = paquete npm (CLI swarm)
+├── src/
+│   ├── cmd/swarm.ts                   ← Entry point (commander)
+│   └── lib/                           ← Logica: agentsconf, injector, init, update, fallback, models
+├── templates/opencode/                ← Plantillas canonicas (21 archivos)
+│   ├── agents/                        ← 6 agentes refinados
+│   ├── commands/                      ← 4 comandos
+│   ├── skills/                        ← 3 skills
+│   └── defaults/                      ← defaults + spec de ejemplo
+├── tests/                             ← Tests con Vitest
 ├── docs/                              ← Documentacion y referencia
 │   ├── PROPOSAL.md                    ← Diseno completo del proyecto
-│   └── _prototype/                    ← Plantillas originales (referencia)
-│       ├── defaults/                  ← 8 archivos de defaults
-│       └── templates/opencode/       ← 13 archivos agentes/skills/commands
-│
-├── swarm-cli/                         ← CLI TypeScript/Node.js
-│   ├── src/
-│   │   ├── cmd/swarm.ts              ← Entry point (commander)
-│   │   └── lib/                       ← Logica: agentsconf, injector, init, update, fallback, models
-│   ├── templates/opencode/            ← Plantillas canonicas (21 archivos)
-│   │   ├── agents/                    ← 6 agentes refinados
-│   │   ├── commands/                  ← 4 comandos
-│   │   ├── skills/                    ← 3 skills
-│   │   └── defaults/                 ← defaults + spec de ejemplo
-│   ├── package.json
-│   └── tsconfig.json
-│
+│   └── _prototype/                    ← Plantillas originales (referencia, NO editar)
+├── openspec/                          ← SDD de este repo (specs y changes)
+├── package.json
+├── tsconfig.json
 └── README.md
 ```
 
 ## Comandos de desarrollo
 
 ```bash
-cd swarm-cli
-
-npm install             # Instalar dependencias
+npm install             # Instalar dependencias (desde la raiz del repo)
 npm run build          # Compilar TypeScript a dist/
 npm run dev -- <cmd>   # Ejecutar con ts-node (sin compilar)
 npm start -- <cmd>     # Ejecutar version compilada
+npm test               # Correr la suite de tests (Vitest)
 ```
 
 ## Stack
 
 - **CLI**: TypeScript + Node.js + Commander.js + js-yaml
+- **Tests**: Vitest
 - **Agentes**: OpenCode nativo (agentes, skills, comandos)
 - **Formato de specs**: OpenSpec (GIVEN/WHEN/THEN, SHALL/MUST, deltas ADDED/MODIFIED/REMOVED)
 - **Modelos**: OpenCode Go (DeepSeek V4 Pro/Flash, GLM-5/5.1, Kimi K2.6, MiniMax M2.7)

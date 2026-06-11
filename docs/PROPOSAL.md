@@ -13,7 +13,7 @@ Las herramientas de AI coding (Claude Code, OpenCode, Cursor, etc.) son poderosa
 Herramientas como **OpenSpec** resuelven la parte del SDD (specs, deltas, archive) pero asumen un flujo monolítico en una sola sesión de chat.
 
 Herramientas como **gentle-ai** resuelven la orquestación multi-agente pero introducen:
-- Un CLI en Go que pocos entienden
+- Un CLI en Go, un lenguaje que el equipo no domina
 - Componentes como GGA cuyo propósito no es claro
 - Una curva de aprendizaje que aleja a los equipos
 - Dependencia de un mantenedor externo
@@ -31,7 +31,7 @@ Un **sistema de coordinación SDD** que:
 
 ### In scope
 
-- **CLI `swarm`** mínimo en Go: `swarm init`, `swarm update`, `swarm fallback`, `swarm models`
+- **CLI `swarm`** mínimo en TypeScript/Node.js: `swarm init`, `swarm update`, `swarm fallback`, `swarm models`
 - **`.agents-conf.yaml`** centralizado — un solo archivo para configurar modelos de todos los agentes, con primary/fallback
 - **Templates centralizados** en `~/.config/swarm/templates/` con referencias desde el proyecto (sin modelos hardcodeados)
 - **Agentes OpenCode** (`.opencode/agents/swarm-*.md`) para cada fase SDD — `model:` y `temperature:` inyectados por `swarm init`
@@ -551,8 +551,8 @@ Los modelos no van hardcodeados en las plantillas. Viven en `~/.config/swarm/.ag
 ### Decisión: Templates centralizados, no copias
 Las plantillas viven en `~/.config/swarm/templates/`. Los proyectos las referencian via symlinks. Un cambio en las plantillas se refleja en todos los proyectos con `swarm update`.
 
-### Decisión: CLI mínimo en Go
-Un solo binario, un solo comando (`init`). Sin TUI compleja, sin GGA, sin componentes extraños. Fácil de instalar con `go install` y fácil de compilar para Windows/Linux/macOS.
+### Decisión: CLI mínimo en TypeScript/Node.js
+Un solo paquete npm con comandos claros (`init`, `update`, `fallback`, `models`). Sin TUI compleja, sin GGA, sin componentes extraños. Se eligió **TypeScript/Node.js** porque es la stack que el equipo domina; fácil de instalar con `npm`/`npx` y multiplataforma (Windows/Linux/macOS).
 
 ### Decisión: OpenCode nativo
 OpenCode ya soporta multi-agentes con modelos distintos por fase. No necesitamos un CLI orquestador — usamos `permission.task`, `mode: subagent`, `model` por agente.
@@ -579,8 +579,10 @@ git clone https://github.com/tu-org/swarm-templates ~/.config/swarm/templates
 # Editar ~/.config/swarm/.agents-conf.yaml con modelos preferidos
 # o usar el default con opencode-go
 
-# 3. Instalar el CLI
-go install github.com/tu-user/swarm-orchest-ia/cmd/swarm@latest
+# 3. Instalar el CLI (TypeScript/Node.js)
+git clone https://github.com/tu-user/swarm-orchest-ia
+cd swarm-orchest-ia && npm install && npm run build
+# luego usar: node dist/cmd/swarm.js <comando>  (o npm link para exponer `swarm`)
 
 # 4. En cada proyecto
 swarm init --tool opencode
@@ -625,7 +627,7 @@ El `opencode.json` del proyecto **NO contiene configuración de agentes**. Los m
 3. ✅ Quitar `model:` y `temperature:` hardcodeados de las plantillas de agentes
 4. ✅ Refinar agentes con detalle fino: delegation prompts, transition criteria, blocking protocol, error handling, verification criteria, search strategy, ADR format
 5. ✅ Crear defaults en `_prototype/defaults/`: `.agents-conf.yaml`, `AGENTS.md`, `opencode.json`, `swarm.yaml`, `current.yaml`, spec de ejemplo
-6. ⬜ Implementar CLI `swarm init --tool opencode` en Go (lee `.agents-conf.yaml`, inyecta modelos, crea symlinks)
+6. ✅ Implementar CLI `swarm init --tool opencode` en TypeScript/Node.js (lee `.agents-conf.yaml`, inyecta modelos, crea symlinks)
 7. ⬜ Implementar `swarm update` (reinjecta modelos si cambió `.agents-conf.yaml`)
 8. ⬜ Implementar `swarm fallback`, `swarm models`
 9. ⬜ Implementar detección de Engram (opcional) en `swarm init`
