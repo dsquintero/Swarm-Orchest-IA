@@ -1,0 +1,29 @@
+schema: spec-driven
+
+# Project context — shown to AI when creating artifacts.
+context: |
+  Swarm-Orchest-IA es la HERRAMIENTA: un orquestador multi-agente de SDD para OpenCode.
+  Este repo contiene el CLI `swarm` (TypeScript/Node.js, no Go — el PROPOSAL menciona Go pero
+  la implementación real es TS) y las plantillas que el CLI instala en proyectos de terceros.
+
+  Stack: TypeScript + Node.js (CommonJS), Commander.js, js-yaml, inquirer, ora, chalk. Build con tsc.
+  Código fuente en swarm-cli/src/ (cmd/swarm.ts + lib/). Plantillas canónicas en
+  swarm-cli/templates/opencode/ (NO en docs/_prototype/, que es referencia histórica).
+
+  Distinción clave: el flujo OpenSpec (este config) es para desarrollar ESTA herramienta.
+  Los agentes swarm-* y la carpeta swarmspec/ son el PRODUCTO que el CLI genera, no el flujo
+  de trabajo de este repo.
+
+  Convenciones: código y comentarios en inglés; documentación de usuario en español. Mantener
+  el CLI liviano — no agregar dependencias sin justificación. `.swarm/config.yaml` marca un
+  proyecto inicializado. Las plantillas de agentes NO llevan model: hardcodeado; injector.ts
+  inyecta model/temperature desde .agents-conf.yaml.
+
+# Per-artifact rules (optional)
+rules:
+  proposal:
+    - Distinguir siempre si el cambio afecta el CLI, las plantillas, o ambos.
+    - Incluir una sección de impacto sobre `swarm init/update/fallback/models` si aplica.
+  tasks:
+    - Separar tareas de código (swarm-cli/src/) de tareas de plantillas (swarm-cli/templates/).
+    - Si se tocan plantillas de agentes, verificar que no se rompa el marcador de inyección de modelo.
