@@ -21,10 +21,15 @@ ROADMAP.md → Issue #N → (si no trivial) /opsx:propose → feature/N desde de
 |---|---|
 | `main` | Producción. Solo recibe releases (merge desde `release/*` o `hotfix/*`) y se taggea (`vX.Y.Z`). **Protegida**. |
 | `develop` | Integración y **rama default**. Acá se acumulan las features listas para el próximo release. **Protegida**. |
-| `feature/<n>-<slug>` | Nueva funcionalidad. Sale de `develop` y vuelve a `develop` por PR. |
+| `feature/<n>-<slug>` | Nueva funcionalidad del producto. Sale de `develop` y vuelve a `develop` por PR. |
 | `bugfix/<n>-<slug>` | Corrección sobre trabajo en `develop`. Mismo flujo que feature. |
+| `chore/<slug>` | Todo lo que no es producto: config, tooling, deps, archivos meta **y documentación**. Sale de `develop`. |
 | `release/X.Y.Z` | Preparar un release. Sale de `develop`; al cerrar, mergea a `main` (con tag) **y** de vuelta a `develop`. |
 | `hotfix/X.Y.Z` | Arreglo urgente de producción. Sale de `main`; al cerrar, mergea a `main` (con tag) **y** a `develop`. |
+
+> El prefijo de rama es **grueso** (señala la intención y agrupa). La precisión fina la da el **tipo de
+> commit** (`docs:`, `chore:`, `ci:`…). Por eso una sola rama `chore/*` cubre mantenimiento y docs;
+> `feature/*` y `bugfix/*` llevan número de issue, `chore/*` no siempre.
 
 Reglas:
 - **Nunca** commitees directo a `main` ni `develop` (protegidas; todo entra por PR con CI en verde).
@@ -68,6 +73,8 @@ Ver [AGENTS.md](AGENTS.md) para la arquitectura completa y la distinción herram
 - **Conventional commits**: `feat:`, `fix:`, `chore:`, `test:`, `docs:`, `refactor:`.
 - **PRs chicos**: 1 funcionalidad por PR. Si crece, partilo.
 - El PR debe: pasar CI (`build` + `test`), incluir tests para lógica nueva, y actualizar docs/ROADMAP si aplica.
+- **Sin atribución de IA**: no incluyas `Co-Authored-By: <IA>` ni "Generated with…" en commits ni en
+  el cuerpo del PR, sea cual sea el agente que uses (Claude, Copilot, OpenCode, Codex, etc.).
 
 ## ¿Cuándo uso OpenSpec y cuándo no?
 
