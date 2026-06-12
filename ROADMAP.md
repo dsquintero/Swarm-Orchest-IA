@@ -49,9 +49,9 @@ Leyenda: ✅ hecho · 🟡 parcial · ⬜ pendiente · 🔴 P0 · 🟠 P1 · �
 ## 🧩 Fase 1 — Templates canónicos *(organizar primero)*
 
 > Dejar la fuente canónica **limpia, agnóstica de tool y revisada** antes de tocar el `init`. Ahora es
-> viable porque [ADR 0013](docs/decisions/0013-canonical-source-adapters.md) y
-> [ADR 0014](docs/decisions/0014-config-neutra-modelo-esfuerzo.md) ya fijaron el formato canónico y las
-> divergencias entre herramientas.
+> viable porque [ADR 0013](docs/decisions/0013-canonical-source-adapters.md) ya fijó el formato canónico
+> y las rutas/divergencias entre herramientas, y [ADR 0014](docs/decisions/0014-config-modelos-por-tool.md)
+> el modelo por tool.
 
 | ID | Funcionalidad | Descripción | Prio | Issue |
 |---|---|---|---|---|
@@ -62,14 +62,15 @@ Leyenda: ✅ hecho · 🟡 parcial · ⬜ pendiente · 🔴 P0 · 🟠 P1 · �
 
 > Renderizar la fuente canónica al formato y la ruta nativa de cada tool (global o proyecto), sin symlinks.
 > Toda la arquitectura en [ADR 0013](docs/decisions/0013-canonical-source-adapters.md) y
-> [ADR 0014](docs/decisions/0014-config-neutra-modelo-esfuerzo.md).
+> [ADR 0014](docs/decisions/0014-config-modelos-por-tool.md).
 
 | ID | Funcionalidad | Descripción | Prio | Issue |
 |---|---|---|---|---|
-| F29 | Estandarizar config + nuevo schema | Contrato de config por responsabilidad: `config.yaml` (settings: `tool`/`mode`/`language`/`version`) y `.agents-conf.yaml` (**model + `effort` por tool**, mergeable global/local). Agregar `version`; migrar `temperature`→`effort`. Lo consume el render → va **antes** de F6. Ver [ADR 0014](docs/decisions/0014-config-neutra-modelo-esfuerzo.md) | 🟠 | — |
+| F29 | Estandarizar config + nuevo schema | Contrato de config por responsabilidad: `config.yaml` (settings: `tool`/`mode`/`language`/`version`) y `.agents-conf.yaml` (**model/fallback por tool**, mergeable global/local). Agregar `version` de schema. Lo consume el render → va **antes** de F6. Ver [ADR 0014](docs/decisions/0014-config-modelos-por-tool.md). El eje de esfuerzo (`effort`/`temperature`) **no** entra acá (diferido a F7) | 🟠 | — |
 | F2 | `init` render/copia **sin symlinks** | Modo global/local = render/copia a ruta nativa (elimina el bloqueo de Windows). Primer paso del motor, para OpenCode. Ver [ADR 0013](docs/decisions/0013-canonical-source-adapters.md) | 🔴 | [#2](https://github.com/dsquintero/Swarm-Orchest-IA/issues/2) |
 | F6 | Motor de adapters **(v1)** | Fuente canónica → **adapter por tool** que renderiza al formato nativo y escribe en su ruta. `init` permite elegir 1+ herramientas (`--tool opencode,claude`). Registry + interfaz `ToolAdapter`. Inyección de model/effort **por adapter** | 🟠 | — |
-| F7 | Adapter **Claude Code** **(v1)** | Render al formato y rutas nativas de Claude (`.claude/`, `~/.claude/`). Resuelve las divergencias `effort`/model. **Requerido para v1**, mismo tier que OpenCode | 🟠 | — |
+| F7 | Adapter **Claude Code** **(v1)** | Render al formato y rutas nativas de Claude (`.claude/`, `~/.claude/`). Aquí se **decide el eje de esfuerzo** (`effort` Claude / `reasoningEffort`·`temperature` OpenCode) que la [ADR 0014](docs/decisions/0014-config-modelos-por-tool.md) dejó diferido. **Requerido para v1**, mismo tier que OpenCode | 🟠 | — |
+| F33 | Configuración guiada de modelos | En `init` (y `soia models`): (a) **validar** si hay config de modelos; (b) elegir **modelos independientes por agente** vs **uno para todos** (conveniencia; el schema sigue por-agente); (c) **picker de modelos por tool** para evitar typos (Claude: lista estática; OpenCode: catálogo si lo expone, si no texto validado). Puebla el schema de [ADR 0014](docs/decisions/0014-config-modelos-por-tool.md) sin errores de input | 🟠 | — |
 | F25 | Idioma de artefactos parametrizable | `init` pregunta el idioma de los artefactos (ES/ENG; default = **idioma del sistema**), se guarda en `config.yaml`; los agentes generan specs/proposals en ese idioma (los **prompts siguen en inglés**) | 🟠 | — |
 | F21 | Modo no-interactivo | `--no-interactive` + helper `isInteractive()` (respeta `CI` y `stdin.isTTY`). Para uso por agentes/CI sin colgarse. Ver [docs/cli-best-practices.md](docs/cli-best-practices.md) | 🟠 | — |
 | F22 | `--version` desde `package.json` | Quitar el `'0.1.0'` hardcodeado en `src/cmd/soia.ts` (una sola fuente de verdad) | 🟡 | — |
@@ -84,7 +85,7 @@ Leyenda: ✅ hecho · 🟡 parcial · ⬜ pendiente · 🔴 P0 · 🟠 P1 · �
 | F27 | **Eliminar `current.yaml`** / multi-instancia | Quitar el puntero único: el cambio se pasa con **`--change <nombre>`** y el estado vive por cambio en `.status.yaml`. Habilita varias instancias/cambios en paralelo. Implica **reescribir** orquestador + `/soia-propose\|apply\|verify\|archive` | 🟠 | — |
 | F31 | Adaptar `update`/`fallback`/`models` | Re-render adapter-aware y schema por tool: `update` re-renderiza por adapter; `fallback`/`models` operan sobre `model`/`effort` **por herramienta** | 🟠 | — |
 | F3 | Tests de capa de comandos | Cubrir `init/update/fallback/models` con HOME y projectDir temporales | 🟠 | [#3](https://github.com/dsquintero/Swarm-Orchest-IA/issues/3) |
-| F12 | Validación de `.agents-conf.yaml` | Schema + errores claros (nuevo schema de [ADR 0014](docs/decisions/0014-config-neutra-modelo-esfuerzo.md)); incluye migración desde el schema viejo (`temperature` plana) | 🟡 | — |
+| F12 | Validación de `.agents-conf.yaml` | Schema + errores claros (`model`/`fallback` por tool, [ADR 0014](docs/decisions/0014-config-modelos-por-tool.md)); incluye migración desde el schema viejo (`model` plano) | 🟡 | — |
 | F26 | Reforzar el verifier (autoría de tests) | Mantener: implementer escribe y corre tests; verifier **read-only** audita. **Mejora**: rechaza por cobertura faltante y **devuelve al implementer** los escenarios sin test. Conserva construir≠aprobar | 🟡 | — |
 | F9 | `soia doctor` | Diagnóstico: HOME, templates, modelos, proyecto válido | 🟡 | — |
 | F13 | Contrato de salida `--json` | Salida machine-readable determinista en comandos de lectura (`models`, `fallback`, futuros `list`/`status`) para agentes/tooling. Ver [docs/cli-best-practices.md](docs/cli-best-practices.md) | 🟡 | — |
