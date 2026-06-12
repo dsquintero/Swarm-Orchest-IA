@@ -43,12 +43,9 @@ soia update          # re-sincroniza plantillas y modelos
 ```
 
 Una vez inicializado, abrí el proyecto en tu herramienta de IA y arrancá el flujo SDD con
-`/swarm-propose "tu feature"`.
+`/soia-propose "tu feature"`.
 
 Guía completa (comandos, validaciones, flujo SDD, agentes): **[docs/usage.md](docs/usage.md)**.
-
-> ℹ️ El comando es `soia` (ver [ADR 0012](docs/decisions/0012-nombre-comando-soia.md)). El rename
-> está pendiente (F19); mientras tanto, desde el código el binario es `swarm`.
 
 ## Requisitos
 

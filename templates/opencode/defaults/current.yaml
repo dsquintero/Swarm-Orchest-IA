@@ -1,6 +1,6 @@
-# .swarm/current.yaml — Tracker del change activo
-# Generado por: swarm init
-# Actualizado por: swarm-orchestrator en cada fase
-# NO editar manualmente — usar /swarm-propose y /swarm-archive
+# .soia/current.yaml — Tracker del change activo
+# Generado por: soia init
+# Actualizado por: soia-orchestrator en cada fase
+# NO editar manualmente — usar /soia-propose y /soia-archive
 
 active_change: null

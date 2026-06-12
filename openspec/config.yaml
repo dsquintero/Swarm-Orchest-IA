@@ -4,19 +4,19 @@ schema: spec-driven
 context: |
   Swarm-Orchest-IA es la HERRAMIENTA: un orquestador multi-agente de SDD agnóstico de la
   herramienta (OpenCode es el primer soporte; se agregarán más).
-  Este repo contiene el CLI `swarm` (TypeScript/Node.js, no Go — el PROPOSAL menciona Go pero
+  Este repo contiene el CLI `soia` (TypeScript/Node.js, no Go — el PROPOSAL menciona Go pero
   la implementación real es TS) y las plantillas que el CLI instala en proyectos de terceros.
 
   Stack: TypeScript + Node.js (CommonJS), Commander.js, js-yaml, inquirer, ora, chalk. Build con tsc.
-  Código fuente en swarm-cli/src/ (cmd/swarm.ts + lib/). Plantillas canónicas en
+  Código fuente en soia-cli/src/ (cmd/soia.ts + lib/). Plantillas canónicas en
   templates/opencode/ (la copia canónica que instala el CLI).
 
   Distinción clave: el flujo OpenSpec (este config) es para desarrollar ESTA herramienta.
-  Los agentes swarm-* y la carpeta swarmspec/ son el PRODUCTO que el CLI genera, no el flujo
+  Los agentes soia-* y la carpeta soia-spec/ son el PRODUCTO que el CLI genera, no el flujo
   de trabajo de este repo.
 
   Convenciones: código y comentarios en inglés; documentación de usuario en español. Mantener
-  el CLI liviano — no agregar dependencias sin justificación. `.swarm/config.yaml` marca un
+  el CLI liviano — no agregar dependencias sin justificación. `.soia/config.yaml` marca un
   proyecto inicializado. Las plantillas de agentes NO llevan model: hardcodeado; injector.ts
   inyecta model/temperature desde .agents-conf.yaml.
 
@@ -24,7 +24,7 @@ context: |
 rules:
   proposal:
     - Distinguir siempre si el cambio afecta el CLI, las plantillas, o ambos.
-    - Incluir una sección de impacto sobre `swarm init/update/fallback/models` si aplica.
+    - Incluir una sección de impacto sobre `soia init/update/fallback/models` si aplica.
   tasks:
-    - Separar tareas de código (swarm-cli/src/) de tareas de plantillas (swarm-cli/templates/).
+    - Separar tareas de código (soia-cli/src/) de tareas de plantillas (soia-cli/templates/).
     - Si se tocan plantillas de agentes, verificar que no se rompa el marcador de inyección de modelo.

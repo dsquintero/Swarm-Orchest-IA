@@ -23,10 +23,10 @@ Leyenda: ✅ hecho · 🟡 parcial · ⬜ pendiente · 🔴 P0 · 🟠 P1 · �
 
 ## Hecho (v0.1)
 
-- ✅ CLI `swarm init` (inyección de modelos, estructura, modo global/local)
-- ✅ CLI `swarm update` / `--all`
-- ✅ CLI `swarm fallback` / `--all` / `--restore`
-- ✅ CLI `swarm models` / `--primary` / `--fallback`
+- ✅ CLI `soia init` (inyección de modelos, estructura, modo global/local)
+- ✅ CLI `soia update` / `--all`
+- ✅ CLI `soia fallback` / `--all` / `--restore`
+- ✅ CLI `soia models` / `--primary` / `--fallback`
 - ✅ `.agents-conf.yaml` central + override local (merge)
 - ✅ Plantillas sin modelo hardcodeado (marcador de inyección) — 6 agentes, 3 skills, 4 comandos
 - 🟡 Suite de tests (Vitest) — cubre núcleos puros; falta la capa de comandos
@@ -43,7 +43,7 @@ Leyenda: ✅ hecho · 🟡 parcial · ⬜ pendiente · 🔴 P0 · 🟠 P1 · �
 | F2 | Quitar symlinks (render/copia) | Modo global/local = render/copia a ruta nativa, **sin symlinks** (elimina el bloqueo de Windows). Primer paso del modelo de adapters, para OpenCode. Ver ADR 0013 | 🔴 | [#2](https://github.com/dsquintero/Swarm-Orchest-IA/issues/2) |
 | F3 | Tests de capa de comandos | Cubrir `init/update/fallback/models` con HOME y projectDir temporales | 🟠 | [#3](https://github.com/dsquintero/Swarm-Orchest-IA/issues/3) |
 | F4 | ✅ CI con GitHub Actions | `npm test` + `build` en cada PR (matriz Win/Linux/macOS) — **hecho** (`.github/workflows/ci.yml`) | 🟠 | — |
-| F5 | Limpieza de defaults muertos | Cablear o eliminar `swarm.yaml` / `swarm-config.yaml` | 🟡 | [#4](https://github.com/dsquintero/Swarm-Orchest-IA/issues/4) |
+| F5 | Limpieza de defaults muertos | Cablear o eliminar `soia.yaml` / `soia-config.yaml` | 🟡 | [#4](https://github.com/dsquintero/Swarm-Orchest-IA/issues/4) |
 | F15 | ✅ Smoke test de empaquetado | En CI: `npm pack` → instalar el tarball → CLI `--version` + `init` en proyecto temporal — **hecho** (`.github/workflows/smoke-test.yml`) | 🟠 | [#8](https://github.com/dsquintero/Swarm-Orchest-IA/issues/8) |
 | F16 | ✅ Campo `engines` en package.json | Declarar `node >=20` para un mensaje claro con Node viejo — **hecho** | 🟡 | [#9](https://github.com/dsquintero/Swarm-Orchest-IA/issues/9) |
 
@@ -66,12 +66,12 @@ Leyenda: ✅ hecho · 🟡 parcial · ⬜ pendiente · 🔴 P0 · 🟠 P1 · �
 
 | ID | Funcionalidad | Descripción | Prio | Issue |
 |---|---|---|---|---|
-| F10 | `soia list` / `soia status` | Leer `swarmspec/changes/` y mostrar cambios y fase activa | ⚪ | — |
+| F10 | `soia list` / `soia status` | Leer `soia-spec/changes/` y mostrar cambios y fase activa | ⚪ | — |
 | F11 | Publicación en npm | `npm install -g swarm-orchest-ia` → comando `soia`; release automatizado por CI en tag `vX.Y.Z` | ⚪ | — |
 | F12 | Validación de `.agents-conf.yaml` | Schema + errores claros si falta `primary/fallback/temperature` | ⚪ | — |
 | F13 | `soia models --json` | Salida machine-readable para tooling | ⚪ | — |
 | F14 | Ejemplo .NET 8 end-to-end | Flujo SDD completo demostrado | ⚪ | — |
-| F19 | Renombrar comando a `soia` | `bin` + `program.name` + barrido de ejemplos en docs (el paquete sigue siendo `swarm-orchest-ia`). Ver ADR 0012 | 🟠 | — |
+| F19 | ✅ Rebranding `swarm` → `soia` | Nombre corto universal (comando, agentes, carpetas, contratos). Marca y paquete `swarm-orchest-ia` intactos. Ver ADR 0012 — **hecho** | 🟠 | [#12](https://github.com/dsquintero/Swarm-Orchest-IA/issues/12) |
 | F20 | Automatización del board (Kanban) | rama→*In progress*, PR→*In review*, merge→*Done*. Workflows nativos de Projects + GitHub Actions (con PAT) usando la convención `feature/<n>-…` | ⚪ | — |
 
 ---

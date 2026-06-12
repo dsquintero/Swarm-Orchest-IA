@@ -27,12 +27,12 @@ function getTemplatesDir(): string {
 const TEMPLATES_DIR = getTemplatesDir();
 
 const AGENT_ORDER = [
-  'swarm-orchestrator',
-  'swarm-explorer',
-  'swarm-specifier',
-  'swarm-designer',
-  'swarm-implementer',
-  'swarm-verifier',
+  'soia-orchestrator',
+  'soia-explorer',
+  'soia-specifier',
+  'soia-designer',
+  'soia-implementer',
+  'soia-verifier',
 ];
 
 export async function runInit(tool: string, projectDir: string, mode?: string): Promise<void> {
@@ -40,14 +40,14 @@ export async function runInit(tool: string, projectDir: string, mode?: string): 
 
   console.log(`Swarm-Orchest-IA — Project: ${projectName}\n`);
 
-  agentsconf.ensureSwarmConfigDir();
-  agentsconf.ensureSwarmTemplatesDir();
+  agentsconf.ensureSoiaConfigDir();
+  agentsconf.ensureSoiaTemplatesDir();
 
-  const configFile = agentsconf.swarmConfigFile();
+  const configFile = agentsconf.soiaConfigFile();
   let config: agentsconf.Config;
 
   if (!agentsconf.fileExists(configFile)) {
-    console.log('No ~/.config/swarm/.agents-conf.yaml found.');
+    console.log('No ~/.config/soia/.agents-conf.yaml found.');
     console.log('Installing default configuration...');
     const defaultConf = fs.readFileSync(
       path.join(TEMPLATES_DIR, 'defaults', '.agents-conf.yaml'),
@@ -73,7 +73,7 @@ export async function runInit(tool: string, projectDir: string, mode?: string): 
       name: 'mode',
       message: 'Install mode:',
       choices: [
-        { name: 'Global — symlinks to ~/.config/swarm/templates/, shared across projects', value: 'global' },
+        { name: 'Global — symlinks to ~/.config/soia/templates/, shared across projects', value: 'global' },
         { name: 'Local  — copies all files into the project, fully independent', value: 'local' },
       ],
       default: 'global',
@@ -82,9 +82,9 @@ export async function runInit(tool: string, projectDir: string, mode?: string): 
     console.log();
   }
 
-  const swarmDir = path.join(projectDir, '.swarm');
+  const soiaDir = path.join(projectDir, '.soia');
   const opencodeDir = path.join(projectDir, '.opencode');
-  const swarmspecDir = path.join(projectDir, 'swarmspec');
+  const soiaSpecDir = path.join(projectDir, 'soia-spec');
   const home = os.homedir();
 
   // Step 2: .opencode/ with agents, skills, commands
@@ -93,7 +93,7 @@ export async function runInit(tool: string, projectDir: string, mode?: string): 
   const commandsDir = path.join(opencodeDir, 'commands');
 
   if (modeValue === 'global') {
-    const templatesPath = path.join(agentsconf.swarmConfigDir(), 'templates', 'opencode');
+    const templatesPath = path.join(agentsconf.soiaConfigDir(), 'templates', 'opencode');
     const spinner = ora('Installing central templates...').start();
 
     installCentralTemplates(templatesPath);
@@ -119,9 +119,9 @@ export async function runInit(tool: string, projectDir: string, mode?: string): 
     spinner.succeed(chalk.green('Installed in local mode — all files copied'));
   }
 
-  // Step 4: .swarm/.agents-conf.yaml
-  fsutil.ensureDir(swarmDir);
-  const localConf = path.join(swarmDir, '.agents-conf.yaml');
+  // Step 4: .soia/.agents-conf.yaml
+  fsutil.ensureDir(soiaDir);
+  const localConf = path.join(soiaDir, '.agents-conf.yaml');
   if (!agentsconf.fileExists(localConf)) {
     fs.writeFileSync(
       localConf,
@@ -139,26 +139,26 @@ export async function runInit(tool: string, projectDir: string, mode?: string): 
   const openCodeJson = generateOpenCodeJson(projectName);
   fs.writeFileSync(path.join(projectDir, 'opencode.json'), openCodeJson, 'utf-8');
 
-  fsutil.ensureDir(path.join(swarmspecDir, 'specs'));
-  fsutil.ensureDir(path.join(swarmspecDir, 'changes', 'archive'));
-  const exampleSpecDir = path.join(swarmspecDir, 'specs', 'hello-mundo');
+  fsutil.ensureDir(path.join(soiaSpecDir, 'specs'));
+  fsutil.ensureDir(path.join(soiaSpecDir, 'changes', 'archive'));
+  const exampleSpecDir = path.join(soiaSpecDir, 'specs', 'hello-mundo');
   fsutil.ensureDir(exampleSpecDir);
   fs.writeFileSync(
     path.join(exampleSpecDir, 'spec.md'),
-    fs.readFileSync(path.join(TEMPLATES_DIR, 'defaults', 'swarmspec-example', 'specs', 'hello-mundo', 'spec.md'), 'utf-8'),
+    fs.readFileSync(path.join(TEMPLATES_DIR, 'defaults', 'soia-spec-example', 'specs', 'hello-mundo', 'spec.md'), 'utf-8'),
     'utf-8'
   );
 
   const configContent = [
     `tool: ${tool}`,
     `mode: ${modeValue}`,
-    `templates_path: ${home}/.config/swarm/templates/opencode`,
+    `templates_path: ${home}/.config/soia/templates/opencode`,
     `initialized_at: ${new Date().toISOString()}`,
   ].join('\n') + '\n';
-  fs.writeFileSync(path.join(swarmDir, 'config.yaml'), configContent, 'utf-8');
+  fs.writeFileSync(path.join(soiaDir, 'config.yaml'), configContent, 'utf-8');
 
   fs.writeFileSync(
-    path.join(swarmDir, 'current.yaml'),
+    path.join(soiaDir, 'current.yaml'),
     fs.readFileSync(path.join(TEMPLATES_DIR, 'defaults', 'current.yaml'), 'utf-8'),
     'utf-8'
   );
@@ -169,15 +169,15 @@ export async function runInit(tool: string, projectDir: string, mode?: string): 
   console.log(`Mode: ${chalk.cyan(modeValue)} | Tool: ${chalk.cyan(tool)}`);
   console.log(chalk.dim('\nNext steps:'));
   console.log(chalk.dim('  1. Open this project in OpenCode'));
-  console.log(chalk.dim('  2. Use /swarm-propose "your feature description" to start'));
+  console.log(chalk.dim('  2. Use /soia-propose "your feature description" to start'));
 }
 
 function installCentralTemplates(templatesPath: string): void {
   const dirs: [string, string][] = [
     ['agents', path.join(templatesPath, 'agents')],
-    ['skills/swarm-format', path.join(templatesPath, 'skills', 'swarm-format')],
-    ['skills/swarm-delta', path.join(templatesPath, 'skills', 'swarm-delta')],
-    ['skills/swarm-archive', path.join(templatesPath, 'skills', 'swarm-archive')],
+    ['skills/soia-format', path.join(templatesPath, 'skills', 'soia-format')],
+    ['skills/soia-delta', path.join(templatesPath, 'skills', 'soia-delta')],
+    ['skills/soia-archive', path.join(templatesPath, 'skills', 'soia-archive')],
     ['commands', path.join(templatesPath, 'commands')],
   ];
 
@@ -192,7 +192,7 @@ function injectIntoCentralAgents(templatesPath: string, config: agentsconf.Confi
   if (!fs.existsSync(agentsPath)) return;
 
   for (const entry of fs.readdirSync(agentsPath)) {
-    if (!injector.isSwarmAgent(entry)) continue;
+    if (!injector.isSoiaAgent(entry)) continue;
 
     const filePath = path.join(agentsPath, entry);
     let content = fs.readFileSync(filePath, 'utf-8');
@@ -209,7 +209,7 @@ function copyAndInjectAgents(agentsDir: string, config: agentsconf.Config): void
   const srcDir = path.join(TEMPLATES_DIR, 'agents');
 
   for (const entry of fs.readdirSync(srcDir)) {
-    if (!injector.isSwarmAgent(entry)) continue;
+    if (!injector.isSoiaAgent(entry)) continue;
 
     const srcPath = path.join(srcDir, entry);
     const dstPath = path.join(agentsDir, entry);

@@ -1,5 +1,5 @@
 ---
-name: swarm-format
+name: soia-format
 description: OpenSpec format guide — GIVEN/WHEN/THEN scenarios and SHALL/MUST/SHOULD keywords
 license: MIT
 ---

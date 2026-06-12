@@ -3,19 +3,19 @@ import * as path from 'path';
 import * as agentsconf from './agentsconf';
 
 const AGENT_ORDER = [
-  'swarm-orchestrator',
-  'swarm-explorer',
-  'swarm-specifier',
-  'swarm-designer',
-  'swarm-implementer',
-  'swarm-verifier',
+  'soia-orchestrator',
+  'soia-explorer',
+  'soia-specifier',
+  'soia-designer',
+  'soia-implementer',
+  'soia-verifier',
 ];
 
 export function runModels(primaryOnly: boolean = false, fallbackOnly: boolean = false, projectDir: string = process.cwd()): void {
-  const configFile = agentsconf.swarmConfigFile();
+  const configFile = agentsconf.soiaConfigFile();
   const config = agentsconf.load(configFile);
 
-  const localConf = path.join(projectDir, '.swarm', '.agents-conf.yaml');
+  const localConf = path.join(projectDir, '.soia', '.agents-conf.yaml');
   let effectiveConfig = config;
 
   if (fs.existsSync(localConf)) {
@@ -51,7 +51,7 @@ export function runModels(primaryOnly: boolean = false, fallbackOnly: boolean = 
   }
 
   if (fs.existsSync(localConf)) {
-    console.log('\n(local override active: .swarm/.agents-conf.yaml)');
+    console.log('\n(local override active: .soia/.agents-conf.yaml)');
   }
 
   console.log();

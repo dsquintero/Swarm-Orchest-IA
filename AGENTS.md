@@ -7,17 +7,17 @@
 
 Este repo **es la herramienta** Swarm-Orchest-IA: un orquestador multi-agente de SDD
 (Spec-Driven Development) **agnóstico de la herramienta** (OpenCode es el primer soporte; se
-agregarán más). Contiene el CLI `swarm` y las plantillas que ese CLI instala en proyectos de terceros.
+agregarán más). Contiene el CLI `soia` y las plantillas que ese CLI instala en proyectos de terceros.
 
 **Distinción clave — no confundir dos planos:**
 
 | Plano | Qué es | Artefactos |
 |---|---|---|
 | **Este repo (desarrollo de la herramienta)** | Acá se desarrolla el CLI y las plantillas | Usamos **OpenSpec** (`openspec/`, comandos `/opsx:*`) para el SDD de *nuestro* propio desarrollo |
-| **Proyecto del usuario final (output de la herramienta)** | Lo que `swarm init` genera en otro repo | Usa **swarmspec/**, agentes `swarm-*`, comandos `/swarm-*` |
+| **Proyecto del usuario final (output de la herramienta)** | Lo que `soia init` genera en otro repo | Usa **soia-spec/**, agentes `soia-*`, comandos `/soia-*` |
 
-Es decir: cuando desarrollás features de *este* repo, usás OpenSpec. Los agentes `swarm-*` y
-`swarmspec/` son el **producto** que generamos, no el flujo con el que trabajamos acá.
+Es decir: cuando desarrollás features de *este* repo, usás OpenSpec. Los agentes `soia-*` y
+`soia-spec/` son el **producto** que generamos, no el flujo con el que trabajamos acá.
 
 > ℹ️ **Stack**: el CLI está implementado en **TypeScript/Node.js** (la stack que el equipo domina).
 > `docs/proposal.md` es la visión de producto y diseño; el código en `src/` es la fuente de
@@ -32,14 +32,14 @@ tests con **Vitest**. El detalle y el porqué de cada pieza viven en
 ## Estructura del repositorio
 
 ```
-Swarm-Orchest-IA/                    ← raíz = paquete npm (CLI swarm)
+Swarm-Orchest-IA/                    ← raíz = paquete npm (CLI soia)
 ├── src/
-│   ├── cmd/swarm.ts                 ← Entry point (Commander)
+│   ├── cmd/soia.ts                 ← Entry point (Commander)
 │   └── lib/                         ← agentsconf, injector, init, update, fallback, models, fsutil
 ├── templates/opencode/              ← Plantillas CANÓNICAS que instala el CLI (editar acá)
-│   ├── agents/                      ← 6 agentes swarm-* (sin model/temperature hardcodeado)
-│   ├── skills/                      ← swarm-format, swarm-delta, swarm-archive
-│   ├── commands/                    ← swarm-propose, swarm-apply, swarm-verify, swarm-archive
+│   ├── agents/                      ← 6 agentes soia-* (sin model/temperature hardcodeado)
+│   ├── skills/                      ← soia-format, soia-delta, soia-archive
+│   ├── commands/                    ← soia-propose, soia-apply, soia-verify, soia-archive
 │   └── defaults/                    ← .agents-conf.yaml, AGENTS.md, opencode.json, spec ejemplo
 ├── tests/                           ← Tests con Vitest (injector, agentsconf, fsutil, templates)
 ├── docs/                            ← documentación (router + detalle); índice en docs/README.md
@@ -110,7 +110,7 @@ npm run coverage         # Tests con reporte de cobertura
 - **Filosofía**: **una sola fuente canónica** de la que cada adapter **renderiza** los outputs por
   herramienta (sin symlinks — ver [ADR 0013](docs/decisions/0013-canonical-source-adapters.md)); usar
   los mecanismos nativos de cada tool; Engram opcional.
-- No rompas el contrato de paths que el CLI espera: `.swarm/config.yaml` marca un proyecto inicializado.
+- No rompas el contrato de paths que el CLI espera: `.soia/config.yaml` marca un proyecto inicializado.
 
 ## Flujo de desarrollo con OpenSpec (para este repo)
 
@@ -154,7 +154,7 @@ las maneja quien hace el release. Detalle en [CONTRIBUTING.md](CONTRIBUTING.md).
    `npm run build` deben pasar antes de proponer el merge.
 5. **No rompas los contratos del repo**:
    - El marcador de inyección de modelo en las plantillas de agentes (lo protege `tests/templates.test.ts`).
-   - `.swarm/config.yaml` como marca de proyecto inicializado.
+   - `.soia/config.yaml` como marca de proyecto inicializado.
 6. **Conventional commits** (`feat/fix/chore/test/docs/refactor`) y **PRs chicos**: 1 feature por PR.
    **Sin atribución de IA**: nada de `Co-Authored-By: <IA>` ni "Generated with…" en commits ni PRs,
    sea cual sea el agente.

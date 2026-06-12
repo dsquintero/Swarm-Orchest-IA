@@ -10,7 +10,7 @@ import { resolveProjectDir, isInitialized } from '../lib/fsutil';
 const program = new Command();
 
 program
-  .name('swarm')
+  .name('soia')
   .description('Swarm-Orchest-IA — Multi-Agent SDD Orchestrator CLI')
   .version('0.1.0');
 
@@ -27,7 +27,7 @@ program
       }
       const projectDir = resolveProjectDir(projectPath);
       if (isInitialized(projectDir)) {
-        throw new Error(`Project already initialized. Found .swarm/config.yaml in ${projectDir}.\nUse 'swarm update' to update.`);
+        throw new Error(`Project already initialized. Found .soia/config.yaml in ${projectDir}.\nUse 'soia update' to update.`);
       }
       const mode: string | undefined = opts.global ? 'global' : opts.local ? 'local' : undefined;
       await runInit(opts.tool, projectDir, mode);
@@ -40,7 +40,7 @@ program
 program
   .command('update [path]')
   .description('Update templates and re-inject model configuration')
-  .option('--all', 'Update all projects with .swarm/config.yaml')
+  .option('--all', 'Update all projects with .soia/config.yaml')
   .action((projectPath, opts) => {
     try {
       if (opts.all) {
@@ -48,7 +48,7 @@ program
       } else {
         const projectDir = resolveProjectDir(projectPath);
         if (!isInitialized(projectDir)) {
-          throw new Error(`Not a Swarm project. Run 'swarm init' first.`);
+          throw new Error(`Not a Soia project. Run 'soia init' first.`);
         }
         runUpdate(false, projectDir);
       }
@@ -68,7 +68,7 @@ program
     try {
       const projectDir = resolveProjectDir(opts.path);
       if (!isInitialized(projectDir)) {
-        throw new Error(`Not a Swarm project. Run 'swarm init' first.`);
+        throw new Error(`Not a Soia project. Run 'soia init' first.`);
       }
       await runFallback(agentName, opts.all || false, opts.restore || false, projectDir);
     } catch (err: any) {
@@ -86,7 +86,7 @@ program
     try {
       const projectDir = resolveProjectDir(projectPath);
       if (!isInitialized(projectDir)) {
-        throw new Error(`Not a Swarm project. Run 'swarm init' first.`);
+        throw new Error(`Not a Soia project. Run 'soia init' first.`);
       }
       runModels(opts.primary || false, opts.fallback || false, projectDir);
     } catch (err: any) {

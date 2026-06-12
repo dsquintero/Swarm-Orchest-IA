@@ -1,5 +1,5 @@
 ---
-name: swarm-archive
+name: soia-archive
 description: Archive process — merge delta specs into main specs and move change to archive/
 license: MIT
 ---
@@ -19,9 +19,9 @@ Before archiving, verify:
 
 ### 2. Merge Deltas
 
-For each `swarmspec/changes/{feature}/specs/{domain}/spec.md`:
+For each `soia-spec/changes/{feature}/specs/{domain}/spec.md`:
 
-1. Read the main spec at `swarmspec/specs/{domain}/spec.md`
+1. Read the main spec at `soia-spec/specs/{domain}/spec.md`
 2. Apply ADDED requirements → append to the main spec
 3. Apply MODIFIED requirements → find and replace the matching requirement
 4. Apply REMOVED requirements → delete the matching requirement
@@ -29,7 +29,7 @@ For each `swarmspec/changes/{feature}/specs/{domain}/spec.md`:
 
 ### 3. Handle Missing Main Spec
 
-If `swarmspec/specs/{domain}/spec.md` does not exist:
+If `soia-spec/specs/{domain}/spec.md` does not exist:
 - Create it with the content from the delta
 - All ADDED requirements become the initial spec
 - MODIFIED and REMOVED should not appear in a first spec
@@ -38,7 +38,7 @@ If `swarmspec/specs/{domain}/spec.md` does not exist:
 
 ```bash
 # Rename change folder with date prefix
-mv swarmspec/changes/{feature}/ swarmspec/changes/archive/YYYY-MM-DD-{feature}/
+mv soia-spec/changes/{feature}/ soia-spec/changes/archive/YYYY-MM-DD-{feature}/
 ```
 
 ### 5. Clean Up
@@ -51,7 +51,7 @@ mv swarmspec/changes/{feature}/ swarmspec/changes/archive/YYYY-MM-DD-{feature}/
 
 **Before archive:**
 ```
-swarmspec/
+soia-spec/
 ├── specs/
 │   └── usuarios/spec.md     → has 2 requirements
 └── changes/
@@ -61,7 +61,7 @@ swarmspec/
 
 **After archive:**
 ```
-swarmspec/
+soia-spec/
 ├── specs/
 │   └── usuarios/spec.md     → has 3 requirements (2 original + 1 ADDED)
 └── changes/

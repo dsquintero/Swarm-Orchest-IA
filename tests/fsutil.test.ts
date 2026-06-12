@@ -13,7 +13,7 @@ import {
 let tmp: string;
 
 beforeEach(() => {
-  tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'swarm-fsutil-'));
+  tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'soia-fsutil-'));
 });
 
 afterEach(() => {
@@ -74,13 +74,13 @@ describe('resolveProjectDir', () => {
 });
 
 describe('isInitialized', () => {
-  it('is false without .swarm/config.yaml', () => {
+  it('is false without .soia/config.yaml', () => {
     expect(isInitialized(tmp)).toBe(false);
   });
 
-  it('is true once .swarm/config.yaml exists', () => {
-    fs.mkdirSync(path.join(tmp, '.swarm'), { recursive: true });
-    fs.writeFileSync(path.join(tmp, '.swarm', 'config.yaml'), 'mode: local');
+  it('is true once .soia/config.yaml exists', () => {
+    fs.mkdirSync(path.join(tmp, '.soia'), { recursive: true });
+    fs.writeFileSync(path.join(tmp, '.soia', 'config.yaml'), 'mode: local');
     expect(isInitialized(tmp)).toBe(true);
   });
 });

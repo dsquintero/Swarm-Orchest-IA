@@ -1,6 +1,6 @@
 import * as agentsconf from './agentsconf';
 
-const INJECT_COMMENT = '# model y temperature se inyectan desde ~/.config/swarm/.agents-conf.yaml';
+const INJECT_COMMENT = '# model y temperature se inyectan desde ~/.config/soia/.agents-conf.yaml';
 
 export function injectIntoAgent(
   content: string,
@@ -77,8 +77,8 @@ export function injectInto(content: string, model: string, temperature: number):
   return newLines.join('\n');
 }
 
-export function isSwarmAgent(filename: string): boolean {
-  return filename.startsWith('swarm-') && filename.endsWith('.md');
+export function isSoiaAgent(filename: string): boolean {
+  return filename.startsWith('soia-') && filename.endsWith('.md');
 }
 
 export function agentNameFromFilename(filename: string): string {

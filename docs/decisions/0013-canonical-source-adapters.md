@@ -30,7 +30,7 @@ Adoptar **fuente canónica + adapters**:
     que el agente esté disponible en todos los proyectos de esa herramienta.
   - **Modo local** → carpetas del **proyecto** (`.opencode/`, `.claude/`…), autocontenido para commitear.
 - **Sin symlinks.** Las carpetas de cada tool son *output generado*, no editado a mano. La
-  centralización la da la **fuente única**; la sincronización, `swarm update` (re-renderiza).
+  centralización la da la **fuente única**; la sincronización, `soia update` (re-renderiza).
 - El `@import` nativo se usa **dentro de un adapter** donde la tool lo soporte (ej. generar un
   `CLAUDE.md` que importe un `AGENTS.md`), como optimización — no como mecanismo central.
 

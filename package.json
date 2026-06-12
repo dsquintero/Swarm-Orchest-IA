@@ -2,9 +2,9 @@
   "name": "swarm-orchest-ia",
   "version": "0.1.0",
   "description": "Multi-Agent SDD Orchestrator CLI — manages project setup for Spec-Driven Development",
-  "main": "dist/cmd/swarm.js",
+  "main": "dist/cmd/soia.js",
   "bin": {
-    "swarm": "./dist/cmd/swarm.js"
+    "soia": "./dist/cmd/soia.js"
   },
   "files": [
     "dist/",
@@ -12,15 +12,15 @@
   ],
   "scripts": {
     "build": "rimraf dist && tsc",
-    "dev": "ts-node src/cmd/swarm.ts",
-    "start": "node dist/cmd/swarm.js",
+    "dev": "ts-node src/cmd/soia.ts",
+    "start": "node dist/cmd/soia.js",
     "test": "vitest run",
     "test:watch": "vitest",
     "coverage": "vitest run --coverage",
     "prepublishOnly": "npm run build"
   },
   "keywords": [
-    "swarm",
+    "soia",
     "sdd",
     "opencode",
     "agents",

@@ -10,12 +10,12 @@ desincronización.
 
 ## Decisión
 
-Las plantillas viven en un único origen (`~/.config/swarm/templates/opencode/`) y los proyectos las
+Las plantillas viven en un único origen (`~/.config/soia/templates/opencode/`) y los proyectos las
 **referencian** (symlinks) en modo global. Filosofía: *referencias > copias; un solo origen*.
 
 ## Consecuencias
 
-- Un cambio en las plantillas se propaga con `swarm update --all`.
+- Un cambio en las plantillas se propaga con `soia update --all`.
 - Se ofrece también un modo **local** (copias) para proyectos que quieran ser autocontenidos
   (ver [ADR 0006](0006-modo-global-local.md)).
 

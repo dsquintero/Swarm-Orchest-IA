@@ -25,5 +25,5 @@ assignees: []
 
 ## Notas
 
-<!-- ¿Requiere OpenSpec (`/opsx:propose`)? ¿Toca algún contrato (marcador de inyección, .swarm/config.yaml)?
+<!-- ¿Requiere OpenSpec (`/opsx:propose`)? ¿Toca algún contrato (marcador de inyección, .soia/config.yaml)?
      ¿ID del roadmap (ej: F6)? -->

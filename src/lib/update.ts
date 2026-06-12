@@ -5,7 +5,7 @@ import * as agentsconf from './agentsconf';
 import * as injector from './injector';
 
 export function runUpdate(updateAll: boolean = false, projectDir?: string): void {
-  const configFile = agentsconf.swarmConfigFile();
+  const configFile = agentsconf.soiaConfigFile();
   const config = agentsconf.load(configFile);
 
   if (updateAll) {
@@ -16,10 +16,10 @@ export function runUpdate(updateAll: boolean = false, projectDir?: string): void
 }
 
 function updateCurrentProject(config: agentsconf.Config, projectDir: string): void {
-  const configPath = path.join(projectDir, '.swarm', 'config.yaml');
+  const configPath = path.join(projectDir, '.soia', 'config.yaml');
 
   if (!fs.existsSync(configPath)) {
-    throw new Error('No .swarm/config.yaml found in project directory. Run "swarm init" first.');
+    throw new Error('No .soia/config.yaml found in project directory. Run "soia init" first.');
   }
 
   let mode = 'local';
@@ -31,7 +31,7 @@ function updateCurrentProject(config: agentsconf.Config, projectDir: string): vo
   const agentsDir = path.join(projectDir, '.opencode', 'agents');
 
   if (mode === 'global') {
-    const templatesPath = path.join(agentsconf.swarmConfigDir(), 'templates', 'opencode');
+    const templatesPath = path.join(agentsconf.soiaConfigDir(), 'templates', 'opencode');
     injectIntoAgents(path.join(templatesPath, 'agents'), config);
     console.log('Re-injected model/temperature into central templates');
   } else {
@@ -46,7 +46,7 @@ function injectIntoAgents(agentsDir: string, config: agentsconf.Config): void {
   if (!fs.existsSync(agentsDir)) return;
 
   for (const entry of fs.readdirSync(agentsDir)) {
-    if (!injector.isSwarmAgent(entry)) continue;
+    if (!injector.isSoiaAgent(entry)) continue;
 
     const filePath = path.join(agentsDir, entry);
     let content = fs.readFileSync(filePath, 'utf-8');
@@ -62,12 +62,12 @@ function injectIntoAgents(agentsDir: string, config: agentsconf.Config): void {
 
 function updateAllProjects(config: agentsconf.Config): void {
   const home = os.homedir();
-  console.log('Searching for projects with .swarm/config.yaml...');
+  console.log('Searching for projects with .soia/config.yaml...');
 
-  const projects = findSwarmProjects(home);
+  const projects = findSoiaProjects(home);
 
   if (projects.length === 0) {
-    console.log('No projects found with .swarm/config.yaml');
+    console.log('No projects found with .soia/config.yaml');
     return;
   }
 
@@ -81,14 +81,14 @@ function updateAllProjects(config: agentsconf.Config): void {
   }
 }
 
-function findSwarmProjects(dir: string, depth: number = 0): string[] {
+function findSoiaProjects(dir: string, depth: number = 0): string[] {
   if (depth > 5) return [];
   const results: string[] = [];
 
   try {
     for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
       const fullPath = path.join(dir, entry.name);
-      if (entry.name === '.swarm' && entry.isDirectory()) {
+      if (entry.name === '.soia' && entry.isDirectory()) {
         const configFile = path.join(fullPath, 'config.yaml');
         if (fs.existsSync(configFile)) {
           const parentDir = path.dirname(fullPath);
@@ -98,7 +98,7 @@ function findSwarmProjects(dir: string, depth: number = 0): string[] {
         }
       }
       if (entry.isDirectory() && !entry.name.startsWith('.') && entry.name !== 'node_modules') {
-        results.push(...findSwarmProjects(fullPath, depth + 1));
+        results.push(...findSoiaProjects(fullPath, depth + 1));
       }
     }
   } catch {

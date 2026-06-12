@@ -6,19 +6,19 @@
 ## Fuente de verdad: `.agents-conf.yaml`
 
 Un único archivo configura los modelos de todos los agentes, con `primary`, `fallback` y
-`temperature`. `swarm init` los inyecta en cada agente.
+`temperature`. `soia init` los inyecta en cada agente.
 
-- **Global**: `~/.config/swarm/.agents-conf.yaml` — compartido por todos los proyectos.
-- **Override local**: `<proyecto>/.swarm/.agents-conf.yaml` — solo las claves que cambian.
+- **Global**: `~/.config/soia/.agents-conf.yaml` — compartido por todos los proyectos.
+- **Override local**: `<proyecto>/.soia/.agents-conf.yaml` — solo las claves que cambian.
 
 `agentsconf.merge(global, local)` combina: el local **pisa** las claves definidas y hereda el resto.
 
 ```yaml
-swarm-orchestrator:
+soia-orchestrator:
   primary: opencode-go/deepseek-v4-pro
   fallback: opencode-go/kimi-k2.6
   temperature: 0.3
-swarm-explorer:
+soia-explorer:
   primary: opencode-go/deepseek-v4-flash
   fallback: opencode-go/minimax-m2.7
   temperature: 0.1
@@ -42,7 +42,7 @@ Los modelos caros (GLM) solo se usan en 3 de las 6 fases y se ejecutan pocas vec
 
 ## Comandos relacionados
 
-- `swarm models [--primary|--fallback]` — muestra la config efectiva (global + override local).
-- `swarm fallback <agente>|--all|--restore` — escribe un override local intercambiando
+- `soia models [--primary|--fallback]` — muestra la config efectiva (global + override local).
+- `soia fallback <agente>|--all|--restore` — escribe un override local intercambiando
   `primary`↔`fallback` y re-inyecta. `--restore` elimina el override local.
-- `swarm update` — re-inyecta los modelos si cambió `.agents-conf.yaml`.
+- `soia update` — re-inyecta los modelos si cambió `.agents-conf.yaml`.

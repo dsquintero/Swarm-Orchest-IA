@@ -32,23 +32,23 @@ export function agentNames(config: Config): string[] {
   return Object.keys(config);
 }
 
-export function swarmConfigDir(): string {
-  return path.join(os.homedir(), '.config', 'swarm');
+export function soiaConfigDir(): string {
+  return path.join(os.homedir(), '.config', 'soia');
 }
 
-export function swarmConfigFile(): string {
-  return path.join(swarmConfigDir(), '.agents-conf.yaml');
+export function soiaConfigFile(): string {
+  return path.join(soiaConfigDir(), '.agents-conf.yaml');
 }
 
-export function ensureSwarmConfigDir(): void {
-  const dir = swarmConfigDir();
+export function ensureSoiaConfigDir(): void {
+  const dir = soiaConfigDir();
   if (!fs.existsSync(dir)) {
     fs.mkdirSync(dir, { recursive: true });
   }
 }
 
-export function ensureSwarmTemplatesDir(): void {
-  const dir = path.join(swarmConfigDir(), 'templates', 'opencode');
+export function ensureSoiaTemplatesDir(): void {
+  const dir = path.join(soiaConfigDir(), 'templates', 'opencode');
   if (!fs.existsSync(dir)) {
     fs.mkdirSync(dir, { recursive: true });
   }
