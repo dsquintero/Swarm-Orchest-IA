@@ -40,6 +40,21 @@ soia-explorer:
 
 Los modelos caros (GLM) solo se usan en 3 de las 6 fases y se ejecutan pocas veces por feature.
 
+## Portabilidad entre herramientas (decisión abierta de F6)
+
+Hoy los valores de `model` están en el formato que espera **OpenCode** (`provider/model-id`, ej.
+`opencode-go/deepseek-v4-pro`) y se asume `temperature` siempre presente. Al sumar el adapter de Claude
+([ADR 0013](decisions/0013-canonical-source-adapters.md)) aparecen dos límites confirmados en la doc de
+cada tool:
+
+- **`temperature` no es universal**: Claude Code no soporta el campo (usa `effort`). El render de Claude
+  inyecta solo `model`.
+- **El `model` no es portable**: Claude espera alias / id pelado / `inherit`, no `provider/model-id`.
+
+Queda **abierto para F6** cómo modelar esto: una **forma neutra + tabla de mapeo por adapter**, o
+**valores de modelo por-tool** dentro de `.agents-conf.yaml`. Se decide al implementar el motor de
+adapters; por ahora solo OpenCode consume estos valores tal cual.
+
 ## Comandos relacionados
 
 - `soia models [--primary|--fallback]` — muestra la config efectiva (global + override local).
