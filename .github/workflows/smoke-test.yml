@@ -1,0 +1,56 @@
+name: Smoke test (packaging)
+
+# Simula al usuario final: empaqueta el CLI, lo instala desde el tarball y lo
+# ejecuta en un proyecto temporal. Atrapa errores de empaquetado (plantilla
+# faltante, path roto) que los unit tests no ven.
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+jobs:
+  smoke:
+    name: smoke / ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      - name: Pack
+        run: npm pack
+
+      - name: Install the tarball globally
+        shell: bash
+        run: npm install -g swarm-orchest-ia-*.tgz
+
+      - name: Run the CLI on a temp project (local mode)
+        shell: bash
+        run: |
+          set -e
+          swarm --version
+          proj="$(mktemp -d)/demo"
+          mkdir -p "$proj"
+          swarm init "$proj" --local --tool opencode
+          test -f "$proj/.swarm/config.yaml"     || { echo "missing .swarm/config.yaml"; exit 1; }
+          test -f "$proj/AGENTS.md"              || { echo "missing AGENTS.md"; exit 1; }
+          test -d "$proj/.opencode/agents"       || { echo "missing .opencode/agents"; exit 1; }
+          echo "smoke OK"
