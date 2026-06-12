@@ -21,12 +21,17 @@
   de OpenCode. Los sub-agentes no se comunican entre sí.
 - **Marcador de inyección**: comentario en el frontmatter de un agente que `injector.ts` reemplaza por
   `model:`/`temperature:`. Ver [templates-system.md](templates-system.md).
-- **Modo global / local**: en `init`, global usa **symlinks** a plantillas centrales; local **copia**
-  todo al proyecto. Ver [architecture.md](architecture.md).
+- **Modo global / local**: en `init`, ambos **renderizan/copian** (sin symlinks). Global escribe en la
+  ruta **global de la tool** (disponible en todos los proyectos); local en el **proyecto**. Ver
+  [architecture.md](architecture.md) y [ADR 0013](decisions/0013-canonical-source-adapters.md).
 - **primary / fallback**: modelo principal y de respaldo por agente en `.agents-conf.yaml`. Ver
   [models-config.md](models-config.md).
-- **Adapter (de plataforma)**: el soporte por herramienta de IA (OpenCode hoy; Claude, Codex y más
-  después). Se podrá elegir más de una en `init`. Ver F6–F8 en [ROADMAP.md](../ROADMAP.md).
+- **Adapter (de plataforma)**: componente que **renderiza** la fuente canónica al formato y la ruta
+  nativa de una herramienta de IA (OpenCode hoy; Claude, Codex, Antigravity… después). Es el mecanismo
+  central de distribución (sin symlinks). Ver [ADR 0013](decisions/0013-canonical-source-adapters.md)
+  y F6–F8 en [ROADMAP.md](../ROADMAP.md).
+- **Fuente canónica**: la definición única y agnóstica de cada agente/skill/command, desde la cual los
+  adapters generan los outputs por herramienta. Ver [ADR 0013](decisions/0013-canonical-source-adapters.md).
 - **swarmspec/**: carpeta de specs y changes del **proyecto del usuario** (formato OpenSpec).
 - **OpenSpec**: metodología/CLI de SDD que usamos para desarrollar **este** repo (`/opsx:*`).
 - **ADR**: Architecture Decision Record — registro inmutable de una decisión. Ver

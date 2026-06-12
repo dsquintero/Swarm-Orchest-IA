@@ -25,7 +25,7 @@ assignees: []
 
 - **SO**: <!-- Windows 11 / Ubuntu 22.04 / macOS 14 -->
 - **Node**: <!-- node --version -->
-- **Modo de instalación**: <!-- global (symlinks) / local (copias) -->
+- **Modo de instalación**: <!-- global / local -->
 
 ## Logs / salida
 

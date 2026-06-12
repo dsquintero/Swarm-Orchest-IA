@@ -25,51 +25,43 @@ exploring → spec-writing → design → implementing → verifying → archivi
 Cada fase la ejecuta un agente distinto con el modelo óptimo para su tarea. El orquestador coordina las
 transiciones y el usuario aprueba cada avance.
 
-## Quickstart
+## Instalación
 
 ```bash
-npm install
-npm run build
-
-# Inicializar un proyecto (pregunta modo Global/symlinks o Local/copias)
-node dist/cmd/swarm.js init /path/to/mi-proyecto
+npm install -g swarm-orchest-ia   # expone el comando `soia`
 ```
 
-Guía de uso completa (comandos, validaciones, flujo SDD, agentes): **[docs/usage.md](docs/usage.md)**.
+> ⏳ La publicación en npm está en camino (F11). Por ahora se instala **desde el código** — ver
+> [DEVELOPMENT.md](DEVELOPMENT.md).
+
+## Uso
+
+```bash
+soia init            # prepara un proyecto (pregunta modo Global o Local)
+soia models          # muestra la configuración de modelos por agente
+soia update          # re-sincroniza plantillas y modelos
+```
+
+Una vez inicializado, abrí el proyecto en tu herramienta de IA y arrancá el flujo SDD con
+`/swarm-propose "tu feature"`.
+
+Guía completa (comandos, validaciones, flujo SDD, agentes): **[docs/usage.md](docs/usage.md)**.
+
+> ℹ️ El comando es `soia` (ver [ADR 0012](docs/decisions/0012-nombre-comando-soia.md)). El rename
+> está pendiente (F19); mientras tanto, desde el código el binario es `swarm`.
+
+## Requisitos
+
+`soia` solo prepara la estructura. El ecosistema necesita además **OpenCode** instalado y un
+**proveedor de modelos** configurado. Detalle en [docs/usage.md](docs/usage.md#prerrequisitos).
 
 ## Documentación
 
-| Para… | Ver |
-|---|---|
-| **Usar** el CLI (comandos, flujo SDD, agentes) | [docs/usage.md](docs/usage.md) |
-| Cómo está **construido** (arquitectura, módulos) | [docs/architecture.md](docs/architecture.md) |
-| Stack y tecnologías | [docs/technologies.md](docs/technologies.md) |
-| Sistema de plantillas e inyección de modelos | [docs/templates-system.md](docs/templates-system.md) |
-| Configuración de modelos | [docs/models-config.md](docs/models-config.md) |
-| Tests | [docs/testing.md](docs/testing.md) |
-| **Por qué** se decidió algo (ADRs) | [docs/decisions/](docs/decisions/) |
-| Glosario y conceptos | [docs/glossary.md](docs/glossary.md) |
-| Visión de producto | [docs/proposal.md](docs/proposal.md) |
-| Contribuir (flujo, convenciones) | [CONTRIBUTING.md](CONTRIBUTING.md) |
-| Estado y roadmap | [ROADMAP.md](ROADMAP.md) |
-
-Índice completo: [docs/README.md](docs/README.md).
-
-## Estado del proyecto
-
-El mapa vivo de funcionalidades vive en **[ROADMAP.md](ROADMAP.md)**. En esta etapa el foco es que
-**OpenCode funcione bien**; el soporte de más plataformas (Claude → Codex → más) y la integración con
-Engram se abordan después.
-
-## Limitaciones conocidas
-
-- **Resolución de HOME en Windows**: el código usa `process.env.HOME || '/root'`. En Windows nativo
-  `HOME` suele no estar definido, por lo que la config global se resolvería a una ruta incorrecta.
-  Debería usar `os.homedir()`. (Prioridad alta — ver [ROADMAP.md](ROADMAP.md).)
-- **Modo global en Windows sin Developer Mode**: `swarm init -g` crea symlinks con `fs.symlinkSync`,
-  que falla sin privilegios. Workaround: usar el modo **local** (`-l`).
-- **Plantillas default sin uso**: `templates/opencode/defaults/swarm.yaml` y `swarm-config.yaml`
-  no los consume el CLI (se genera `config.yaml` inline). Limpiar o cablear.
+- **Usar la herramienta** → [docs/usage.md](docs/usage.md)
+- **Desarrollarla** (build, tests, estructura) → [DEVELOPMENT.md](DEVELOPMENT.md)
+- **Contribuir** (flujo, convenciones) → [CONTRIBUTING.md](CONTRIBUTING.md)
+- **Estado y roadmap** → [ROADMAP.md](ROADMAP.md)
+- **Índice de toda la documentación** → [docs/README.md](docs/README.md)
 
 ## Licencia
 

@@ -1,6 +1,7 @@
 # ADR 0006 — Modo global/local explícito en `init`
 
-- **Estado**: Aceptada
+- **Estado**: Aceptada — **mecanismo superado por [ADR 0013](0013-canonical-source-adapters.md)**
+  (la elección global/local se mantiene, pero **ambos modos son render/copia, no symlinks**).
 - **Fecha**: 2026-06-11
 
 ## Contexto
