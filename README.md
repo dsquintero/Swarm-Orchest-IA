@@ -1,6 +1,12 @@
-# Swarm-Orchest-IA
+<p align="center">
+  <img src="docs/assets/logo.png" alt="Swarm-Orchest-IA — Multi-Agent SDD Orchestrator" width="600">
+</p>
 
-Orquestador multi-agente de SDD (Spec-Driven Development) para OpenCode. Liviano, portable y entendible.
+<p align="center">
+  Orquesta el desarrollo guiado por especificaciones (SDD) con un equipo de agentes de IA.<br>
+  Agnóstico de la herramienta — OpenCode hoy, más soportes en camino.<br>
+  Minimalista, estructurado y fácil de usar.
+</p>
 
 ## Qué hace
 

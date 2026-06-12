@@ -2,7 +2,8 @@ schema: spec-driven
 
 # Project context — shown to AI when creating artifacts.
 context: |
-  Swarm-Orchest-IA es la HERRAMIENTA: un orquestador multi-agente de SDD para OpenCode.
+  Swarm-Orchest-IA es la HERRAMIENTA: un orquestador multi-agente de SDD agnóstico de la
+  herramienta (OpenCode es el primer soporte; se agregarán más).
   Este repo contiene el CLI `swarm` (TypeScript/Node.js, no Go — el PROPOSAL menciona Go pero
   la implementación real es TS) y las plantillas que el CLI instala en proyectos de terceros.
 

@@ -6,8 +6,8 @@
 ## Qué es este repositorio
 
 Este repo **es la herramienta** Swarm-Orchest-IA: un orquestador multi-agente de SDD
-(Spec-Driven Development) para OpenCode. Contiene el CLI `swarm` y las plantillas que ese CLI
-instala en proyectos de terceros.
+(Spec-Driven Development) **agnóstico de la herramienta** (OpenCode es el primer soporte; se
+agregarán más). Contiene el CLI `swarm` y las plantillas que ese CLI instala en proyectos de terceros.
 
 **Distinción clave — no confundir dos planos:**
 
