@@ -12,6 +12,7 @@ agentes de IA; **el detalle vive acá** y se lee según se necesite.
 | [architecture.md](architecture.md) | Entender cómo está armado el CLI: módulos, flujo, contratos de paths |
 | [technologies.md](technologies.md) | Saber qué librería se usa y por qué; tooling de build/test |
 | [templates-system.md](templates-system.md) | Tocar plantillas, el marcador de inyección, o entender qué genera `soia init` |
+| [cli-best-practices.md](cli-best-practices.md) | Diseñar/evolucionar el CLI: patrones de Commander (interactividad, `--json`, exit codes, hooks) aprendidos de OpenSpec |
 | [models-config.md](models-config.md) | Cambiar modelos, entender primary/fallback y la config `.agents-conf.yaml` |
 | [testing.md](testing.md) | Escribir o entender los tests |
 | [glossary.md](glossary.md) | Aclarar términos y conceptos (los dos planos, adapters, etc.) |

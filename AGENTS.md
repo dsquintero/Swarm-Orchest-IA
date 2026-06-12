@@ -73,6 +73,7 @@ cargarlo todo de entrada):
 | Arquitectura del CLI (módulos, flujo, contratos de paths) | [docs/architecture.md](docs/architecture.md) |
 | Qué librería se usa y por qué | [docs/technologies.md](docs/technologies.md) |
 | Tocar plantillas / el marcador de inyección de modelo | [docs/templates-system.md](docs/templates-system.md) |
+| Diseñar o evolucionar el CLI (Commander: interactividad, `--json`, exit codes, hooks) | [docs/cli-best-practices.md](docs/cli-best-practices.md) |
 | Cambiar modelos / config primary-fallback | [docs/models-config.md](docs/models-config.md) |
 | Escribir o entender tests | [docs/testing.md](docs/testing.md) |
 | Términos del dominio (los dos planos, adapters…) | [docs/glossary.md](docs/glossary.md) |
