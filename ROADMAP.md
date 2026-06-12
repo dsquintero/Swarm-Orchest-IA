@@ -44,8 +44,8 @@ Leyenda: ✅ hecho · 🟡 parcial · ⬜ pendiente · 🔴 P0 · 🟠 P1 · �
 | F3 | Tests de capa de comandos | Cubrir `init/update/fallback/models` con HOME y projectDir temporales | 🟠 | [#3](https://github.com/dsquintero/Swarm-Orchest-IA/issues/3) |
 | F4 | ✅ CI con GitHub Actions | `npm test` + `build` en cada PR (matriz Win/Linux/macOS) — **hecho** (`.github/workflows/ci.yml`) | 🟠 | — |
 | F5 | Limpieza de defaults muertos | Cablear o eliminar `swarm.yaml` / `swarm-config.yaml` | 🟡 | [#4](https://github.com/dsquintero/Swarm-Orchest-IA/issues/4) |
-| F15 | Smoke test de empaquetado | En CI: `npm pack` → instalar el tarball en un temp → `soia --help` + `init` en proyecto temporal | 🟠 | — |
-| F16 | Campo `engines` en package.json | Declarar `node >=20` para un mensaje claro con Node viejo | 🟡 | — |
+| F15 | ✅ Smoke test de empaquetado | En CI: `npm pack` → instalar el tarball → CLI `--version` + `init` en proyecto temporal — **hecho** (`.github/workflows/smoke-test.yml`) | 🟠 | [#8](https://github.com/dsquintero/Swarm-Orchest-IA/issues/8) |
+| F16 | ✅ Campo `engines` en package.json | Declarar `node >=20` para un mensaje claro con Node viejo — **hecho** | 🟡 | [#9](https://github.com/dsquintero/Swarm-Orchest-IA/issues/9) |
 
 ## v0.3 — Multi-plataforma
 
