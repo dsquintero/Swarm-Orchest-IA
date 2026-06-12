@@ -628,8 +628,8 @@ El `opencode.json` del proyecto **NO contiene configuración de agentes**. Los m
 4. ✅ Refinar agentes con detalle fino: delegation prompts, transition criteria, blocking protocol, error handling, verification criteria, search strategy, ADR format
 5. ✅ Crear defaults en `_prototype/defaults/`: `.agents-conf.yaml`, `AGENTS.md`, `opencode.json`, `swarm.yaml`, `current.yaml`, spec de ejemplo
 6. ✅ Implementar CLI `swarm init --tool opencode` en TypeScript/Node.js (lee `.agents-conf.yaml`, inyecta modelos, crea symlinks)
-7. ⬜ Implementar `swarm update` (reinjecta modelos si cambió `.agents-conf.yaml`)
-8. ⬜ Implementar `swarm fallback`, `swarm models`
+7. ✅ Implementar `swarm update` (reinjecta modelos si cambió `.agents-conf.yaml`)
+8. ✅ Implementar `swarm fallback`, `swarm models`
 9. ⬜ Implementar detección de Engram (opcional) en `swarm init`
 10. ⬜ Probar `swarm init` en Linux (symlinks)
 11. ⬜ Probar `swarm init` en Windows (symlinks o fallback)
