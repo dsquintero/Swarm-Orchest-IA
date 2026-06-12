@@ -32,3 +32,4 @@ alcance del proyecto. **Siempre con confirmación del usuario** antes de crearla
 | [0011](0011-gitflow-branching.md) | Modelo de ramas GitFlow | Aceptada |
 | [0012](0012-nombre-comando-soia.md) | Comando `soia`, paquete `swarm-orchest-ia` | Aceptada |
 | [0013](0013-canonical-source-adapters.md) | Fuente canónica + adapters (sin symlinks) | Aceptada |
+| [0014](0014-config-neutra-modelo-esfuerzo.md) | Config neutra: modelo por tool + esfuerzo (mapeo por adapter) | Propuesta |
