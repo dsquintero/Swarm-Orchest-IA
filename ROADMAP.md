@@ -47,19 +47,20 @@ Leyenda: ✅ hecho · 🟡 parcial · ⬜ pendiente · 🔴 P0 · 🟠 P1 · �
 | F15 | ✅ Smoke test de empaquetado | En CI: `npm pack` → instalar el tarball → CLI `--version` + `init` en proyecto temporal — **hecho** (`.github/workflows/smoke-test.yml`) | 🟠 | [#8](https://github.com/dsquintero/Swarm-Orchest-IA/issues/8) |
 | F16 | ✅ Campo `engines` en package.json | Declarar `node >=20` para un mensaje claro con Node viejo — **hecho** | 🟡 | [#9](https://github.com/dsquintero/Swarm-Orchest-IA/issues/9) |
 
-## v0.3 — Multi-plataforma
+## v0.3 — Multi-plataforma (objetivo **v1: OpenCode + Claude Code**)
 
-> La razón de ser del CLI: preparar un proyecto para **una o varias** herramientas de IA.
-> **OpenCode es el default y debe funcionar bien** antes de sumar adapters. Orden de soporte:
-> OpenCode (hoy) → Claude → Codex → más adelante se agregan más.
+> La **primera versión sale con dos adapters: OpenCode + Claude Code**, ambos funcionando — mismo tier,
+> no "OpenCode primero". La base de OpenCode viene de **F2** (render/copia); el **motor de adapters** es
+> **F6** y el **adapter de Claude** es **F7**: los tres son **requeridos para v1**. Codex y Antigravity
+> se suman después. Todo sobre la arquitectura de adapters ([ADR 0013](docs/decisions/0013-canonical-source-adapters.md), [ADR 0009](docs/decisions/0009-multiplataforma-seleccion-multiple.md)).
 
 | ID | Funcionalidad | Descripción | Prio | Issue |
 |---|---|---|---|---|
-| F6 | Motor de adapters (multi-plataforma) | Fuente canónica → **adapter por tool** que renderiza al formato nativo y escribe en su ruta (global o proyecto). `init` permite elegir 1+ herramientas (`--tool opencode,claude`). Ver ADR 0013 | 🟠 | — |
-| F7 | Adapter Claude Code | Render al formato y rutas nativas de Claude Code (`.claude/`, `~/.claude/`) | 🟡 | — |
-| F8 | Adapter Codex | Ídem para Codex | ⚪ | — |
+| F6 | Motor de adapters **(v1)** | Fuente canónica → **adapter por tool** que renderiza al formato nativo y escribe en su ruta (global o proyecto). `init` permite elegir 1+ herramientas (`--tool opencode,claude`). Base de v1. Ver ADR 0013 | 🟠 | — |
+| F7 | Adapter Claude Code **(v1)** | Render al formato y rutas nativas de Claude Code (`.claude/`, `~/.claude/`). **Requerido para v1**, mismo tier que OpenCode | 🟠 | — |
+| F8 | Adapter Codex | Ídem para Codex (post-v1) | ⚪ | — |
 | F9 | `soia doctor` | Diagnóstico: HOME, templates, modelos, proyecto válido | 🟡 | — |
-| F+ | Más adapters | Antigravity, Cursor y otros — se suman incrementalmente sobre el motor de adapters de F6 | ⚪ | — |
+| F+ | Más adapters (post-v1) | Antigravity, Cursor y otros — se suman sobre el motor de adapters (F6) | ⚪ | — |
 
 ## v0.4 — DX y distribución
 
@@ -71,6 +72,7 @@ Leyenda: ✅ hecho · 🟡 parcial · ⬜ pendiente · 🔴 P0 · 🟠 P1 · �
 | F13 | `soia models --json` | Salida machine-readable para tooling | ⚪ | — |
 | F14 | Ejemplo .NET 8 end-to-end | Flujo SDD completo demostrado | ⚪ | — |
 | F19 | Renombrar comando a `soia` | `bin` + `program.name` + barrido de ejemplos en docs (el paquete sigue siendo `swarm-orchest-ia`). Ver ADR 0012 | 🟠 | — |
+| F20 | Automatización del board (Kanban) | rama→*In progress*, PR→*In review*, merge→*Done*. Workflows nativos de Projects + GitHub Actions (con PAT) usando la convención `feature/<n>-…` | ⚪ | — |
 
 ---
 
