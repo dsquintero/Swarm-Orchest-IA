@@ -1,4 +1,5 @@
 import * as fs from 'fs';
+import * as os from 'os';
 import * as path from 'path';
 import * as agentsconf from '../lib/agentsconf';
 import * as injector from '../lib/injector';
@@ -84,7 +85,7 @@ export async function runInit(tool: string, projectDir: string, mode?: string): 
   const swarmDir = path.join(projectDir, '.swarm');
   const opencodeDir = path.join(projectDir, '.opencode');
   const swarmspecDir = path.join(projectDir, 'swarmspec');
-  const home = process.env.HOME || '/root';
+  const home = os.homedir();
 
   // Step 2: .opencode/ with agents, skills, commands
   const agentsDir = path.join(opencodeDir, 'agents');

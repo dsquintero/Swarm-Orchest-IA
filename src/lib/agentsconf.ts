@@ -1,4 +1,5 @@
 import * as fs from 'fs';
+import * as os from 'os';
 import * as path from 'path';
 import * as yaml from 'js-yaml';
 
@@ -32,7 +33,7 @@ export function agentNames(config: Config): string[] {
 }
 
 export function swarmConfigDir(): string {
-  return path.join(process.env.HOME || '/root', '.config', 'swarm');
+  return path.join(os.homedir(), '.config', 'swarm');
 }
 
 export function swarmConfigFile(): string {
