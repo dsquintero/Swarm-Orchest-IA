@@ -1,6 +1,0 @@
-# .swarm.yaml — Proyecto Swarm-Orchest-IA
-# Generado por: swarm init --tool opencode
-# Este archivo apunta a las plantillas centralizadas del proyecto.
-
-tool: opencode
-templates_path: "{{HOME}}/.config/swarm/templates/opencode"

@@ -38,7 +38,7 @@ Guía de uso completa (comandos, validaciones, flujo SDD, agentes): **[docs/usag
 | Tests | [docs/testing.md](docs/testing.md) |
 | **Por qué** se decidió algo (ADRs) | [docs/decisions/](docs/decisions/) |
 | Glosario y conceptos | [docs/glossary.md](docs/glossary.md) |
-| Visión de producto | [docs/PROPOSAL.md](docs/PROPOSAL.md) |
+| Visión de producto | [docs/proposal.md](docs/proposal.md) |
 | Contribuir (flujo, convenciones) | [CONTRIBUTING.md](CONTRIBUTING.md) |
 | Estado y roadmap | [ROADMAP.md](ROADMAP.md) |
 

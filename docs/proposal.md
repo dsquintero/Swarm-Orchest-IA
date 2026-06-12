@@ -1,5 +1,10 @@
 # Proposal: Swarm-Orchest-IA — Multi-Agent SDD Orchestrator
 
+> ⚠️ **Documento histórico de visión.** Describe el diseño y la intención **originales** del proyecto y
+> puede **divergir de la implementación actual** (p. ej. menciona `_prototype/`, Engram, `--tool cursor`
+> y `.swarm.yaml`, que hoy no aplican). Para el **estado real** mirá la documentación en
+> [docs/](README.md) (arquitectura, uso, decisiones/ADRs) y el [ROADMAP](../ROADMAP.md).
+
 ## Intent
 
 Crear un **orquestador de agentes SDD (Spec-Driven Development)** liviano, portable y entendible, que permita a cualquier equipo estructurar el desarrollo de software con AI de forma predecible, trazable y colaborativa — con un CLI mínimo que referencia plantillas centralizadas en lugar de copiarlas, y Engram como memoria opcional.

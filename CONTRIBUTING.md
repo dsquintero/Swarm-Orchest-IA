@@ -31,7 +31,7 @@ Probar el CLI sin compilar: `npm run dev -- <comando>` (ej: `npm run dev -- init
 ## Dónde va cada cosa
 
 - **Código del CLI**: `src/` (`cmd/swarm.ts` + `lib/`).
-- **Plantillas canónicas**: `templates/opencode/` — **editá acá**, nunca `docs/_prototype/` (es histórico).
+- **Plantillas canónicas**: `templates/opencode/` — **editá acá** (es la copia que instala el CLI).
 - **Tests**: `tests/*.test.ts`.
 - **Diseño de features (este repo)**: `openspec/` vía `/opsx:*`.
 

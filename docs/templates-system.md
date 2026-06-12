@@ -28,7 +28,6 @@ editar una línea de config. Ver [models-config.md](models-config.md).
 ## Plantillas canónicas
 
 - **Editá** `templates/opencode/` — es la copia **canónica** que instala el CLI.
-- **No edites** `docs/_prototype/` — es referencia histórica congelada.
 
 Contenido (`templates/opencode/`):
 

@@ -8,7 +8,7 @@ context: |
 
   Stack: TypeScript + Node.js (CommonJS), Commander.js, js-yaml, inquirer, ora, chalk. Build con tsc.
   Código fuente en swarm-cli/src/ (cmd/swarm.ts + lib/). Plantillas canónicas en
-  swarm-cli/templates/opencode/ (NO en docs/_prototype/, que es referencia histórica).
+  templates/opencode/ (la copia canónica que instala el CLI).
 
   Distinción clave: el flujo OpenSpec (este config) es para desarrollar ESTA herramienta.
   Los agentes swarm-* y la carpeta swarmspec/ son el PRODUCTO que el CLI genera, no el flujo

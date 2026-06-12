@@ -20,7 +20,7 @@ Es decir: cuando desarrollás features de *este* repo, usás OpenSpec. Los agent
 `swarmspec/` son el **producto** que generamos, no el flujo con el que trabajamos acá.
 
 > ℹ️ **Stack**: el CLI está implementado en **TypeScript/Node.js** (la stack que el equipo domina).
-> `docs/PROPOSAL.md` es la visión de producto y diseño; el código en `src/` es la fuente de
+> `docs/proposal.md` es la visión de producto y diseño; el código en `src/` es la fuente de
 > verdad de la implementación. Ante conflicto, gana el código.
 
 ## Stack (resumen)
@@ -42,11 +42,10 @@ Swarm-Orchest-IA/                    ← raíz = paquete npm (CLI swarm)
 │   ├── commands/                    ← swarm-propose, swarm-apply, swarm-verify, swarm-archive
 │   └── defaults/                    ← .agents-conf.yaml, AGENTS.md, opencode.json, spec ejemplo
 ├── tests/                           ← Tests con Vitest (injector, agentsconf, fsutil, templates)
-├── docs/
-│   ├── PROPOSAL.md                  ← Visión de producto y diseño (alineado con la implementación TS)
-│   └── _prototype/                  ← Plantillas originales de referencia (NO editar; histórico)
-│       ├── defaults/
-│       └── templates/opencode/
+├── docs/                            ← documentación (router + detalle); índice en docs/README.md
+│   ├── proposal.md                  ← visión de producto original
+│   ├── usage / architecture / …     ← guías por tema (ver docs/README.md)
+│   └── decisions/                   ← ADRs (el porqué de cada decisión)
 ├── openspec/                        ← SDD de ESTE repo (specs y changes de la herramienta)
 │   ├── config.yaml
 │   ├── specs/
@@ -62,8 +61,7 @@ Swarm-Orchest-IA/                    ← raíz = paquete npm (CLI swarm)
 └── README.md
 ```
 
-> `templates/opencode/` es la copia **canónica**. `docs/_prototype/` es referencia
-> histórica congelada — los cambios reales van en `templates/`.
+> `templates/opencode/` es la copia **canónica** que instala el CLI. Editá ahí.
 
 ## Documentación — leé según necesidad
 
@@ -79,7 +77,7 @@ cargarlo todo de entrada):
 | Escribir o entender tests | [docs/testing.md](docs/testing.md) |
 | Términos del dominio (los dos planos, adapters…) | [docs/glossary.md](docs/glossary.md) |
 | **Por qué** se tomó una decisión | [docs/decisions/](docs/decisions/) (ADRs) |
-| Visión de producto | [docs/PROPOSAL.md](docs/PROPOSAL.md) |
+| Visión de producto | [docs/proposal.md](docs/proposal.md) |
 | Flujo de colaboración / convenciones | [CONTRIBUTING.md](CONTRIBUTING.md) |
 | Estado y roadmap | [ROADMAP.md](ROADMAP.md) |
 | Índice completo de docs | [docs/README.md](docs/README.md) |
@@ -108,7 +106,7 @@ npm run coverage         # Tests con reporte de cobertura
 - **Lenguaje del código y comentarios**: el código está en inglés; la documentación de usuario y
   los mensajes del proposal están en español. Mantené el idioma del archivo que estés tocando.
 - **Sin dependencias nuevas** salvo justificación clara (mantener el CLI liviano es un objetivo explícito).
-- **Plantillas**: editá `templates/opencode/`, no `docs/_prototype/`.
+- **Plantillas**: editá `templates/opencode/` (es la copia canónica que instala el CLI).
 - **Filosofía** (del proposal): referencias > copias; un solo origen de plantillas; usar lo que
   OpenCode ya provee; Engram opcional.
 - No rompas el contrato de paths que el CLI espera: `.swarm/config.yaml` marca un proyecto inicializado.
@@ -169,5 +167,5 @@ documentación o ADRs. Esas acciones no las hace un agente por su cuenta.
 
 ## Roadmap
 
-El estado por funcionalidad vive en [ROADMAP.md](ROADMAP.md) (mapa vivo). `docs/PROPOSAL.md` es la
+El estado por funcionalidad vive en [ROADMAP.md](ROADMAP.md) (mapa vivo). `docs/proposal.md` es la
 visión de producto original.

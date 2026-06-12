@@ -8,7 +8,7 @@ agentes de IA; **el detalle vive acá** y se lee según se necesite.
 | Doc | Leé esto cuando necesités… |
 |---|---|
 | [usage.md](usage.md) | Usar el CLI: comandos, flujo SDD, agentes, estructura del proyecto |
-| [PROPOSAL.md](PROPOSAL.md) | La visión de producto y diseño original |
+| [proposal.md](proposal.md) | La visión de producto y diseño original |
 | [architecture.md](architecture.md) | Entender cómo está armado el CLI: módulos, flujo, contratos de paths |
 | [technologies.md](technologies.md) | Saber qué librería se usa y por qué; tooling de build/test |
 | [templates-system.md](templates-system.md) | Tocar plantillas, el marcador de inyección, o entender qué genera `swarm init` |

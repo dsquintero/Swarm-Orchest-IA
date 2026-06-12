@@ -74,7 +74,7 @@ Leyenda: ✅ hecho · 🟡 parcial · ⬜ pendiente · 🔴 P0 · 🟠 P1 · �
 ## Fuera de alcance en esta etapa
 
 - **Integración con Engram** (memoria opcional). No se implementa por ahora; se retoma más adelante.
-  Se mantiene como visión en `docs/PROPOSAL.md`, pero no es trabajo activo.
+  Se mantiene como visión en `docs/proposal.md`, pero no es trabajo activo.
 
 ## Limitaciones conocidas
 
