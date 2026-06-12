@@ -23,14 +23,11 @@ Es decir: cuando desarrollás features de *este* repo, usás OpenSpec. Los agent
 > `docs/PROPOSAL.md` es la visión de producto y diseño; el código en `src/` es la fuente de
 > verdad de la implementación. Ante conflicto, gana el código.
 
-## Stack
+## Stack (resumen)
 
-- **CLI**: TypeScript + Node.js (CommonJS)
-- **Librerías**: Commander.js (parsing), js-yaml (config), inquirer (prompts), ora (spinners), chalk (color)
-- **Build**: `tsc` → `dist/`
-- **Tests**: Vitest (`tests/*.test.ts`)
-- **Formato de specs (producto)**: OpenSpec — GIVEN/WHEN/THEN, SHALL/MUST/SHOULD, deltas ADDED/MODIFIED/REMOVED
-- **Modelos (producto)**: OpenCode Go (DeepSeek V4 Pro/Flash, GLM-5/5.1, Kimi K2.6, MiniMax M2.7)
+**TypeScript + Node.js** (CommonJS), Commander + js-yaml + inquirer + ora + chalk. Build con `tsc`,
+tests con **Vitest**. El detalle y el porqué de cada pieza viven en
+[docs/technologies.md](docs/technologies.md).
 
 ## Estructura del repositorio
 
@@ -54,9 +51,12 @@ Swarm-Orchest-IA/                    ← raíz = paquete npm (CLI swarm)
 │   ├── config.yaml
 │   ├── specs/
 │   └── changes/
+├── .github/                         ← plantillas de Issue/PR + CI (GitHub Actions)
 ├── package.json
 ├── tsconfig.json
 ├── vitest.config.ts
+├── ROADMAP.md                       ← mapa vivo de funcionalidades (estado por feature)
+├── CONTRIBUTING.md                  ← guía de colaboración (flujo, convenciones)
 ├── AGENTS.md                        ← este archivo (fuente canónica)
 ├── CLAUDE.md                        ← importa AGENTS.md
 └── README.md
@@ -65,24 +65,28 @@ Swarm-Orchest-IA/                    ← raíz = paquete npm (CLI swarm)
 > `templates/opencode/` es la copia **canónica**. `docs/_prototype/` es referencia
 > histórica congelada — los cambios reales van en `templates/`.
 
-## Arquitectura del CLI
+## Documentación — leé según necesidad
 
-Entry point `src/cmd/swarm.ts` registra 4 comandos vía Commander:
+`AGENTS.md` es un **router liviano**. El detalle vive en `docs/` y se lee on-demand (no hace falta
+cargarlo todo de entrada):
 
-| Comando | Lib | Qué hace |
-|---|---|---|
-| `swarm init [path]` | `lib/init.ts` | Crea estructura del proyecto; modo **global** (symlinks a `~/.config/swarm/templates/`) o **local** (copias) |
-| `swarm update [path]` / `--all` | `lib/update.ts` | Re-inyecta modelos y resincroniza plantillas |
-| `swarm fallback [agent]` / `--all` / `--restore` | `lib/fallback.ts` | Cambia agentes a modelo fallback o restaura primary |
-| `swarm models [path]` / `--primary` / `--fallback` | `lib/models.ts` | Muestra config de modelos por agente |
+| Necesitás… | Leé |
+|---|---|
+| Arquitectura del CLI (módulos, flujo, contratos de paths) | [docs/architecture.md](docs/architecture.md) |
+| Qué librería se usa y por qué | [docs/technologies.md](docs/technologies.md) |
+| Tocar plantillas / el marcador de inyección de modelo | [docs/templates-system.md](docs/templates-system.md) |
+| Cambiar modelos / config primary-fallback | [docs/models-config.md](docs/models-config.md) |
+| Escribir o entender tests | [docs/testing.md](docs/testing.md) |
+| Términos del dominio (los dos planos, adapters…) | [docs/glossary.md](docs/glossary.md) |
+| **Por qué** se tomó una decisión | [docs/decisions/](docs/decisions/) (ADRs) |
+| Visión de producto | [docs/PROPOSAL.md](docs/PROPOSAL.md) |
+| Flujo de colaboración / convenciones | [CONTRIBUTING.md](CONTRIBUTING.md) |
+| Estado y roadmap | [ROADMAP.md](ROADMAP.md) |
+| Índice completo de docs | [docs/README.md](docs/README.md) |
 
-Módulos de soporte:
-- `lib/agentsconf.ts` — lee/escribe `~/.config/swarm/.agents-conf.yaml` y override local `.swarm/.agents-conf.yaml`
-- `lib/injector.ts` — inyecta `model:`/`temperature:` en el frontmatter de los agentes reemplazando el comentario marcador
-- `lib/fsutil.ts` — symlinks/copias, resolución de paths, detección de proyecto inicializado (`.swarm/config.yaml`)
-
-**Concepto central**: las plantillas de agentes NO tienen `model:` hardcodeado; llevan un comentario
-marcador que `injector.ts` reemplaza con los valores de `.agents-conf.yaml` durante `init`/`update`.
+**Concepto central** (lo único que conviene tener siempre presente): las plantillas de agentes NO
+tienen `model:` hardcodeado; llevan un marcador que `injector.ts` reemplaza desde `.agents-conf.yaml`
+durante `init`/`update`.
 
 ## Comandos de desarrollo
 
@@ -96,9 +100,8 @@ npm run test:watch       # Tests en modo watch
 npm run coverage         # Tests con reporte de cobertura
 ```
 
-**Tests**: usamos **Vitest**. Viven en `tests/*.test.ts` y cubren los núcleos puros
-(`injector`, `agentsconf`, `fsutil`) más un test de integridad de plantillas que verifica que los
-6 agentes mantengan el marcador de inyección de modelo. Al agregar features, añadí tests.
+**Tests**: Vitest en `tests/*.test.ts`. Al agregar features, añadí tests. Estrategia y detalle en
+[docs/testing.md](docs/testing.md).
 
 ## Convenciones
 
@@ -123,8 +126,48 @@ Comandos OpenSpec CLI: `openspec new change "<name>"`, `openspec status --change
 
 El contexto del proyecto para OpenSpec vive en `openspec/config.yaml`.
 
-## Roadmap (de PROPOSAL.md)
+## Cómo colaborar en este repo (agentes y personas)
 
-Hecho: proposal, plantillas base, agentes refinados, defaults, CLI `init/update/fallback/models`.
-Pendiente: detección de Engram, pruebas multiplataforma de symlinks (Win/Linux), soporte
-`--tool claude` y `--tool cursor`, prueba del flujo SDD completo con un feature real.
+Este repo es **colaborativo**: varias personas y agentes de IA trabajan sobre él. Seguí este flujo
+para no pisar a nadie. El detalle completo está en [CONTRIBUTING.md](CONTRIBUTING.md); el mapa de
+funcionalidades en [ROADMAP.md](ROADMAP.md).
+
+```
+ROADMAP.md → Issue #N → (si no trivial) /opsx:propose → branch feat/N → PR "Closes #N" → CI verde → merge
+```
+
+**Reglas para agentes de IA (obligatorias):**
+
+1. **Arrancá con un objetivo claro**: leé `ROADMAP.md` y el Issue asignado antes de tocar código. No
+   empieces sin un Issue o instrucción explícita.
+2. **Elegí el peso del proceso**:
+   - Feature **no trivial** (comando nuevo, cambia comportamiento) → `/opsx:propose` primero
+     (genera `proposal/design/tasks` en `openspec/changes/`).
+   - Bug fix, refactor chico, docs o ajuste de plantilla → Issue + PR directo, **sin** OpenSpec.
+3. **Branch, nunca `main` directo**: `feat/<n>-<slug>` o `fix/<n>-<slug>`.
+4. **Tests + verde**: agregá/actualizá tests (Vitest) para toda lógica nueva. `npm test` y
+   `npm run build` deben pasar antes de proponer el merge.
+5. **No rompas los contratos del repo**:
+   - El marcador de inyección de modelo en las plantillas de agentes (lo protege `tests/templates.test.ts`).
+   - `.swarm/config.yaml` como marca de proyecto inicializado.
+6. **Conventional commits** (`feat/fix/chore/test/docs/refactor`) y **PRs chicos**: 1 feature por PR.
+7. **Actualizá `ROADMAP.md`** (estado + link al Issue) en el **mismo PR** que cierra la feature.
+8. Usá las plantillas de Issue/PR de `.github/` y referenciá el Issue (`Closes #N`).
+
+**Documentación y decisiones (mantener al día):**
+
+- **Registrá decisiones como ADRs**: si la tarea implica una decisión de arquitectura, stack, contrato
+  o alcance, proponé crear/actualizar una ADR en [docs/decisions/](docs/decisions/). Creala solo tras
+  confirmación del usuario.
+- **Notificá desfases siempre**: si un cambio deja desactualizado algún doc (`docs/*`, `AGENTS.md`,
+  `ROADMAP.md`, `README.md`, `CONTRIBUTING.md`), **avisá** qué quedó desfasado y proponé el ajuste —
+  aunque no se aplique en el momento, la notificación es obligatoria.
+- **Siempre con confirmación previa**: no crees ni edites documentación ni ADRs sin el OK del usuario.
+
+**Pedí confirmación al usuario antes de**: pushear, abrir o mergear PRs, crear Issues, y crear/editar
+documentación o ADRs. Esas acciones no las hace un agente por su cuenta.
+
+## Roadmap
+
+El estado por funcionalidad vive en [ROADMAP.md](ROADMAP.md) (mapa vivo). `docs/PROPOSAL.md` es la
+visión de producto original.

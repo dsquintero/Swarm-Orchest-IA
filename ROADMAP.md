@@ -1,0 +1,83 @@
+# Roadmap — Swarm-Orchest-IA
+
+> **Mapa vivo** de las funcionalidades del CLI y su estado. Es la "foto" de alto nivel del proyecto:
+> un compañero nuevo lee esto primero. El detalle de ejecución vive en los **GitHub Issues** y el
+> diseño de cada feature no trivial en **OpenSpec** (`openspec/changes/`).
+
+## Cómo trabajamos (resumen)
+
+Tres capas, una fuente de verdad por capa — sin duplicar info:
+
+| Capa | Pregunta | Dónde |
+|---|---|---|
+| **Mapa** | ¿Qué hay y en qué estado? | Este archivo (`ROADMAP.md`) |
+| **Coordinación** | ¿Quién hace qué? | GitHub Issues + Project board |
+| **Especificación** | ¿Qué/por qué/cómo en detalle? | OpenSpec (`/opsx:propose`) |
+
+Flujo: `ROADMAP` → `Issue #N` → (si no trivial) `OpenSpec change` → branch `feat/N` → PR `Closes #N`.
+Ver [CONTRIBUTING.md](CONTRIBUTING.md) para el paso a paso.
+
+Leyenda: ✅ hecho · 🟡 parcial · ⬜ pendiente · 🔴 P0 · 🟠 P1 · 🟡 P2 · ⚪ P3
+
+---
+
+## Hecho (v0.1)
+
+- ✅ CLI `swarm init` (inyección de modelos, estructura, modo global/local)
+- ✅ CLI `swarm update` / `--all`
+- ✅ CLI `swarm fallback` / `--all` / `--restore`
+- ✅ CLI `swarm models` / `--primary` / `--fallback`
+- ✅ `.agents-conf.yaml` central + override local (merge)
+- ✅ Plantillas sin modelo hardcodeado (marcador de inyección) — 6 agentes, 3 skills, 4 comandos
+- 🟡 Suite de tests (Vitest) — cubre núcleos puros; falta la capa de comandos
+
+---
+
+## v0.2 — Correctez y robustez
+
+> Desbloquea Windows y la colaboración. Atacar primero.
+
+| ID | Funcionalidad | Descripción | Prio | Issue |
+|---|---|---|---|---|
+| F1 | Fix HOME multiplataforma | Usar `os.homedir()` en vez de `process.env.HOME \|\| '/root'` | 🔴 | — |
+| F2 | Fallback symlink→copia | En modo global, copiar si `symlinkSync` falla (Windows sin dev-mode) | 🔴 | — |
+| F3 | Tests de capa de comandos | Cubrir `init/update/fallback/models` con HOME y projectDir temporales | 🟠 | — |
+| F4 | CI con GitHub Actions | `npm test` + `build` en cada PR (matriz Win/Linux/macOS) | 🟠 | — |
+| F5 | Limpieza de defaults muertos | Cablear o eliminar `swarm.yaml` / `swarm-config.yaml` | 🟡 | — |
+
+## v0.3 — Multi-plataforma
+
+> La razón de ser del CLI: preparar un proyecto para **una o varias** herramientas de IA.
+> **OpenCode es el default y debe funcionar bien** antes de sumar adapters. Orden de soporte:
+> OpenCode (hoy) → Claude → Codex → más adelante se agregan más.
+
+| ID | Funcionalidad | Descripción | Prio | Issue |
+|---|---|---|---|---|
+| F6 | Selección de múltiples plataformas | `init` permite elegir 1+ herramientas (ej. `--tool opencode,claude`) sobre una arquitectura de adapters por tool | 🟠 | — |
+| F7 | Adapter Claude Code | Generar la estructura y los paths propios de Claude Code | 🟡 | — |
+| F8 | Adapter Codex | Ídem para Codex | ⚪ | — |
+| F9 | `swarm doctor` | Diagnóstico: HOME, dev-mode, templates, modelos, proyecto válido | 🟡 | — |
+| F+ | Más adapters | Cursor y otros — se suman incrementalmente sobre la arquitectura de F6 | ⚪ | — |
+
+## v0.4 — DX y distribución
+
+| ID | Funcionalidad | Descripción | Prio | Issue |
+|---|---|---|---|---|
+| F10 | `swarm list` / `swarm status` | Leer `swarmspec/changes/` y mostrar cambios y fase activa | ⚪ | — |
+| F11 | Publicación npm + `npx swarm` | Distribuir el CLI sin clonar; `bin` linking | ⚪ | — |
+| F12 | Validación de `.agents-conf.yaml` | Schema + errores claros si falta `primary/fallback/temperature` | ⚪ | — |
+| F13 | `swarm models --json` | Salida machine-readable para tooling | ⚪ | — |
+| F14 | Ejemplo .NET 8 end-to-end | Flujo SDD completo demostrado | ⚪ | — |
+
+---
+
+## Fuera de alcance en esta etapa
+
+- **Integración con Engram** (memoria opcional). No se implementa por ahora; se retoma más adelante.
+  Se mantiene como visión en `docs/PROPOSAL.md`, pero no es trabajo activo.
+
+## Limitaciones conocidas
+
+Ver la sección **Limitaciones conocidas** en el [README](README.md#limitaciones-conocidas).
+
+> Al cerrar una funcionalidad, actualizá su fila acá (estado + link al Issue) **en el mismo PR**.
