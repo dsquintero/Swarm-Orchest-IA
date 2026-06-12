@@ -37,20 +37,20 @@ This project uses Swarm-Orchest-IA for Spec-Driven Development.
 
 ### Key Paths
 
-- **Specs**: `swarmspec/specs/` — source of truth for system behavior
-- **Changes**: `swarmspec/changes/` — active feature work
-- **Archive**: `swarmspec/changes/archive/` — completed changes
-- **Current**: `.swarm/current.yaml` — active change tracker
+- **Specs**: `soia-spec/specs/` — source of truth for system behavior
+- **Changes**: `soia-spec/changes/` — active feature work
+- **Archive**: `soia-spec/changes/archive/` — completed changes
+- **Current**: `.soia/current.yaml` — active change tracker
 
 ### Available Commands
 
-- `/swarm-propose <description>` — Start a new SDD change
-- `/swarm-apply` — Continue the current change from its current phase
-- `/swarm-verify` — Verify current implementation against specs
-- `/swarm-archive` — Archive the current change (merge deltas into specs)
+- `/soia-propose <description>` — Start a new SDD change
+- `/soia-apply` — Continue the current change from its current phase
+- `/soia-verify` — Verify current implementation against specs
+- `/soia-archive` — Archive the current change (merge deltas into specs)
 
 ### Format Rules
 
 - Specs use OpenSpec format: GIVEN/WHEN/THEN scenarios, SHALL/MUST/SHOULD keywords
 - Delta specs use ADDED/MODIFIED/REMOVED sections
-- See skills `swarm-format` and `swarm-delta` for detailed format rules
+- See skills `soia-format` and `soia-delta` for detailed format rules

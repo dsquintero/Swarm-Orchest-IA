@@ -25,7 +25,7 @@ alcance del proyecto. **Siempre con confirmación del usuario** antes de crearla
 | [0004](0004-opencode-nativo.md) | Orquestación con primitivas nativas de OpenCode | Aceptada |
 | [0005](0005-formato-openspec.md) | Formato OpenSpec para specs del producto | Aceptada |
 | [0006](0006-modo-global-local.md) | Modo global/local explícito en `init` | Aceptada |
-| [0007](0007-swarm-config-marca-proyecto.md) | `.swarm/config.yaml` marca proyecto inicializado | Aceptada |
+| [0007](0007-soia-config-marca-proyecto.md) | `.soia/config.yaml` marca proyecto inicializado | Aceptada |
 | [0008](0008-engram-fuera-de-alcance.md) | Engram fuera de alcance en esta etapa | Aceptada |
 | [0009](0009-multiplataforma-seleccion-multiple.md) | Multi-plataforma con selección múltiple | Aceptada |
 | [0010](0010-documentacion-router-y-docs.md) | AGENTS.md como router + docs on-demand | Aceptada |

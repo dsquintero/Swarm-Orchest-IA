@@ -8,15 +8,15 @@ import {
   merge,
   agentNames,
   fileExists,
-  swarmConfigDir,
-  swarmConfigFile,
+  soiaConfigDir,
+  soiaConfigFile,
   type Config,
 } from '../src/lib/agentsconf';
 
 let tmp: string;
 
 beforeEach(() => {
-  tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'swarm-conf-'));
+  tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'soia-conf-'));
 });
 
 afterEach(() => {
@@ -24,12 +24,12 @@ afterEach(() => {
 });
 
 const sample: Config = {
-  'swarm-orchestrator': {
+  'soia-orchestrator': {
     primary: 'opencode-go/deepseek-v4-pro',
     fallback: 'opencode-go/kimi-k2.6',
     temperature: 0.3,
   },
-  'swarm-explorer': {
+  'soia-explorer': {
     primary: 'opencode-go/deepseek-v4-flash',
     fallback: 'opencode-go/minimax-m2.7',
     temperature: 0.1,
@@ -53,27 +53,27 @@ describe('save / load', () => {
 describe('merge', () => {
   it('overrides matching keys and preserves the rest', () => {
     const local: Config = {
-      'swarm-explorer': {
+      'soia-explorer': {
         primary: 'opencode-go/kimi-k2.6',
         fallback: 'opencode-go/minimax-m2.7',
         temperature: 0.1,
       },
     };
     const merged = merge(sample, local);
-    expect(merged['swarm-explorer'].primary).toBe('opencode-go/kimi-k2.6');
-    expect(merged['swarm-orchestrator']).toEqual(sample['swarm-orchestrator']);
+    expect(merged['soia-explorer'].primary).toBe('opencode-go/kimi-k2.6');
+    expect(merged['soia-orchestrator']).toEqual(sample['soia-orchestrator']);
   });
 
   it('does not mutate its inputs', () => {
     const before = JSON.parse(JSON.stringify(sample));
-    merge(sample, { 'swarm-explorer': { primary: 'x', fallback: 'y', temperature: 0 } });
+    merge(sample, { 'soia-explorer': { primary: 'x', fallback: 'y', temperature: 0 } });
     expect(sample).toEqual(before);
   });
 });
 
 describe('agentNames', () => {
   it('returns the configured agent keys', () => {
-    expect(agentNames(sample)).toEqual(['swarm-orchestrator', 'swarm-explorer']);
+    expect(agentNames(sample)).toEqual(['soia-orchestrator', 'soia-explorer']);
   });
 });
 
@@ -86,18 +86,18 @@ describe('fileExists', () => {
   });
 });
 
-describe('swarmConfigDir / swarmConfigFile', () => {
+describe('soiaConfigDir / soiaConfigFile', () => {
   it('resolves under the user home dir (os.homedir())', () => {
     const home = os.homedir();
-    expect(swarmConfigDir()).toBe(path.join(home, '.config', 'swarm'));
-    expect(swarmConfigFile()).toBe(path.join(home, '.config', 'swarm', '.agents-conf.yaml'));
+    expect(soiaConfigDir()).toBe(path.join(home, '.config', 'soia'));
+    expect(soiaConfigFile()).toBe(path.join(home, '.config', 'soia', '.agents-conf.yaml'));
   });
 
   it('does not depend on the HOME env var (works on Windows)', () => {
     const original = process.env.HOME;
     try {
       delete process.env.HOME;
-      expect(swarmConfigDir()).toBe(path.join(os.homedir(), '.config', 'swarm'));
+      expect(soiaConfigDir()).toBe(path.join(os.homedir(), '.config', 'soia'));
     } finally {
       if (original === undefined) delete process.env.HOME;
       else process.env.HOME = original;

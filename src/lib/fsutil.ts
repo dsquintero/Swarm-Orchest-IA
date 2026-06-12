@@ -52,5 +52,5 @@ export function resolveProjectDir(projectPath?: string): string {
 }
 
 export function isInitialized(projectDir: string): boolean {
-  return fs.existsSync(path.join(projectDir, '.swarm', 'config.yaml'));
+  return fs.existsSync(path.join(projectDir, '.soia', 'config.yaml'));
 }

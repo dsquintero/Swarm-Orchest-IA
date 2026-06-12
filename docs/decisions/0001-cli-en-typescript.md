@@ -15,7 +15,7 @@ el PROPOSAL queda como visión de producto.
 
 ## Consecuencias
 
-- Distribución vía npm (`bin.swarm`), no `go install`.
+- Distribución vía npm (`bin.soia`), no `go install`.
 - Multiplataforma vía Node, sin compilación nativa por SO.
 - El equipo puede contribuir sin curva de aprendizaje de un lenguaje nuevo.
 

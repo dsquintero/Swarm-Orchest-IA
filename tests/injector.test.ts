@@ -2,16 +2,16 @@ import { describe, it, expect } from 'vitest';
 import {
   injectIntoAgent,
   injectInto,
-  isSwarmAgent,
+  isSoiaAgent,
   agentNameFromFilename,
   needsInjection,
 } from '../src/lib/injector';
 import type { Config } from '../src/lib/agentsconf';
 
-const MARKER = '# model y temperature se inyectan desde ~/.config/swarm/.agents-conf.yaml';
+const MARKER = '# model y temperature se inyectan desde ~/.config/soia/.agents-conf.yaml';
 
 const config: Config = {
-  'swarm-explorer': {
+  'soia-explorer': {
     primary: 'opencode-go/deepseek-v4-flash',
     fallback: 'opencode-go/minimax-m2.7',
     temperature: 0.1,
@@ -29,25 +29,25 @@ function agentTemplate(): string {
     '  edit: false',
     '---',
     '',
-    'You are the Swarm Explorer.',
+    'You are the Soia Explorer.',
   ].join('\n');
 }
 
-describe('isSwarmAgent', () => {
-  it('accepts swarm-*.md files', () => {
-    expect(isSwarmAgent('swarm-explorer.md')).toBe(true);
+describe('isSoiaAgent', () => {
+  it('accepts soia-*.md files', () => {
+    expect(isSoiaAgent('soia-explorer.md')).toBe(true);
   });
 
-  it('rejects non-swarm or non-md files', () => {
-    expect(isSwarmAgent('explorer.md')).toBe(false);
-    expect(isSwarmAgent('swarm-explorer.txt')).toBe(false);
-    expect(isSwarmAgent('AGENTS.md')).toBe(false);
+  it('rejects non-soia or non-md files', () => {
+    expect(isSoiaAgent('explorer.md')).toBe(false);
+    expect(isSoiaAgent('soia-explorer.txt')).toBe(false);
+    expect(isSoiaAgent('AGENTS.md')).toBe(false);
   });
 });
 
 describe('agentNameFromFilename', () => {
   it('strips the .md extension', () => {
-    expect(agentNameFromFilename('swarm-explorer.md')).toBe('swarm-explorer');
+    expect(agentNameFromFilename('soia-explorer.md')).toBe('soia-explorer');
   });
 });
 
@@ -63,31 +63,31 @@ describe('needsInjection', () => {
 
 describe('injectIntoAgent', () => {
   it('replaces the marker with model and temperature from config', () => {
-    const result = injectIntoAgent(agentTemplate(), 'swarm-explorer', config);
+    const result = injectIntoAgent(agentTemplate(), 'soia-explorer', config);
     expect(result).toContain('model: opencode-go/deepseek-v4-flash');
     expect(result).toContain('temperature: 0.1');
     expect(result).not.toContain(MARKER);
   });
 
   it('keeps the body intact', () => {
-    const result = injectIntoAgent(agentTemplate(), 'swarm-explorer', config);
-    expect(result).toContain('You are the Swarm Explorer.');
+    const result = injectIntoAgent(agentTemplate(), 'soia-explorer', config);
+    expect(result).toContain('You are the Soia Explorer.');
     expect(result).toContain('  write: true');
   });
 
   it('returns content unchanged when the agent is not in config', () => {
     const content = agentTemplate();
-    expect(injectIntoAgent(content, 'swarm-unknown', config)).toBe(content);
+    expect(injectIntoAgent(content, 'soia-unknown', config)).toBe(content);
   });
 
   it('returns content unchanged when there is no marker', () => {
     const content = '---\nmodel: already-set\n---\nbody';
-    expect(injectIntoAgent(content, 'swarm-explorer', config)).toBe(content);
+    expect(injectIntoAgent(content, 'soia-explorer', config)).toBe(content);
   });
 
   it('is a no-op on its own output (marker already consumed)', () => {
-    const once = injectIntoAgent(agentTemplate(), 'swarm-explorer', config);
-    const twice = injectIntoAgent(once, 'swarm-explorer', config);
+    const once = injectIntoAgent(agentTemplate(), 'soia-explorer', config);
+    const twice = injectIntoAgent(once, 'soia-explorer', config);
     expect(twice).toBe(once);
   });
 });

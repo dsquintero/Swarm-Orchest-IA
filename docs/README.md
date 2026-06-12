@@ -11,7 +11,7 @@ agentes de IA; **el detalle vive acá** y se lee según se necesite.
 | [proposal.md](proposal.md) | La visión de producto y diseño original |
 | [architecture.md](architecture.md) | Entender cómo está armado el CLI: módulos, flujo, contratos de paths |
 | [technologies.md](technologies.md) | Saber qué librería se usa y por qué; tooling de build/test |
-| [templates-system.md](templates-system.md) | Tocar plantillas, el marcador de inyección, o entender qué genera `swarm init` |
+| [templates-system.md](templates-system.md) | Tocar plantillas, el marcador de inyección, o entender qué genera `soia init` |
 | [models-config.md](models-config.md) | Cambiar modelos, entender primary/fallback y la config `.agents-conf.yaml` |
 | [testing.md](testing.md) | Escribir o entender los tests |
 | [glossary.md](glossary.md) | Aclarar términos y conceptos (los dos planos, adapters, etc.) |

@@ -2,7 +2,7 @@
 
 ## Purpose
 
-Ejemplo de spec que sirve como referencia para el formato OpenSpec usado en Swarm-Orchest-IA. Este archivo se crea con `swarm init` como demostración del formato y puede ser eliminado cuando el proyecto tenga specs reales.
+Ejemplo de spec que sirve como referencia para el formato OpenSpec usado en Swarm-Orchest-IA. Este archivo se crea con `soia init` como demostración del formato y puede ser eliminado cuando el proyecto tenga specs reales.
 
 ## Requirements
 

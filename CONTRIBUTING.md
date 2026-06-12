@@ -43,7 +43,7 @@ Cómo levantar el proyecto, compilar y correr los tests está en **[DEVELOPMENT.
 
 ## Dónde va cada cosa
 
-- **Código del CLI**: `src/` (`cmd/swarm.ts` + `lib/`).
+- **Código del CLI**: `src/` (`cmd/soia.ts` + `lib/`).
 - **Plantillas canónicas**: `templates/opencode/` — **editá acá** (es la copia que instala el CLI).
 - **Tests**: `tests/*.test.ts`.
 - **Diseño de features (este repo)**: `openspec/` vía `/opsx:*`.
@@ -56,9 +56,9 @@ Ver [AGENTS.md](AGENTS.md) para la arquitectura completa y la distinción herram
   el idioma del archivo que tocás.
 - **Sin dependencias nuevas** de runtime salvo justificación clara (mantener el CLI liviano es un objetivo).
 - **No rompas el marcador de inyección** de modelo en las plantillas de agentes
-  (`# model y temperature se inyectan desde ~/.config/swarm/.agents-conf.yaml`). El test
+  (`# model y temperature se inyectan desde ~/.config/soia/.agents-conf.yaml`). El test
   `tests/templates.test.ts` lo protege.
-- **No rompas el contrato de paths**: `.swarm/config.yaml` marca un proyecto inicializado.
+- **No rompas el contrato de paths**: `.soia/config.yaml` marca un proyecto inicializado.
 
 ## Commits y PRs
 

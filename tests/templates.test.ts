@@ -1,18 +1,18 @@
 import { describe, it, expect } from 'vitest';
 import * as fs from 'fs';
 import * as path from 'path';
-import { isSwarmAgent, needsInjection, injectIntoAgent } from '../src/lib/injector';
+import { isSoiaAgent, needsInjection, injectIntoAgent } from '../src/lib/injector';
 import type { Config } from '../src/lib/agentsconf';
 
 const AGENTS_DIR = path.join(__dirname, '..', 'templates', 'opencode', 'agents');
 
 const EXPECTED_AGENTS = [
-  'swarm-orchestrator',
-  'swarm-explorer',
-  'swarm-specifier',
-  'swarm-designer',
-  'swarm-implementer',
-  'swarm-verifier',
+  'soia-orchestrator',
+  'soia-explorer',
+  'soia-specifier',
+  'soia-designer',
+  'soia-implementer',
+  'soia-verifier',
 ];
 
 const testConfig: Config = Object.fromEntries(
@@ -23,8 +23,8 @@ const testConfig: Config = Object.fromEntries(
 );
 
 describe('agent templates integrity', () => {
-  it('ships exactly the six expected swarm agents', () => {
-    const files = fs.readdirSync(AGENTS_DIR).filter(isSwarmAgent).sort();
+  it('ships exactly the six expected soia agents', () => {
+    const files = fs.readdirSync(AGENTS_DIR).filter(isSoiaAgent).sort();
     expect(files).toEqual(EXPECTED_AGENTS.map((n) => `${n}.md`).sort());
   });
 

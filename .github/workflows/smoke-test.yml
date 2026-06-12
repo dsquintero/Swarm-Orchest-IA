@@ -46,11 +46,11 @@ jobs:
         shell: bash
         run: |
           set -e
-          swarm --version
+          soia --version
           proj="$(mktemp -d)/demo"
           mkdir -p "$proj"
-          swarm init "$proj" --local --tool opencode
-          test -f "$proj/.swarm/config.yaml"     || { echo "missing .swarm/config.yaml"; exit 1; }
+          soia init "$proj" --local --tool opencode
+          test -f "$proj/.soia/config.yaml"     || { echo "missing .soia/config.yaml"; exit 1; }
           test -f "$proj/AGENTS.md"              || { echo "missing AGENTS.md"; exit 1; }
           test -d "$proj/.opencode/agents"       || { echo "missing .opencode/agents"; exit 1; }
           echo "smoke OK"

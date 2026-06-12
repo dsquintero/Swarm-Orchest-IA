@@ -1,7 +1,0 @@
-# .swarm/config.yaml — Metadatos locales del proyecto
-# Generado por: swarm init --tool opencode
-# NO editar manualmente — usar `swarm fallback` o `swarm models` para cambios
-
-tool: opencode
-initialized_at: "{{INITIALIZED_AT}}"
-templates_source: "{{HOME}}/.config/swarm/templates/opencode"

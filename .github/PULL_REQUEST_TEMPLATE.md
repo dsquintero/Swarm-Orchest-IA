@@ -1,4 +1,4 @@
-<!-- Título del PR en conventional commit, ej: "feat: agregar swarm doctor" -->
+<!-- Título del PR en conventional commit, ej: "feat: agregar soia doctor" -->
 
 ## Qué hace
 

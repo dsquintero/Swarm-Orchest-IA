@@ -9,10 +9,10 @@ Las plantillas de agentes **no** contienen `model:` ni `temperature:`. En su lug
 **comentario marcador** en el frontmatter:
 
 ```
-# model y temperature se inyectan desde ~/.config/swarm/.agents-conf.yaml
+# model y temperature se inyectan desde ~/.config/soia/.agents-conf.yaml
 ```
 
-Durante `swarm init`/`update`, [`lib/injector.ts`](../src/lib/injector.ts) reemplaza esa línea por
+Durante `soia init`/`update`, [`lib/injector.ts`](../src/lib/injector.ts) reemplaza esa línea por
 los valores del agente tomados de `.agents-conf.yaml`. Cambiar el modelo de todos los agentes es
 editar una línea de config. Ver [models-config.md](models-config.md).
 
@@ -22,7 +22,7 @@ editar una línea de config. Ver [models-config.md](models-config.md).
 |---|---|
 | `injectIntoAgent(content, agentName, config)` | Reemplaza el **marcador** por `model`/`temperature` del agente. No-op si el agente no está en config o si no hay marcador (idempotente: una vez consumido el marcador, no vuelve a actuar) |
 | `injectInto(content, model, temperature)` | Reemplaza el marcador **o** un `model:` existente; usada por `update`/`fallback` para re-inyectar (idempotente) |
-| `isSwarmAgent(filename)` | `true` para `swarm-*.md` |
+| `isSoiaAgent(filename)` | `true` para `soia-*.md` |
 | `needsInjection(content)` | `true` si el marcador está presente |
 
 ## Plantillas canónicas
@@ -32,24 +32,24 @@ editar una línea de config. Ver [models-config.md](models-config.md).
 Contenido (`templates/opencode/`):
 
 ```
-agents/     ← 6 agentes swarm-* (con marcador, sin modelo hardcodeado)
-skills/     ← swarm-format, swarm-delta, swarm-archive
-commands/   ← swarm-propose, swarm-apply, swarm-verify, swarm-archive
+agents/     ← 6 agentes soia-* (con marcador, sin modelo hardcodeado)
+skills/     ← soia-format, soia-delta, soia-archive
+commands/   ← soia-propose, soia-apply, soia-verify, soia-archive
 defaults/   ← .agents-conf.yaml, AGENTS.md, opencode.json, current.yaml,
-              local-agents-conf.yaml, swarm.yaml, swarm-config.yaml, spec de ejemplo
+              local-agents-conf.yaml, soia.yaml, soia-config.yaml, spec de ejemplo
 ```
 
-> Nota: `defaults/swarm.yaml` y `defaults/swarm-config.yaml` hoy **no** los consume el CLI
+> Nota: `defaults/soia.yaml` y `defaults/soia-config.yaml` hoy **no** los consume el CLI
 > (`init` genera `config.yaml` inline). Ver F5 en [ROADMAP.md](../ROADMAP.md).
 
-## Qué genera `swarm init` en el proyecto destino
+## Qué genera `soia init` en el proyecto destino
 
 ```
 .opencode/{agents,skills,commands}   ← render/copia a ruta nativa (sin symlinks — ADR 0013)
 AGENTS.md                            ← generado con el nombre del proyecto
 opencode.json
-swarmspec/{specs,changes/archive}    ← con un spec de ejemplo
-.swarm/{config.yaml,current.yaml,.agents-conf.yaml}
+soia-spec/{specs,changes/archive}    ← con un spec de ejemplo
+.soia/{config.yaml,current.yaml,.agents-conf.yaml}
 ```
 
 ## Garantía por tests

@@ -24,3 +24,5 @@ Thumbs.db
 # Environment
 .env
 .env.local
+# Scratch/analysis repo (no versionar)
+openspec-analysis/

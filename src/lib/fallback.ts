@@ -5,13 +5,13 @@ import * as injector from './injector';
 import * as fsutil from './fsutil';
 
 export async function runFallback(agentName?: string, all: boolean = false, restore: boolean = false, projectDir: string = process.cwd()): Promise<void> {
-  const configFile = agentsconf.swarmConfigFile();
+  const configFile = agentsconf.soiaConfigFile();
   const config = agentsconf.load(configFile);
 
-  const configPath = path.join(projectDir, '.swarm', 'config.yaml');
+  const configPath = path.join(projectDir, '.soia', 'config.yaml');
 
   if (!fs.existsSync(configPath)) {
-    throw new Error('No .swarm/config.yaml found. Run "swarm init" first.');
+    throw new Error('No .soia/config.yaml found. Run "soia init" first.');
   }
 
   let mode = 'local';
@@ -71,7 +71,7 @@ async function switchAgentToFallback(globalCfg: agentsconf.Config, projectDir: s
 }
 
 async function restorePrimary(globalCfg: agentsconf.Config, projectDir: string, mode: string): Promise<void> {
-  const localConf = path.join(projectDir, '.swarm', '.agents-conf.yaml');
+  const localConf = path.join(projectDir, '.soia', '.agents-conf.yaml');
   if (fs.existsSync(localConf)) {
     fs.unlinkSync(localConf);
     console.log('Removed local override. Using primary models from global config.');
@@ -83,10 +83,10 @@ async function restorePrimary(globalCfg: agentsconf.Config, projectDir: string, 
 }
 
 function writeLocalOverride(projectDir: string, override: agentsconf.Config): void {
-  const swarmDir = path.join(projectDir, '.swarm');
-  fsutil.ensureDir(swarmDir);
+  const soiaDir = path.join(projectDir, '.soia');
+  fsutil.ensureDir(soiaDir);
 
-  const localConf = path.join(swarmDir, '.agents-conf.yaml');
+  const localConf = path.join(soiaDir, '.agents-conf.yaml');
   let existing: agentsconf.Config = {};
   if (fs.existsSync(localConf)) {
     existing = agentsconf.load(localConf);
@@ -99,7 +99,7 @@ function writeLocalOverride(projectDir: string, override: agentsconf.Config): vo
 async function reinject(projectDir: string, mode: string, config: agentsconf.Config): Promise<void> {
   let agentsDir: string;
   if (mode === 'global') {
-    agentsDir = path.join(agentsconf.swarmConfigDir(), 'templates', 'opencode', 'agents');
+    agentsDir = path.join(agentsconf.soiaConfigDir(), 'templates', 'opencode', 'agents');
   } else {
     agentsDir = path.join(projectDir, '.opencode', 'agents');
   }
@@ -107,7 +107,7 @@ async function reinject(projectDir: string, mode: string, config: agentsconf.Con
   if (!fs.existsSync(agentsDir)) return;
 
   for (const entry of fs.readdirSync(agentsDir)) {
-    if (entry.startsWith('swarm-') && entry.endsWith('.md')) {
+    if (entry.startsWith('soia-') && entry.endsWith('.md')) {
       const filePath = path.join(agentsDir, entry);
       let content = fs.readFileSync(filePath, 'utf-8');
       const agentName = entry.replace(/\.md$/, '');

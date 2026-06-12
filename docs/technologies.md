@@ -38,5 +38,5 @@ tests no se compilan a `dist/`.
 
 ## Empaquetado
 
-`package.json` define `bin.swarm → dist/cmd/swarm.js` y un allowlist `files: ["dist/", "templates/"]`,
+`package.json` define `bin.soia → dist/cmd/soia.js` y un allowlist `files: ["dist/", "templates/"]`,
 de modo que `docs/`, `openspec/` y `tests/` no se publican.

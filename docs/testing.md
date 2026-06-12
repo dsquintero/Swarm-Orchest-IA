@@ -20,7 +20,7 @@
 - **Núcleos puros primero**: la lógica determinista (injector, agentsconf, fsutil) se testea en
   aislamiento, sin tocar el FS global del usuario.
 - **Tests con FS temporal**: usá `fs.mkdtempSync(path.join(os.tmpdir(), '...'))` en `beforeEach` y
-  limpiá en `afterEach`. Nunca escribas en `~/.config/swarm` real.
+  limpiá en `afterEach`. Nunca escribas en `~/.config/soia` real.
 - **`HOME` aislado**: si testeás funciones que dependen de `HOME`, seteá `process.env.HOME` a un temp
   y restaurá el valor original después.
 - **Proteger contratos**: cualquier cambio al marcador de inyección o a los paths esperados debe

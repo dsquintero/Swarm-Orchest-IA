@@ -1,39 +1,40 @@
-# ADR 0012 — Comando `soia`, paquete `swarm-orchest-ia`
+# ADR 0012 — `soia` como nombre corto (comando + producto)
 
-- **Estado**: Aceptada (implementación pendiente, ver F19 en el ROADMAP)
-- **Fecha**: 2026-06-11
+- **Estado**: Aceptada (implementada en F19)
+- **Fecha**: 2026-06-11 (ampliada 2026-06-12: `soia` es el nombre corto **universal**, no solo el comando)
 
 ## Contexto
 
-El producto final es un CLI que se instala con `npm install -g`. El comando inicial era `swarm`, que
-es genérico y poco distintivo. Se buscó un comando **corto (3-4 letras), fácil de teclear y memorable**
-para el usuario final, sin perder relación con la marca.
+El producto final es un CLI que se instala con `npm install -g`. El nombre corto inicial era **`swarm`**
+(comando, prefijo de agentes `swarm-*`, carpetas `.swarm/` y `swarmspec/`). Se quería un nombre corto
+**propio, memorable y consistente** en todo el ecosistema, sin perder la marca.
 
 ## Decisión
 
-- **Comando**: `soia` — iniciales de **S**warm-**O**rchest-**IA**. Corto, único y atado a la marca.
-- **Paquete npm**: se mantiene `swarm-orchest-ia` (descriptivo y bueno para descubrimiento; ya libre
-  en npm). El usuario lo escribe una sola vez: `npm install -g swarm-orchest-ia`.
+**`soia`** (iniciales de **S**warm-**O**rchest-**IA**) es el **nombre corto universal** del proyecto.
+Reemplaza a `swarm` en:
+
+- **Comando CLI**: `soia init/update/fallback/models`.
+- **Prefijo del producto**: agentes `soia-*`, skills `soia-*`, comandos `/soia-*`.
+- **Carpetas y config**: internals `.soia/`, specs `soia-spec/`, config global `~/.config/soia/`.
+
+**Se mantiene** (no es el nombre corto):
+- El **nombre completo de la marca**: **Swarm-Orchest-IA** (de donde `soia` es el diminutivo).
+- El **paquete npm**: `swarm-orchest-ia` (kebab del nombre completo; `soia` está ocupado en npm).
 
 ```
 npm install -g swarm-orchest-ia
 soia init
-soia update
-soia models
 ```
-
-> No confundir con los nombres del **producto** que el CLI genera (agentes `swarm-*`, carpeta
-> `swarmspec/`, comandos `/swarm-propose`): esos **no** cambian. Solo cambia el comando del CLI.
 
 ## Consecuencias
 
-- Implementar el rename (F19): `bin` en `package.json`, `program.name()` en `src/cmd/swarm.ts` y los
-  ejemplos `swarm <subcomando>` en la documentación.
-- Hacerlo **antes** de la primera publicación en npm (F11) para no romper a usuarios después.
+- Rename completo aplicado (F19): código, plantillas, contratos (`.soia/config.yaml`, prefijo `soia-`,
+  marcador de inyección), tests y docs. Marca y paquete intactos.
+- Se hizo **antes** de la primera publicación en npm (F11) para no romper a usuarios.
 
 ## Alternativas consideradas
 
-- **`swarm`**: intuitivo pero genérico; el riesgo de colisión real es bajo (Docker usa `docker swarm`,
-  no un binario `swarm`), pero se prefirió algo más corto y propio.
-- **`swarmo` / `sorch` / `orchia`**: brandables y libres, pero se priorizó un comando de 3-4 letras.
-- **`swo` / `sia` / `orc`**: descartados frente a `soia` por claridad/relación con la marca.
+- **Mantener `swarm`**: genérico y menos distintivo. Descartado.
+- **`swarmo` / `sorch` / `orchia`** (comando): brandables, pero se priorizó un nombre de 3-4 letras.
+- **`swo` / `sia` / `orc`**: descartados frente a `soia` por claridad y relación con la marca.

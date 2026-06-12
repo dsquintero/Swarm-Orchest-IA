@@ -11,7 +11,7 @@ complejidad y curva de aprendizaje.
 ## Decisión
 
 No construir un orquestador en runtime. Usar lo que **OpenCode ya provee**: `permission.task`,
-`mode: subagent`, y `model` por agente. El CLI `swarm` solo prepara la estructura; la orquestación la
+`mode: subagent`, y `model` por agente. El CLI `soia` solo prepara la estructura; la orquestación la
 hace OpenCode al ejecutar los agentes.
 
 ## Consecuencias

@@ -1,0 +1,6 @@
+# .soia.yaml — Proyecto Swarm-Orchest-IA
+# Generado por: soia init --tool opencode
+# Este archivo apunta a las plantillas centralizadas del proyecto.
+
+tool: opencode
+templates_path: "{{HOME}}/.config/soia/templates/opencode"
