@@ -39,11 +39,11 @@ Leyenda: ✅ hecho · 🟡 parcial · ⬜ pendiente · 🔴 P0 · 🟠 P1 · �
 
 | ID | Funcionalidad | Descripción | Prio | Issue |
 |---|---|---|---|---|
-| F1 | Fix HOME multiplataforma | Usar `os.homedir()` en vez de `process.env.HOME \|\| '/root'` | 🔴 | — |
-| F2 | Fallback symlink→copia | En modo global, copiar si `symlinkSync` falla (Windows sin dev-mode) | 🔴 | — |
-| F3 | Tests de capa de comandos | Cubrir `init/update/fallback/models` con HOME y projectDir temporales | 🟠 | — |
-| F4 | CI con GitHub Actions | `npm test` + `build` en cada PR (matriz Win/Linux/macOS) | 🟠 | — |
-| F5 | Limpieza de defaults muertos | Cablear o eliminar `swarm.yaml` / `swarm-config.yaml` | 🟡 | — |
+| F1 | Fix HOME multiplataforma | Usar `os.homedir()` en vez del fallback POSIX hardcodeado de `process.env.HOME` | 🔴 | [#1](https://github.com/dsquintero/Swarm-Orchest-IA/issues/1) |
+| F2 | Fallback symlink→copia | En modo global, copiar si `symlinkSync` falla (Windows sin dev-mode) | 🔴 | [#2](https://github.com/dsquintero/Swarm-Orchest-IA/issues/2) |
+| F3 | Tests de capa de comandos | Cubrir `init/update/fallback/models` con HOME y projectDir temporales | 🟠 | [#3](https://github.com/dsquintero/Swarm-Orchest-IA/issues/3) |
+| F4 | ✅ CI con GitHub Actions | `npm test` + `build` en cada PR (matriz Win/Linux/macOS) — **hecho** (`.github/workflows/ci.yml`) | 🟠 | — |
+| F5 | Limpieza de defaults muertos | Cablear o eliminar `swarm.yaml` / `swarm-config.yaml` | 🟡 | [#4](https://github.com/dsquintero/Swarm-Orchest-IA/issues/4) |
 
 ## v0.3 — Multi-plataforma
 
