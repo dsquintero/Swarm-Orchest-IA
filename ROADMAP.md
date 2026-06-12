@@ -44,6 +44,8 @@ Leyenda: ✅ hecho · 🟡 parcial · ⬜ pendiente · 🔴 P0 · 🟠 P1 · �
 | F3 | Tests de capa de comandos | Cubrir `init/update/fallback/models` con HOME y projectDir temporales | 🟠 | [#3](https://github.com/dsquintero/Swarm-Orchest-IA/issues/3) |
 | F4 | ✅ CI con GitHub Actions | `npm test` + `build` en cada PR (matriz Win/Linux/macOS) — **hecho** (`.github/workflows/ci.yml`) | 🟠 | — |
 | F5 | Limpieza de defaults muertos | Cablear o eliminar `swarm.yaml` / `swarm-config.yaml` | 🟡 | [#4](https://github.com/dsquintero/Swarm-Orchest-IA/issues/4) |
+| F15 | Smoke test de empaquetado | En CI: `npm pack` → instalar el tarball en un temp → `soia --help` + `init` en proyecto temporal | 🟠 | — |
+| F16 | Campo `engines` en package.json | Declarar `node >=20` para un mensaje claro con Node viejo | 🟡 | — |
 
 ## v0.3 — Multi-plataforma
 
@@ -56,18 +58,19 @@ Leyenda: ✅ hecho · 🟡 parcial · ⬜ pendiente · 🔴 P0 · 🟠 P1 · �
 | F6 | Selección de múltiples plataformas | `init` permite elegir 1+ herramientas (ej. `--tool opencode,claude`) sobre una arquitectura de adapters por tool | 🟠 | — |
 | F7 | Adapter Claude Code | Generar la estructura y los paths propios de Claude Code | 🟡 | — |
 | F8 | Adapter Codex | Ídem para Codex | ⚪ | — |
-| F9 | `swarm doctor` | Diagnóstico: HOME, dev-mode, templates, modelos, proyecto válido | 🟡 | — |
+| F9 | `soia doctor` | Diagnóstico: HOME, dev-mode, templates, modelos, proyecto válido | 🟡 | — |
 | F+ | Más adapters | Cursor y otros — se suman incrementalmente sobre la arquitectura de F6 | ⚪ | — |
 
 ## v0.4 — DX y distribución
 
 | ID | Funcionalidad | Descripción | Prio | Issue |
 |---|---|---|---|---|
-| F10 | `swarm list` / `swarm status` | Leer `swarmspec/changes/` y mostrar cambios y fase activa | ⚪ | — |
-| F11 | Publicación npm + `npx swarm` | Distribuir el CLI sin clonar; `bin` linking | ⚪ | — |
+| F10 | `soia list` / `soia status` | Leer `swarmspec/changes/` y mostrar cambios y fase activa | ⚪ | — |
+| F11 | Publicación en npm | `npm install -g swarm-orchest-ia` → comando `soia`; release automatizado por CI en tag `vX.Y.Z` | ⚪ | — |
 | F12 | Validación de `.agents-conf.yaml` | Schema + errores claros si falta `primary/fallback/temperature` | ⚪ | — |
-| F13 | `swarm models --json` | Salida machine-readable para tooling | ⚪ | — |
+| F13 | `soia models --json` | Salida machine-readable para tooling | ⚪ | — |
 | F14 | Ejemplo .NET 8 end-to-end | Flujo SDD completo demostrado | ⚪ | — |
+| F19 | Renombrar comando a `soia` | `bin` + `program.name` + barrido de ejemplos en docs (el paquete sigue siendo `swarm-orchest-ia`). Ver ADR 0012 | 🟠 | — |
 
 ---
 

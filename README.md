@@ -8,6 +8,11 @@
   Minimalista, estructurado y fácil de usar.
 </p>
 
+<p align="center">
+  <a href="https://github.com/dsquintero/Swarm-Orchest-IA/actions/workflows/ci.yml"><img src="https://github.com/dsquintero/Swarm-Orchest-IA/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="License: MIT"></a>
+</p>
+
 ## Qué hace
 
 Swarm-Orchest-IA coordina un equipo de agentes especializados de IA para seguir un flujo de desarrollo

@@ -135,8 +135,9 @@ ROADMAP.md → Issue #N → (si no trivial) /opsx:propose → feature/N desde de
 ```
 
 **Modelo de ramas (GitFlow)**: `main` (producción, solo releases, protegida) · `develop` (integración,
-**rama default**, protegida) · `feature/*` y `bugfix/*` salen de `develop` y vuelven por PR · `release/X.Y.Z`
-y `hotfix/X.Y.Z` son temporales y las maneja quien hace el release. Detalle en [CONTRIBUTING.md](CONTRIBUTING.md).
+**rama default**, protegida) · `feature/*` y `bugfix/*` (producto) y `chore/*` (mantenimiento **y**
+documentación) salen de `develop` y vuelven por PR · `release/X.Y.Z` y `hotfix/X.Y.Z` son temporales y
+las maneja quien hace el release. Detalle en [CONTRIBUTING.md](CONTRIBUTING.md).
 
 **Reglas para agentes de IA (obligatorias):**
 
@@ -154,6 +155,8 @@ y `hotfix/X.Y.Z` son temporales y las maneja quien hace el release. Detalle en [
    - El marcador de inyección de modelo en las plantillas de agentes (lo protege `tests/templates.test.ts`).
    - `.swarm/config.yaml` como marca de proyecto inicializado.
 6. **Conventional commits** (`feat/fix/chore/test/docs/refactor`) y **PRs chicos**: 1 feature por PR.
+   **Sin atribución de IA**: nada de `Co-Authored-By: <IA>` ni "Generated with…" en commits ni PRs,
+   sea cual sea el agente.
 7. **Actualizá `ROADMAP.md`** (estado + link al Issue) en el **mismo PR** que cierra la feature.
 8. Usá las plantillas de Issue/PR de `.github/` y referenciá el Issue (`Closes #N`).
 

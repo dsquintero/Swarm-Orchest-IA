@@ -1,8 +1,22 @@
 # Guía de uso del CLI
 
-> Cómo usar el CLI `swarm` para preparar un proyecto y correr el flujo SDD. Para la config de modelos
+> Cómo usar el CLI para preparar un proyecto y correr el flujo SDD. Para la config de modelos
 > en detalle ver [models-config.md](models-config.md); para la arquitectura interna,
 > [architecture.md](architecture.md).
+>
+> ℹ️ El comando del CLI será **`soia`** (ver [ADR 0012](decisions/0012-nombre-comando-soia.md)); el
+> rename está pendiente (F19), por eso los ejemplos de abajo todavía usan `swarm`.
+
+## Prerrequisitos
+
+El CLI solo **prepara la estructura** del proyecto; el ecosistema necesita además:
+
+- **Node.js 20+** (para correr el CLI).
+- **OpenCode** instalado (es quien ejecuta los agentes del flujo SDD).
+- **Un proveedor de modelos** configurado (por defecto `opencode-go`); ver [models-config.md](models-config.md).
+
+> La publicación en npm (`npm install -g swarm-orchest-ia`) está pendiente (F11). Por ahora se instala
+> desde el código (ver abajo).
 
 ## Instalación
 

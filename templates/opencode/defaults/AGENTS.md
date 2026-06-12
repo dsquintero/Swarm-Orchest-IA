@@ -28,6 +28,8 @@
 - Use the same error handling patterns already established in the codebase.
 - API responses follow the existing format (check existing controllers).
 - Database changes require a migration — do NOT modify schemas directly.
+- Do NOT add AI authorship attribution (e.g. `Co-Authored-By: <AI>`, "Generated with…") to commits or
+  PRs — regardless of the agent used (Claude, Copilot, OpenCode, Codex, etc.).
 
 ## SDD Workflow
 
