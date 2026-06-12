@@ -37,6 +37,76 @@ Adoptar **fuente canónica + adapters**:
 > La inyección de `model`/`temperature` desde `.agents-conf.yaml` ocurre **durante el render**: el
 > output ya sale con el modelo correcto por tool/proyecto.
 
+## Estructura concreta (diseño para F6/F7)
+
+El diseño se inspira en el patrón de adapters de [OpenSpec](https://github.com/Fission-AI/OpenSpec)
+(`ToolCommandAdapter` + registry estático), **extendido** a nuestras necesidades: 4 tipos de artefacto,
+scope global/local e inyección de modelo. Ver también [docs/cli-best-practices.md](../cli-best-practices.md).
+
+### Fuente canónica (templates agnósticos de tool)
+
+Hoy los templates viven bajo `templates/opencode/`, lo que mezcla "canónico" con el *shape* de OpenCode.
+F6 separa ambos planos:
+
+```
+templates/canonical/
+├── agents/     soia-*.md   (con marcador de inyección, SIN frontmatter de tool)
+├── skills/     soia-format · soia-delta · soia-archive
+├── commands/   soia-propose · apply · verify · archive
+├── context/    AGENTS.md canónico
+└── defaults/   .agents-conf.yaml, spec de ejemplo, …
+```
+
+### Adapters en código
+
+```
+src/lib/adapters/
+├── types.ts      # ToolAdapter, Artifact, RenderContext, Scope
+├── registry.ts   # AdapterRegistry (register/get/getAll/has)
+├── index.ts      # re-exports
+├── opencode.ts   # opencodeAdapter  (v1)
+└── claude.ts     # claudeAdapter    (v1)
+```
+
+### Interfaz
+
+```ts
+export type ArtifactKind = 'agent' | 'skill' | 'command' | 'context';
+export type Scope = 'project' | 'global';
+
+export interface ToolAdapter {
+  toolId: string;                                                     // 'opencode' | 'claude'
+  getFilePath(a: Artifact, scope: Scope, projectDir: string): string; // ruta NATIVA de la tool
+  render(a: Artifact, ctx: RenderContext): string;                    // frontmatter nativo + inyecta model/temperature
+}
+```
+
+`init`/`update` resuelven el adapter con `AdapterRegistry.get(tool)` y, para cada artefacto canónico,
+escriben `render(a, ctx)` en `getFilePath(a, scope, projectDir)`. Esto reemplaza el `if (tool !== 'opencode') throw`
+y la rama de symlinks que hoy tiene `src/lib/init.ts`.
+
+### Tabla de rutas nativas
+
+> ⚠️ A **confirmar contra el spec de cada tool** al implementar F7. Las de OpenCode reflejan lo que hoy
+> escribe `src/lib/init.ts`.
+
+| Artefacto | OpenCode local | OpenCode global | Claude local | Claude global |
+|---|---|---|---|---|
+| agent | `.opencode/agent/soia-*.md` | `~/.config/opencode/agent/` | `.claude/agents/soia-*.md` | `~/.claude/agents/` |
+| command | `.opencode/command/soia-*.md` | `~/.config/opencode/command/` | `.claude/commands/soia-*.md` | `~/.claude/commands/` |
+| skill | `.opencode/skills/<id>/SKILL.md` | `~/.config/opencode/skills/` | `.claude/skills/<id>/SKILL.md` | `~/.claude/skills/` |
+| context | `AGENTS.md` (raíz) | — | `CLAUDE.md` → `@AGENTS.md` | `~/.claude/CLAUDE.md` |
+
+### Diferencias deliberadas frente a OpenSpec
+
+1. **Un adapter por tool maneja los 4 `kind`** (OpenSpec separa command-generation de skill-generation;
+   para nuestro set chico, unificar es más simple).
+2. **La inyección de `model`/`temperature` vive dentro de `render()`** — OpenSpec no inyecta modelos.
+3. **`scope` global/local explícito** en `getFilePath()` (ver [ADR 0006](0006-modo-global-local.md));
+   OpenSpec es casi todo project-scoped.
+4. **Sin symlinks**: `render()` escribe copias a la ruta nativa.
+5. **Registry** estático tomado casi literal de OpenSpec (limpio y testeable).
+
 ## Consecuencias
 
 - **Elimina el bloqueo de Windows** (nunca se crea un symlink).
