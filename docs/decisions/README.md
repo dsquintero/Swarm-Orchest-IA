@@ -29,3 +29,4 @@ alcance del proyecto. **Siempre con confirmación del usuario** antes de crearla
 | [0008](0008-engram-fuera-de-alcance.md) | Engram fuera de alcance en esta etapa | Aceptada |
 | [0009](0009-multiplataforma-seleccion-multiple.md) | Multi-plataforma con selección múltiple | Aceptada |
 | [0010](0010-documentacion-router-y-docs.md) | AGENTS.md como router + docs on-demand | Aceptada |
+| [0011](0011-gitflow-branching.md) | Modelo de ramas GitFlow | Aceptada |

@@ -131,8 +131,12 @@ para no pisar a nadie. El detalle completo está en [CONTRIBUTING.md](CONTRIBUTI
 funcionalidades en [ROADMAP.md](ROADMAP.md).
 
 ```
-ROADMAP.md → Issue #N → (si no trivial) /opsx:propose → branch feat/N → PR "Closes #N" → CI verde → merge
+ROADMAP.md → Issue #N → (si no trivial) /opsx:propose → feature/N desde develop → PR a develop "Closes #N" → CI verde → merge
 ```
+
+**Modelo de ramas (GitFlow)**: `main` (producción, solo releases, protegida) · `develop` (integración,
+**rama default**, protegida) · `feature/*` y `bugfix/*` salen de `develop` y vuelven por PR · `release/X.Y.Z`
+y `hotfix/X.Y.Z` son temporales y las maneja quien hace el release. Detalle en [CONTRIBUTING.md](CONTRIBUTING.md).
 
 **Reglas para agentes de IA (obligatorias):**
 
@@ -142,7 +146,8 @@ ROADMAP.md → Issue #N → (si no trivial) /opsx:propose → branch feat/N → 
    - Feature **no trivial** (comando nuevo, cambia comportamiento) → `/opsx:propose` primero
      (genera `proposal/design/tasks` en `openspec/changes/`).
    - Bug fix, refactor chico, docs o ajuste de plantilla → Issue + PR directo, **sin** OpenSpec.
-3. **Branch, nunca `main` directo**: `feat/<n>-<slug>` o `fix/<n>-<slug>`.
+3. **Branch desde `develop`, nunca commits directos a `main`/`develop`**: `feature/<n>-<slug>` (o
+   `bugfix/<n>-<slug>`). El PR va **hacia `develop`**.
 4. **Tests + verde**: agregá/actualizá tests (Vitest) para toda lógica nueva. `npm test` y
    `npm run build` deben pasar antes de proponer el merge.
 5. **No rompas los contratos del repo**:

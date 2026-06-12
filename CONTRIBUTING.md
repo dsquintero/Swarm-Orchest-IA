@@ -5,15 +5,31 @@
 ## TL;DR del flujo
 
 ```
-ROADMAP.md  →  Issue #N  →  (si no trivial) /opsx:propose  →  branch feat/N  →  PR "Closes #N"  →  review  →  merge
+ROADMAP.md → Issue #N → (si no trivial) /opsx:propose → feature/N desde develop → PR a develop ("Closes #N") → CI verde → merge
 ```
 
-1. Elegí un Issue en la columna **Ready** del board y auto-asignátelo (o creá uno con la plantilla).
+1. Elegí un Issue del board (columna **Backlog**) y auto-asignátelo (o creá uno con la plantilla).
 2. Si la feature es **no trivial**, generá el diseño con OpenSpec: `/opsx:propose "<descripción>"`.
-3. Creá un branch `feat/<n>-<slug>` (o `fix/<n>-<slug>`).
+3. Creá un branch **desde `develop`**: `feature/<n>-<slug>` (o `bugfix/<n>-<slug>`).
 4. Implementá **con tests**.
-5. Abrí un PR que referencie el Issue (`Closes #N`) y actualizá la fila en `ROADMAP.md`.
-6. CI debe estar verde antes del merge.
+5. Abrí un PR **hacia `develop`** que referencie el Issue (`Closes #N`) y actualizá la fila en `ROADMAP.md`.
+6. CI debe estar verde antes del merge (es obligatorio por la protección de rama).
+
+## Modelo de ramas (GitFlow)
+
+| Rama | Rol |
+|---|---|
+| `main` | Producción. Solo recibe releases (merge desde `release/*` o `hotfix/*`) y se taggea (`vX.Y.Z`). **Protegida**. |
+| `develop` | Integración y **rama default**. Acá se acumulan las features listas para el próximo release. **Protegida**. |
+| `feature/<n>-<slug>` | Nueva funcionalidad. Sale de `develop` y vuelve a `develop` por PR. |
+| `bugfix/<n>-<slug>` | Corrección sobre trabajo en `develop`. Mismo flujo que feature. |
+| `release/X.Y.Z` | Preparar un release. Sale de `develop`; al cerrar, mergea a `main` (con tag) **y** de vuelta a `develop`. |
+| `hotfix/X.Y.Z` | Arreglo urgente de producción. Sale de `main`; al cerrar, mergea a `main` (con tag) **y** a `develop`. |
+
+Reglas:
+- **Nunca** commitees directo a `main` ni `develop` (protegidas; todo entra por PR con CI en verde).
+- `release/*` y `hotfix/*` son **temporales** y las maneja quien hace el release; se borran al mergear.
+- Borrá tu `feature/*` después del merge.
 
 ## Setup local
 
