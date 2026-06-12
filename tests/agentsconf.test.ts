@@ -87,16 +87,20 @@ describe('fileExists', () => {
 });
 
 describe('swarmConfigDir / swarmConfigFile', () => {
-  const originalHome = process.env.HOME;
-
-  afterEach(() => {
-    if (originalHome === undefined) delete process.env.HOME;
-    else process.env.HOME = originalHome;
+  it('resolves under the user home dir (os.homedir())', () => {
+    const home = os.homedir();
+    expect(swarmConfigDir()).toBe(path.join(home, '.config', 'swarm'));
+    expect(swarmConfigFile()).toBe(path.join(home, '.config', 'swarm', '.agents-conf.yaml'));
   });
 
-  it('resolves under HOME/.config/swarm', () => {
-    process.env.HOME = tmp;
-    expect(swarmConfigDir()).toBe(path.join(tmp, '.config', 'swarm'));
-    expect(swarmConfigFile()).toBe(path.join(tmp, '.config', 'swarm', '.agents-conf.yaml'));
+  it('does not depend on the HOME env var (works on Windows)', () => {
+    const original = process.env.HOME;
+    try {
+      delete process.env.HOME;
+      expect(swarmConfigDir()).toBe(path.join(os.homedir(), '.config', 'swarm'));
+    } finally {
+      if (original === undefined) delete process.env.HOME;
+      else process.env.HOME = original;
+    }
   });
 });

@@ -1,4 +1,5 @@
 import * as fs from 'fs';
+import * as os from 'os';
 import * as path from 'path';
 import * as agentsconf from './agentsconf';
 import * as injector from './injector';
@@ -60,7 +61,7 @@ function injectIntoAgents(agentsDir: string, config: agentsconf.Config): void {
 }
 
 function updateAllProjects(config: agentsconf.Config): void {
-  const home = process.env.HOME || '/root';
+  const home = os.homedir();
   console.log('Searching for projects with .swarm/config.yaml...');
 
   const projects = findSwarmProjects(home);
