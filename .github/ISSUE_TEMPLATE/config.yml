@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Roadmap del proyecto
+    url: https://github.com/dsquintero/Swarm-Orchest-IA/blob/main/ROADMAP.md
+    about: Antes de abrir un issue, revisá si la funcionalidad ya está en el roadmap.
