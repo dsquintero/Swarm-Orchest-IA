@@ -45,7 +45,7 @@ defaults/   ← .agents-conf.yaml, AGENTS.md, opencode.json, current.yaml,
 ## Qué genera `swarm init` en el proyecto destino
 
 ```
-.opencode/{agents,skills,commands}   ← symlinks (global) o copias (local)
+.opencode/{agents,skills,commands}   ← render/copia a ruta nativa (sin symlinks — ADR 0013)
 AGENTS.md                            ← generado con el nombre del proyecto
 opencode.json
 swarmspec/{specs,changes/archive}    ← con un spec de ejemplo

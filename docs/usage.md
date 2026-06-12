@@ -39,14 +39,15 @@ node /path/to/swarm-orchest-ia/dist/cmd/swarm.js init /path/to/mi-proyecto
 npm run dev -- init
 ```
 
-El comando pregunta si querés instalación **Global** (symlinks) o **Local** (copias):
+El comando pregunta si querés instalación **Global** o **Local**. En ambos casos los agentes, skills y
+comandos se **renderizan al formato nativo de la herramienta** (sin symlinks):
 
-- **Global**: agentes, skills y comandos se linkean a `~/.config/swarm/templates/opencode/`. Los
-  cambios en las plantillas se propagan a todos los proyectos con `swarm update`.
-- **Local**: todo se copia al proyecto. Cada proyecto es independiente. Ideal para commitear al repo.
+- **Global**: se escriben en la ruta **global de la herramienta** (ej. `~/.config/opencode/…`), así
+  quedan disponibles en todos tus proyectos de esa tool. `swarm update` re-renderiza.
+- **Local**: se copian dentro del **proyecto** (`.opencode/…`). Autocontenido, ideal para commitear al repo.
 
-> En Windows sin Developer Mode, usá el modo **local** (los symlinks fallan). Ver
-> [limitaciones](../README.md#limitaciones-conocidas).
+> Funciona en Windows sin trucos (no se usan symlinks). Ver
+> [ADR 0013](decisions/0013-canonical-source-adapters.md).
 
 ## Argumento `[path]`
 
@@ -86,7 +87,7 @@ swarm models --fallback             # Solo modelos fallback
 ```
 mi-proyecto/
 ├── .opencode/
-│   ├── agents/                    ← 6 agentes (symlinks o copias)
+│   ├── agents/                    ← 6 agentes (render/copia; modo local)
 │   ├── skills/                    ← 3 skills
 │   └── commands/                  ← 4 comandos
 ├── AGENTS.md                      ← reglas del proyecto (auto-generado)

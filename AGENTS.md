@@ -107,8 +107,9 @@ npm run coverage         # Tests con reporte de cobertura
   los mensajes del proposal están en español. Mantené el idioma del archivo que estés tocando.
 - **Sin dependencias nuevas** salvo justificación clara (mantener el CLI liviano es un objetivo explícito).
 - **Plantillas**: editá `templates/opencode/` (es la copia canónica que instala el CLI).
-- **Filosofía** (del proposal): referencias > copias; un solo origen de plantillas; usar lo que
-  OpenCode ya provee; Engram opcional.
+- **Filosofía**: **una sola fuente canónica** de la que cada adapter **renderiza** los outputs por
+  herramienta (sin symlinks — ver [ADR 0013](docs/decisions/0013-canonical-source-adapters.md)); usar
+  los mecanismos nativos de cada tool; Engram opcional.
 - No rompas el contrato de paths que el CLI espera: `.swarm/config.yaml` marca un proyecto inicializado.
 
 ## Flujo de desarrollo con OpenSpec (para este repo)

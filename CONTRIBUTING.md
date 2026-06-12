@@ -38,16 +38,8 @@ Reglas:
 
 ## Setup local
 
-Requiere **Node.js 20+**.
-
-```bash
-npm install        # instalar dependencias (desde la raíz)
-npm run build      # compilar TS → dist/
-npm test           # correr la suite (Vitest)
-npm run test:watch # tests en modo watch mientras desarrollás
-```
-
-Probar el CLI sin compilar: `npm run dev -- <comando>` (ej: `npm run dev -- init /tmp/test`).
+Cómo levantar el proyecto, compilar y correr los tests está en **[DEVELOPMENT.md](DEVELOPMENT.md)**
+(requiere Node.js 20+). Esta guía cubre el **flujo** de contribución; aquella, el setup técnico.
 
 ## Dónde va cada cosa
 
