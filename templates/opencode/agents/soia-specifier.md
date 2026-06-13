@@ -107,13 +107,10 @@ The system SHALL [new behavior].
 ## Specification Rules
 
 1. **Observable behavior only** — describe what the system does from the outside, not how it does it internally.
-   - ✅ "The system SHALL return 404 when a resource is not found."
-   - ❌ "The UserController uses NotFound() from ControllerBase."
+   - ✅ "The system SHALL return a not-found error when the requested resource does not exist."
+   - ❌ "The request handler calls the framework's built-in not-found helper."
 
-2. **Every requirement uses RFC 2119 keywords**:
-   - `SHALL` / `MUST` → obligatory (use for security, data integrity, core business rules)
-   - `SHOULD` → recommended but allows exceptions (use for logging, caching, convenience)
-   - `MAY` → optional (use for features that enhance but aren't required)
+2. **Every requirement uses RFC 2119 keywords** (`SHALL`/`MUST`, `SHOULD`, `MAY`) — see the `soia-format` skill for their exact meaning and when to use each.
 
 3. **Every requirement has at least one scenario** — no orphan requirements.
 

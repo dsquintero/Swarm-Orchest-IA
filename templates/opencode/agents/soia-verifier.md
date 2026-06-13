@@ -50,8 +50,8 @@ You are the final quality gate before a change is archived. Be thorough and spec
 
 ### 4. Tests — Do tests exist and pass?
 
-- Detect the test framework from `AGENTS.md` or project files (e.g., xUnit, NUnit, Jest, pytest).
-- Run the test suite for the affected areas: `dotnet test`, `npm test`, or equivalent.
+- Detect the test framework from `AGENTS.md` or project files.
+- Run the test suite for the affected areas using the project's test command.
 - If tests exist in the implementation, verify they cover the scenarios from the specs.
 - If no tests exist, note this as a Warning.
 

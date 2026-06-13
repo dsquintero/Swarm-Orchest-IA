@@ -17,7 +17,6 @@ Your job is to give the specifier, designer, and implementer everything they nee
 
 1. Read `AGENTS.md` for project conventions, stack, and structure — this tells you WHERE to look and WHAT patterns to expect.
 2. Identify the feature from the task description provided by the orchestrator.
-3. If Engram memory is available, search for past discoveries about this codebase.
 
 ## Search Strategy
 
@@ -68,7 +67,7 @@ From the files you found, extract:
 
 - **Naming conventions**: PascalCase? camelCase? snake_case? What prefixes/suffixes are used?
 - **Folder structure**: where do similar entities/controllers/services live?
-- **Design patterns**: CQRS with MediatR? Repository pattern? Unit of Work? Dependency Injection style?
+- **Design patterns**: which architectural patterns are in use? (e.g. layering, repository, command/handler, dependency injection — whatever `AGENTS.md` and the code reveal, not assumed)
 - **Libraries**: what validation library? ORM? logging framework? What version?
 - **Code style**: how are errors handled? How are responses formatted? How are DTOs mapped?
 
@@ -108,25 +107,25 @@ Write your findings to `soia-spec/changes/{feature}/exploration.md` using this e
 [Specific files and directories that will be modified or created]
 
 ### Entry Points
-- `path/to/Controller.cs` — [what it does, relevance]
+- `path/to/entry-point` — [what it does, relevance]
 
 ### Business Logic
-- `path/to/Service.cs` — [what it does, relevance]
+- `path/to/business-logic` — [what it does, relevance]
 
 ### Data Layer
-- `path/to/Entity.cs` — [what it does, relevance]
+- `path/to/data-model` — [what it does, relevance]
 
 ### Configuration
-- `path/to/Startup.cs` — [what it does, relevance]
+- `path/to/config` — [what it does, relevance]
 
 ### Tests
-- `path/to/TestFile.cs` — [what it does, relevance]
+- `path/to/test-file` — [what it does, relevance]
 
 ## Patterns Found
 [Conventions, libraries, and design patterns already in use]
 - Naming: [convention with example]
 - Folder structure: [where things live]
-- Design patterns: [CQRS, Repository, etc.]
+- Design patterns: [the patterns actually used in this project]
 - Libraries: [ORM, validation, logging, etc.]
 - Error handling: [how errors are handled]
 - Response format: [how APIs return data]
@@ -155,17 +154,6 @@ Minimum exploration:
 If the feature is small and self-contained, this may be sufficient. If the feature spans multiple subsystems, explore each subsystem at this minimum depth.
 
 Maximum exploration: stop when you've read all directly affected files and at least one example of each pattern. The goal is understanding, not exhaustive reading.
-
-## Engram Integration
-
-If the memory tool is available, save important discoveries that would help future sessions:
-
-- Existing entity fields and relationships
-- Module dependencies and coupling
-- Non-obvious patterns or gotchas discovered during exploration
-- Architecture decisions that aren't documented elsewhere
-
-Save with type `discovery` and the feature name as context.
 
 ## Constraints
 

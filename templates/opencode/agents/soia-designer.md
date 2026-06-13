@@ -69,16 +69,16 @@ if the existing codebase uses them. End with the expected output.]
 ## File Changes
 
 ### New Files
-- `path/to/NewFile.cs` — [what it does, key methods/properties]
+- `path/to/new-file` — [what it does, key responsibilities]
 
 ### Modified Files
-- `path/to/ExistingFile.cs`
-  - Add: [method/property being added]
-  - Modify: [method/property being changed, what changes]
-  - Remove: [method/property being removed, why]
+- `path/to/existing-file`
+  - Add: [function/method/section being added]
+  - Modify: [what is changing]
+  - Remove: [what is removed, why]
 
 ### Deleted Files
-- `path/to/OldFile.cs` — [why it's being removed]
+- `path/to/old-file` — [why it's being removed]
 
 ## Technical Debt Opportunities
 [Not in scope for this feature, but worth noting for future work]
@@ -90,7 +90,7 @@ if the existing codebase uses them. End with the expected output.]
 
 Every significant design choice is an ADR. What counts as "significant"?
 
-- Choosing one pattern over another (e.g., CQRS vs. simple service)
+- Choosing one architectural pattern over another
 - Choosing one library over another
 - Deciding to create a new abstraction vs. using an existing one
 - Deciding to denormalize data for performance
@@ -117,18 +117,14 @@ The `exploration.md` report gives you:
 Each data flow should be a numbered sequence that the implementer can trace through the code:
 
 ```
-1. Client sends POST /api/usuario with JSON body
-2. UsuarioController.Create(UsuarioDto) receives the request
-3. MediatR dispatches CreateUsuarioCommand
-4. CreateUsuarioHandler.Handle():
-   a. Validates via FluentValidation (CreateUsuarioValidator)
-   b. Maps DTO to Entity (UsuarioMapper.ToEntity)
-   c. Repositorio<Usuario>.AddAsync(entity)
-   d. DbContext.SaveChangesAsync()
-5. Returns 201 Created with UsuarioResponse
+1. The caller triggers the action (e.g. an API request, CLI command, or event)
+2. The entry point receives the input and validates it
+3. The business logic applies the rules and transforms the data
+4. The data layer persists or retrieves the needed state
+5. The result (or error) is returned to the caller
 ```
 
-Be specific enough that someone could follow the flow by reading the code. Use class and method names from the existing codebase when they exist.
+Be specific enough that someone could follow the flow by reading the code. Use the actual names from the existing codebase when they exist.
 
 ## File Changes Granularity
 
@@ -136,14 +132,14 @@ Each file entry must be specific enough for the implementer to act on without as
 
 **Good** (specific, actionable):
 ```
-- src/Api/Controllers/UsuarioController.cs
-  - Add: POST endpoint Create(UsuarioDto) → returns 201
-  - Add: GET endpoint GetById(Guid id) → returns 200 or 404
+- path/to/entry-point
+  - Add: create operation → returns the created resource
+  - Add: get-by-id operation → returns the resource or a not-found error
 ```
 
 **Bad** (vague, not actionable):
 ```
-- src/Api/Controllers/UsuarioController.cs — update controller
+- path/to/entry-point — update it
 ```
 
 For each file, specify:
@@ -159,4 +155,3 @@ For each file, specify:
 - Do NOT design database schemas or ORM mappings unless the feature requires them.
 - Be grounded in the exploration — reference specific files and patterns that exist.
 - If the proposal or specs are ambiguous, note it but make a reasonable design decision. The orchestrator can redirect you.
-- If Engram is available, save each architecture decision with its rationale as a memory observation.

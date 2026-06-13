@@ -56,7 +56,7 @@ Leyenda: ✅ hecho · 🟡 parcial · ⬜ pendiente · 🔴 P0 · 🟠 P1 · �
 | ID | Funcionalidad | Descripción | Prio | Issue |
 |---|---|---|---|---|
 | F30 | Extraer y organizar `templates/canonical/` | Separar el canónico del *shape* OpenCode (`templates/canonical/{agents,skills,commands,context,defaults}`), definir el formato **agnóstico de tool** y **abstraer el frontmatter** tool-specific (`mode`/`permission`/`color`/`agent:` salen del canónico; los pone cada adapter). Base de todo. Ver [ADR 0013](docs/decisions/0013-canonical-source-adapters.md) | 🔴 | — |
-| F24 | Pulir el workflow SDD canónico | Neutralizar el **sesgo .NET/C#** en ejemplos (explorer/specifier/designer/`soia-format`); **deduplicar** la lógica de archive/format/delta triplicada (agente vs comando vs skill) → skills como fuente única; **gatear/quitar** Engram (fuera de alcance). Artefactos canónicos en inglés | 🔴 | — |
+| F24 | ✅ Pulir el workflow SDD canónico | Neutralizar el **sesgo .NET/C#** en ejemplos (explorer/specifier/designer/`soia-format`); **deduplicar** la lógica de archive/format/delta triplicada (agente vs comando vs skill) → skills como fuente única; **quitar** Engram (fuera de alcance). Artefactos canónicos en inglés — **hecho** (change `pulir-workflow-canonico`) | 🔴 | — |
 
 ## ⚙️ Fase 2 — `init` + motor de adapters
 
