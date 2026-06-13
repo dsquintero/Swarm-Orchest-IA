@@ -20,7 +20,7 @@ Each requirement describes **observable behavior**, not implementation details.
 
 ✅ Good: "The system SHALL validate email format before creating a user."
 
-❌ Bad: "Use FluentValidation in CreateUserHandler to call EmailValidator."
+❌ Bad: "The create handler calls the framework's validation library to check the email."
 
 ## Scenarios
 
@@ -37,25 +37,23 @@ Every requirement MUST have at least one scenario. Use GIVEN/WHEN/THEN/AND:
 ### Examples
 
 ```markdown
-#### Scenario: Successful user creation
-- GIVEN valid user data (name, email, password)
-- WHEN POST /api/usuarios is called
-- THEN return 201 Created
-- AND the response body contains the user ID
-- AND the user is persisted in the database
+#### Scenario: Successful creation
+- GIVEN valid input data
+- WHEN a create operation is requested
+- THEN the system creates the record
+- AND the result includes the new identifier
 
-#### Scenario: Duplicate email
-- GIVEN a user with email "test@mail.com" already exists
-- WHEN POST /api/usuarios with the same email
-- THEN return 409 Conflict
-- AND the error message indicates "email already registered"
-- AND no new user is created
+#### Scenario: Duplicate unique value
+- GIVEN a record with a given unique value already exists
+- WHEN a create operation uses the same unique value
+- THEN the system rejects it as a conflict
+- AND no new record is created
 
-#### Scenario: Invalid email format
-- GIVEN a request with email "not-an-email"
-- WHEN POST /api/usuarios is called
-- THEN return 400 Bad Request
-- AND the error response includes the field "email"
+#### Scenario: Invalid input
+- GIVEN input that violates a validation rule
+- WHEN a create operation is requested
+- THEN the system rejects it as invalid
+- AND the response identifies the offending field
 ```
 
 ## Spec Structure

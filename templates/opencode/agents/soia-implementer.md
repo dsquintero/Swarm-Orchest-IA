@@ -112,14 +112,9 @@ Do NOT write a blocker for things you can resolve yourself:
 If the project has a test suite:
 
 1. Write tests for the code you create. Place them in the project's test directory following its conventions.
-2. Each test should map to a scenario from the delta specs. Add a comment: `// Scenario: {scenario name}`
+2. Each test should map to a scenario from the delta specs. Mark which scenario it covers with a comment (e.g. `Scenario: {scenario name}`).
 3. Cover at minimum the happy path and the most critical edge case for each requirement.
-4. Run the relevant tests after implementation to confirm they pass:
-   ```bash
-   dotnet test --filter "{test}"
-   # or
-   npm test -- --grep "{test name}"
-   ```
+4. Run the relevant tests after implementation to confirm they pass, using the project's test command (see `AGENTS.md`).
 5. If tests fail, fix the code (not the test, unless the test itself is wrong).
 
 If the project has NO test suite, note this in `tasks.md` and skip test creation. Do not set up a test framework unless `design.md` explicitly includes it.

@@ -26,7 +26,6 @@ When starting any session:
 1. Read `AGENTS.md` for project-specific conventions, stack, and structure.
 2. Read `.soia/current.yaml` to find the active change. If it doesn't exist or is empty, ask the user what feature to work on.
 3. Read `soia-spec/changes/{feature}/.status.yaml` to determine the current phase and artifact status.
-4. If Engram memory is available, search for relevant past decisions about this codebase.
 
 ### Recovery Procedure
 
@@ -198,27 +197,8 @@ Clear it (`active_change: null`) after archiving completes.
 
 When reaching the archiving phase, the orchestrator handles it directly (no sub-agent):
 
-1. Load skill `soia-archive` for the merge process.
-2. Verify: all tasks in `tasks.md` are `[x]`, verification report has no critical issues, user has approved.
-3. For each `soia-spec/changes/{feature}/specs/{domain}/spec.md`:
-   - Read the main spec at `soia-spec/specs/{domain}/spec.md`
-   - Apply ADDED requirements (append)
-   - Apply MODIFIED requirements (replace matching requirement by title)
-   - Apply REMOVED requirements (delete matching requirement)
-   - If main spec doesn't exist, create it from the delta content
-   - Write the updated main spec
-4. Move the change folder: `soia-spec/changes/{feature}/` → `soia-spec/changes/archive/{YYYY-MM-DD}-{feature}/`
-5. Update `.status.yaml`: `phase: done`
-6. Update `.soia/current.yaml`: `active_change: null`
-7. If Engram is available, save the completed change as a memory observation.
-
-## Engram Integration
-
-If the memory tool is available:
-
-- After **exploring**: save discoveries about the codebase (entity fields, module dependencies, non-obvious patterns)
-- After **design**: save each architecture decision with its rationale
-- After **archiving**: save a summary of the completed change as an observation
-- On **session start**: search for relevant past decisions before delegating
-
-If Engram is NOT available, proceed without it. The workflow does not depend on it.
+1. Verify: all tasks in `tasks.md` are `[x]`, verification report has no critical issues, user has approved.
+2. Load the `soia-archive` skill and apply the merge **exactly as it describes** (ADDED/MODIFIED/REMOVED for each delta spec).
+3. Move the change folder: `soia-spec/changes/{feature}/` → `soia-spec/changes/archive/{YYYY-MM-DD}-{feature}/`
+4. Update `.status.yaml`: `phase: done`
+5. Update `.soia/current.yaml`: `active_change: null`

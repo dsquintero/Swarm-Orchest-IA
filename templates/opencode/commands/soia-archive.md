@@ -22,26 +22,15 @@ Archive the current SDD change.
 
 4. If confirmed, set phase to `archiving` in `.status.yaml`.
 
-5. Load skill `soia-archive` for the merge process.
+5. Load the `soia-archive` skill and merge each delta spec **exactly as the skill describes** (ADDED/MODIFIED/REMOVED per domain; if the main spec does not exist, create it from the delta).
 
-6. Merge delta specs:
-   For each `soia-spec/changes/{feature}/specs/{domain}/spec.md`:
-
-   a. Read the delta spec.
-   b. Check if `soia-spec/specs/{domain}/spec.md` exists:
-      - **Exists**: Apply ADDED (append), MODIFIED (replace by title), REMOVED (delete by title).
-      - **Does not exist**: Create it. All content becomes the initial spec (strip ADDED/MODIFIED/REMOVED headers, keep requirements).
-   c. Write the updated main spec.
-
-7. Move the change folder:
+6. Move the change folder:
    ```
    soia-spec/changes/{feature}/ → soia-spec/changes/archive/{YYYY-MM-DD}-{feature}/
    ```
 
-8. Update `.status.yaml` in the archived folder: `phase: done`.
+7. Update `.status.yaml` in the archived folder: `phase: done`.
 
-9. Update `.soia/current.yaml`: `active_change: null`.
+8. Update `.soia/current.yaml`: `active_change: null`.
 
-10. If Engram is available, save a summary of the completed change.
-
-11. Confirm to the user: "Change **{feature}** archived. Specs updated in `soia-spec/specs/`. Change preserved in `soia-spec/changes/archive/{date}-{feature}/`."
+9. Confirm to the user: "Change **{feature}** archived. Specs updated in `soia-spec/specs/`. Change preserved in `soia-spec/changes/archive/{date}-{feature}/`."
