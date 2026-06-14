@@ -108,7 +108,7 @@ Leyenda: ✅ hecho · 🟡 parcial · ⬜ pendiente · 🔴 P0 · 🟠 P1 · �
 | F28 | Merge de specs en el CLI | Mover el merge ADDED/MODIFIED/REMOVED del LLM a **código** con validación (robustez del archive) | ⚪ | — |
 | F11 | Publicación en npm | `npm install -g swarm-orchest-ia` → comando `soia`; release por CI en tag `vX.Y.Z` | ⚪ | — |
 | F20 | Automatización del board (Kanban) | rama→*In progress*, PR→*In review*, merge→*Done* (Projects + Actions con PAT) | ⚪ | — |
-| F5 | Limpieza de defaults muertos | Cablear o eliminar `soia.yaml` / `soia-config.yaml` | ⚪ | [#4](https://github.com/dsquintero/Swarm-Orchest-IA/issues/4) |
+| F5 | ✅ Limpieza de defaults muertos | Eliminados `soia.yaml`, `soia-config.yaml` y `defaults/opencode.json` (sin referencias; el adapter genera `opencode.json`) — **hecho** | ⚪ | [#4](https://github.com/dsquintero/Swarm-Orchest-IA/issues/4) |
 | F+ | Más adapters | Antigravity, Cursor y otros sobre el motor de adapters (F6) | ⚪ | — |
 
 ---
