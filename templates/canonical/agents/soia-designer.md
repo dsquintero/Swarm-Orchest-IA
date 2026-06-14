@@ -1,8 +1,7 @@
 ---
 description: Makes architecture decisions, writes technical design, and documents data flow
-mode: subagent
-# model y temperature se inyectan desde ~/.config/soia/.agents-conf.yaml
-tools:
+role: subagent
+capabilities:
   write: true
   edit: true
   bash: false

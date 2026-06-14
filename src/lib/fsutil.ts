@@ -1,23 +1,6 @@
 import * as fs from 'fs';
 import * as path from 'path';
 
-export function createSymlink(target: string, link: string): void {
-  fs.mkdirSync(path.dirname(link), { recursive: true });
-  if (fs.existsSync(link)) {
-    try {
-      const stat = fs.lstatSync(link);
-      if (stat.isSymbolicLink() || stat.isFile()) {
-        fs.unlinkSync(link);
-      } else if (stat.isDirectory()) {
-        fs.rmSync(link, { recursive: true });
-      }
-    } catch {
-      fs.rmSync(link, { recursive: true, force: true });
-    }
-  }
-  fs.symlinkSync(target, link);
-}
-
 export function copyFile(src: string, dst: string): void {
   fs.mkdirSync(path.dirname(dst), { recursive: true });
   fs.writeFileSync(dst, fs.readFileSync(src));

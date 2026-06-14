@@ -1,6 +1,6 @@
 ---
 description: Archive the current change — merge delta specs into main specs and move to archive/
-agent: soia-orchestrator
+runs: soia-orchestrator
 ---
 
 Archive the current SDD change.

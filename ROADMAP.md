@@ -55,7 +55,7 @@ Leyenda: ✅ hecho · 🟡 parcial · ⬜ pendiente · 🔴 P0 · 🟠 P1 · �
 
 | ID | Funcionalidad | Descripción | Prio | Issue |
 |---|---|---|---|---|
-| F30 | Extraer y organizar `templates/canonical/` | Separar el canónico del *shape* OpenCode (`templates/canonical/{agents,skills,commands,context,defaults}`), definir el formato **agnóstico de tool** y **abstraer el frontmatter** tool-specific (`mode`/`permission`/`color`/`agent:` salen del canónico; los pone cada adapter). Base de todo. Ver [ADR 0013](docs/decisions/0013-canonical-source-adapters.md) | 🔴 | — |
+| F30 | ✅ Extraer y organizar `templates/canonical/` | Separar el canónico del *shape* OpenCode (`templates/canonical/{agents,skills,commands,context,defaults}`), formato **agnóstico de tool** y **frontmatter abstraído** (`role`/`capabilities`/`delegatesTo`; el adapter repone `mode`/`permission`/`tools`). Cuerpo con tags `{{soia:delegate:…}}` — **hecho** (change `motor-adapters-opencode`). Ver [ADR 0013](docs/decisions/0013-canonical-source-adapters.md) | 🔴 | — |
 | F24 | ✅ Pulir el workflow SDD canónico | Neutralizar el **sesgo .NET/C#** en ejemplos (explorer/specifier/designer/`soia-format`); **deduplicar** la lógica de archive/format/delta triplicada (agente vs comando vs skill) → skills como fuente única; **quitar** Engram (fuera de alcance). Artefactos canónicos en inglés — **hecho** (change `pulir-workflow-canonico`) | 🔴 | — |
 
 ## ⚙️ Fase 2 — `init` + motor de adapters
@@ -67,8 +67,8 @@ Leyenda: ✅ hecho · 🟡 parcial · ⬜ pendiente · 🔴 P0 · 🟠 P1 · �
 | ID | Funcionalidad | Descripción | Prio | Issue |
 |---|---|---|---|---|
 | F29 | Estandarizar config + nuevo schema | Contrato de config por responsabilidad: `config.yaml` (settings: `tool`/`mode`/`language`/`version`) y `.agents-conf.yaml` (**model/fallback por tool**, mergeable global/local). Agregar `version` de schema. Lo consume el render → va **antes** de F6. Ver [ADR 0014](docs/decisions/0014-config-modelos-por-tool.md). El eje de esfuerzo (`effort`/`temperature`) **no** entra acá (diferido a F7) | 🟠 | — |
-| F2 | `init` render/copia **sin symlinks** | Modo global/local = render/copia a ruta nativa (elimina el bloqueo de Windows). Primer paso del motor, para OpenCode. Ver [ADR 0013](docs/decisions/0013-canonical-source-adapters.md) | 🔴 | [#2](https://github.com/dsquintero/Swarm-Orchest-IA/issues/2) |
-| F6 | Motor de adapters **(v1)** | Fuente canónica → **adapter por tool** que renderiza al formato nativo y escribe en su ruta. `init` permite elegir 1+ herramientas (`--tool opencode,claude`). Registry + interfaz `ToolAdapter`. Inyección de model/effort **por adapter** | 🟠 | — |
+| F2 | ✅ `init` render/copia **sin symlinks** | `init`/`update` renderizan a la ruta nativa (local `.opencode/`, global `~/.config/opencode/`); se eliminó `fsutil.createSymlink` y la copia central — desbloquea Windows — **hecho** (change `motor-adapters-opencode`). Ver [ADR 0013](docs/decisions/0013-canonical-source-adapters.md) | 🔴 | [#2](https://github.com/dsquintero/Swarm-Orchest-IA/issues/2) |
+| F6 | 🟡 Motor de adapters **(v1)** | **Hecho**: registry + interfaz `ToolAdapter` + loader canónico + **adapter OpenCode** (render por artefacto, inyección de modelo por agent id). **Falta** (con F7): selección multi-tool (`--tool opencode,claude`) y el eje de esfuerzo. Ver [ADR 0013](docs/decisions/0013-canonical-source-adapters.md) | 🟠 | — |
 | F7 | Adapter **Claude Code** **(v1)** | Render al formato y rutas nativas de Claude (`.claude/`, `~/.claude/`). Aquí se **decide el eje de esfuerzo** (`effort` Claude / `reasoningEffort`·`temperature` OpenCode) que la [ADR 0014](docs/decisions/0014-config-modelos-por-tool.md) dejó diferido. **Requerido para v1**, mismo tier que OpenCode | 🟠 | — |
 | F33 | Configuración guiada de modelos | En `init` (y `soia models`): (a) **validar** si hay config de modelos; (b) elegir **modelos independientes por agente** vs **uno para todos** (conveniencia; el schema sigue por-agente); (c) **picker de modelos por tool** para evitar typos (Claude: lista estática; OpenCode: catálogo si lo expone, si no texto validado). Puebla el schema de [ADR 0014](docs/decisions/0014-config-modelos-por-tool.md) sin errores de input | 🟠 | — |
 | F25 | Idioma de artefactos parametrizable | `init` pregunta el idioma de los artefactos (ES/ENG; default = **idioma del sistema**), se guarda en `config.yaml`; los agentes generan specs/proposals en ese idioma (los **prompts siguen en inglés**) | 🟠 | — |
@@ -108,7 +108,7 @@ Leyenda: ✅ hecho · 🟡 parcial · ⬜ pendiente · 🔴 P0 · 🟠 P1 · �
 | F28 | Merge de specs en el CLI | Mover el merge ADDED/MODIFIED/REMOVED del LLM a **código** con validación (robustez del archive) | ⚪ | — |
 | F11 | Publicación en npm | `npm install -g swarm-orchest-ia` → comando `soia`; release por CI en tag `vX.Y.Z` | ⚪ | — |
 | F20 | Automatización del board (Kanban) | rama→*In progress*, PR→*In review*, merge→*Done* (Projects + Actions con PAT) | ⚪ | — |
-| F5 | Limpieza de defaults muertos | Cablear o eliminar `soia.yaml` / `soia-config.yaml` | ⚪ | [#4](https://github.com/dsquintero/Swarm-Orchest-IA/issues/4) |
+| F5 | ✅ Limpieza de defaults muertos | Eliminados `soia.yaml`, `soia-config.yaml` y `defaults/opencode.json` (sin referencias; el adapter genera `opencode.json`) — **hecho** | ⚪ | [#4](https://github.com/dsquintero/Swarm-Orchest-IA/issues/4) |
 | F+ | Más adapters | Antigravity, Cursor y otros sobre el motor de adapters (F6) | ⚪ | — |
 
 ---

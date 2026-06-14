@@ -1,8 +1,7 @@
 ---
 description: Writes proposal.md and delta specs in OpenSpec format (GIVEN/WHEN/THEN, SHALL/MUST)
-mode: subagent
-# model y temperature se inyectan desde ~/.config/soia/.agents-conf.yaml
-tools:
+role: subagent
+capabilities:
   write: true
   edit: true
   bash: false

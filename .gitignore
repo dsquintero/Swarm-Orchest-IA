@@ -24,5 +24,9 @@ Thumbs.db
 # Environment
 .env
 .env.local
+
+# Claude Code local (personal) settings — no versionar
+.claude/settings.local.json
+
 # Scratch/analysis repo (no versionar)
 openspec-analysis/
