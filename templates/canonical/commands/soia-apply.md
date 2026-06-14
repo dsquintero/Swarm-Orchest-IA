@@ -1,6 +1,6 @@
 ---
 description: Continue the current SDD change from its current phase — delegates to the appropriate sub-agent
-agent: soia-orchestrator
+runs: soia-orchestrator
 ---
 
 Continue the current SDD change.
@@ -16,11 +16,11 @@ Continue the current SDD change.
 
    | Phase | Action |
    |-------|--------|
-   | `exploring` | Check if `exploration.md` exists. If yes, show to user and ask to continue. If no, re-delegate to `@soia-explorer`. |
-   | `spec-writing` | Check for `blockers.md`. If exists, show blocker to user. Otherwise, delegate to `@soia-specifier`. |
-   | `design` | Check for `blockers.md`. If exists, show blocker to user. Otherwise, delegate to `@soia-designer`. |
-   | `implementing` | Check for `blockers.md`. If exists, show blocker to user. Otherwise, delegate to `@soia-implementer`. |
-   | `verifying` | Delegate to `@soia-verifier`. |
+   | `exploring` | Check if `exploration.md` exists. If yes, show to user and ask to continue. If no, re-delegate to `{{soia:delegate:soia-explorer}}`. |
+   | `spec-writing` | Check for `blockers.md`. If exists, show blocker to user. Otherwise, delegate to `{{soia:delegate:soia-specifier}}`. |
+   | `design` | Check for `blockers.md`. If exists, show blocker to user. Otherwise, delegate to `{{soia:delegate:soia-designer}}`. |
+   | `implementing` | Check for `blockers.md`. If exists, show blocker to user. Otherwise, delegate to `{{soia:delegate:soia-implementer}}`. |
+   | `verifying` | Delegate to `{{soia:delegate:soia-verifier}}`. |
    | `archiving` | Execute archive process directly (merge deltas + move to archive). |
 
 5. After the sub-agent completes:

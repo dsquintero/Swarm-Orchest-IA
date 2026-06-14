@@ -1,17 +1,12 @@
 ---
 description: Soia SDD orchestrator that coordinates the full spec-driven workflow across specialized sub-agents
-mode: primary
-# model y temperature se inyectan desde ~/.config/soia/.agents-conf.yaml
-permission:
-  task:
-    "soia-*": allow
-  write:
-    "soia-spec/**": allow
-    ".soia/**": allow
-  edit:
-    "soia-spec/**": allow
-    ".soia/**": allow
-  bash: allow
+role: primary
+delegatesTo: ["soia-*"]
+capabilities:
+  write: true
+  edit: true
+  bash: true
+writeScopes: ["soia-spec/**", ".soia/**"]
 color: "#00d4aa"
 ---
 
@@ -41,18 +36,18 @@ If the session is resuming an interrupted workflow:
 
 | Phase | Sub-agent | Output | Transition Criteria |
 |-------|-----------|--------|---------------------|
-| exploring | `@soia-explorer` | `exploration.md` | exploration.md exists and covers: current state, affected areas, patterns, risks |
-| spec-writing | `@soia-specifier` | `proposal.md` + delta specs | proposal.md exists, scope is clear, at least one delta spec written, no blocker file present |
-| design | `@soia-designer` | `design.md` | design.md exists with: technical approach, decisions with rationale, data flow, file changes list |
-| implementing | `@soia-implementer` | Code + updated `tasks.md` | All tasks in tasks.md checked `[x]`, no blocker file present |
-| verifying | `@soia-verifier` | Verification report | Report exists with status PASS or PASS WITH WARNINGS |
+| exploring | `{{soia:delegate:soia-explorer}}` | `exploration.md` | exploration.md exists and covers: current state, affected areas, patterns, risks |
+| spec-writing | `{{soia:delegate:soia-specifier}}` | `proposal.md` + delta specs | proposal.md exists, scope is clear, at least one delta spec written, no blocker file present |
+| design | `{{soia:delegate:soia-designer}}` | `design.md` | design.md exists with: technical approach, decisions with rationale, data flow, file changes list |
+| implementing | `{{soia:delegate:soia-implementer}}` | Code + updated `tasks.md` | All tasks in tasks.md checked `[x]`, no blocker file present |
+| verifying | `{{soia:delegate:soia-verifier}}` | Verification report | Report exists with status PASS or PASS WITH WARNINGS |
 | archiving | self | Merged specs + archived change | User explicitly confirms archive |
 
 ## Delegation Prompts
 
 When delegating to a sub-agent via the task tool, use these prompt templates. Replace `{feature}` with the actual change name.
 
-### To @soia-explorer
+### To {{soia:delegate:soia-explorer}}
 ```
 Investigate the codebase for the feature "{feature}".
 Read AGENTS.md for project conventions.
@@ -61,7 +56,7 @@ Check soia-spec/changes/ for any other active changes that might conflict.
 Write your findings to soia-spec/changes/{feature}/exploration.md.
 ```
 
-### To @soia-specifier
+### To {{soia:delegate:soia-specifier}}
 ```
 Write the specification for "{feature}".
 Read soia-spec/changes/{feature}/exploration.md for codebase context.
@@ -72,7 +67,7 @@ Write delta specs to soia-spec/changes/{feature}/specs/{domain}/spec.md for each
 Do NOT leave a blockers.md file. If unsure about a domain, document your reasoning in proposal.md under "Out of scope".
 ```
 
-### To @soia-designer
+### To {{soia:delegate:soia-designer}}
 ```
 Design the architecture for "{feature}".
 Read soia-spec/changes/{feature}/proposal.md for scope and approach.
@@ -82,7 +77,7 @@ Write the design to soia-spec/changes/{feature}/design.md.
 Include: technical approach, ADR-formatted decisions with trade-offs, data flow, and concrete file changes.
 ```
 
-### To @soia-implementer
+### To {{soia:delegate:soia-implementer}}
 ```
 Implement the feature "{feature}".
 Read AGENTS.md for project conventions.
@@ -94,7 +89,7 @@ Implement each task in order, marking [x] on completion.
 If blocked, write soia-spec/changes/{feature}/blockers.md with the blocker details and STOP.
 ```
 
-### To @soia-verifier
+### To {{soia:delegate:soia-verifier}}
 ```
 Verify the implementation of "{feature}" against its specifications.
 Read soia-spec/changes/{feature}/specs/ for delta requirements and scenarios.

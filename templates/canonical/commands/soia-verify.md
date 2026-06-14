@@ -1,6 +1,6 @@
 ---
 description: Verify the current change — validate implementation against specs
-agent: soia-orchestrator
+runs: soia-orchestrator
 ---
 
 Verify the current SDD change.
@@ -13,7 +13,7 @@ Verify the current SDD change.
 
 3. Set phase to `verifying` in `.status.yaml`.
 
-4. Delegate to `@soia-verifier` with:
+4. Delegate to `{{soia:delegate:soia-verifier}}` with:
    ```
    Verify the implementation of "{feature}" against its specifications.
    Read soia-spec/changes/{feature}/specs/ for delta requirements and scenarios.
@@ -34,6 +34,6 @@ Verify the current SDD change.
    | PASS WITH WARNINGS | Show warnings. Ask: "Minor issues found. Fix warnings (back to implementing) or proceed to archiving?" |
    | FAIL | Show critical issues. Ask: "Critical issues found. Send back to implementing with fixes, or proceed anyway at your own risk?" |
 
-7. If fixing: update phase to `implementing` and re-delegate `@soia-implementer` with the specific issues to fix.
+7. If fixing: update phase to `implementing` and re-delegate `{{soia:delegate:soia-implementer}}` with the specific issues to fix.
 
 8. If proceeding: update phase to `archiving` and execute the archive process.

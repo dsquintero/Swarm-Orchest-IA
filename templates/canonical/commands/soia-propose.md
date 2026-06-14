@@ -1,6 +1,6 @@
 ---
 description: Start a new SDD change — propose a feature and begin the exploration phase
-agent: soia-orchestrator
+runs: soia-orchestrator
 ---
 
 Start a new SDD change for: $ARGUMENTS
@@ -33,10 +33,10 @@ Start a new SDD change for: $ARGUMENTS
    active_change: {name}
    ```
 
-6. Delegate to `@soia-explorer` with the feature description.
+6. Delegate to `{{soia:delegate:soia-explorer}}` with the feature description.
 
 7. After exploration completes, show the findings summary to the user and ask: "Should I continue to spec-writing, or do you want to revise the exploration?"
 
-8. If continuing, update `.status.yaml` to `phase: spec-writing` and delegate to `@soia-specifier`.
+8. If continuing, update `.status.yaml` to `phase: spec-writing` and delegate to `{{soia:delegate:soia-specifier}}`.
 
-9. If the user requests changes to the exploration, re-delegate `@soia-explorer` with the revision instructions.
+9. If the user requests changes to the exploration, re-delegate `{{soia:delegate:soia-explorer}}` with the revision instructions.

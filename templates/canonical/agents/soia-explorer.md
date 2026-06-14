@@ -1,8 +1,7 @@
 ---
 description: Investigates codebase to understand current structure, find affected files, detect patterns and risks
-mode: subagent
-# model y temperature se inyectan desde ~/.config/soia/.agents-conf.yaml
-tools:
+role: subagent
+capabilities:
   write: true
   edit: false
   bash: true

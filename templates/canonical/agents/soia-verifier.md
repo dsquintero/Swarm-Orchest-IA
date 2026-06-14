@@ -1,8 +1,7 @@
 ---
 description: Validates implementation against specs across completeness, correctness, and coherence
-mode: subagent
-# model y temperature se inyectan desde ~/.config/soia/.agents-conf.yaml
-tools:
+role: subagent
+capabilities:
   write: true
   edit: false
   bash: true

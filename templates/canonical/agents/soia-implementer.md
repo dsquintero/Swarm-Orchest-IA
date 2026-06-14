@@ -1,8 +1,7 @@
 ---
 description: Implements code following specs, design, and tasks — writes actual source files
-mode: subagent
-# model y temperature se inyectan desde ~/.config/soia/.agents-conf.yaml
-tools:
+role: subagent
+capabilities:
   write: true
   edit: true
   bash: true
